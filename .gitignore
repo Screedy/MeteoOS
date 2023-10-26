@@ -1,2 +1,7 @@
 MicroPython/.DS_Store
 .DS_Store
+.idea/vcs.xml
+.idea/misc.xml
+.idea/MeteoOS.iml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
