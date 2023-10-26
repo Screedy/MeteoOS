@@ -15,7 +15,7 @@ storage_pin = 0
 
 
 def wizard_start():
-    """Starts the setup wizard"""
+    """Starts the wizard for first time setup."""
 
     clear_fast()
     display.set_pen(main.WHITE)
@@ -28,12 +28,12 @@ def wizard_start():
 
 
 def pin_setup():
-    """Sets up the pins for first thermal sensor"""
+    """Sets up the pins for first thermal sensor."""
 
     global selected_pin
 
     def render_screen():
-        """Renders the pin setup screen"""
+        """Renders the pin setup screen."""
 
         clear_fast()
         display.set_pen(main.WHITE)
@@ -61,7 +61,7 @@ def pin_setup():
 
 
 def storage_pin_setup():
-    """"""
+    """Sets up the pins for the SD card adapter."""
 
     global storage_pin
 
@@ -89,12 +89,14 @@ def storage_pin_setup():
 
 
 def help_interrupt():
+    """Interrupts the current function and displays the help screen."""
     import qr_code
 
     qr_code.render_help()
 
 
 def initial():
+    """Initiates the first time setup. This function is called when the settings.txt file is not found."""
     f = open("settings.txt", "w")
 
     wizard_start()

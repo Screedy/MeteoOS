@@ -11,7 +11,7 @@ WIDTH, HEIGHT = display.get_bounds()
 def measure_qr_code(size, code):
     """
     Calculates the size of the QR code and the size of each module.
-    
+
     :param size: The maximum size of the QR code.
     :param code: The QR code object.
     :return: The size of the QR code and the size of each module.

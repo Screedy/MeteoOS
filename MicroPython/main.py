@@ -25,7 +25,7 @@ GREEN = display.create_pen(0, 255, 0)  # Create color green
 
 
 def clear_fast():
-    """Clears the display"""
+    """Clears the display without refreshing the display to remove flickering."""
 
     display.set_pen(BLACK)  # Set pen color to black
     display.clear()  # Clear display
