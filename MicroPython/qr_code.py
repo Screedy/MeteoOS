@@ -11,10 +11,12 @@ WIDTH, HEIGHT = display.get_bounds()
 def measure_qr_code(size, code):
     """
     Calculates the size of the QR code and the size of each module.
+    
     :param size: The maximum size of the QR code.
     :param code: The QR code object.
     :return: The size of the QR code and the size of each module.
     """
+
     w, h = code.get_size()
     module_size = int(size / w)
     return module_size * w, module_size
@@ -23,12 +25,14 @@ def measure_qr_code(size, code):
 def draw_qr_code(ox, oy, size, code):
     """
     Draws the QR code on the display.
+
     :param ox: The x offset.
     :param oy: The y offset.
     :param size: The size of the QR code.
     :param code: The QR code object.
     :return: None
     """
+
     size, module_size = measure_qr_code(size, code)
 
     display.set_pen(main.WHITE)
@@ -41,6 +45,13 @@ def draw_qr_code(ox, oy, size, code):
 
 
 def render_help(url="https://github.com/Screedy/MeteoOS"):
+    """
+    Renders QR code with the given URL address and displays it on the screen.
+
+    :param url: The URL address to be encoded.
+    :return: None
+    """
+
     code = qrcode.QRCode()
     code.set_text(url)
 
