@@ -40,9 +40,9 @@ def draw_qr_code(ox, oy, size, code):
                 display.rectangle(ox + x * module_size, oy + y * module_size, module_size, module_size)
 
 
-def render_help():
+def render_help(url="https://github.com/Screedy/MeteoOS"):
     code = qrcode.QRCode()
-    code.set_text("test.test")
+    code.set_text(url)
 
     display.set_pen(main.WHITE)
     display.clear()
