@@ -31,6 +31,16 @@ def clear_fast():
     display.clear()  # Clear display
 
 
+def render_homepage(sensor_number, graph_interval):
+    """Renders the homepage with information about the selected sensor and selected graph interval.
+
+    :param sensor_number: The selected sensor number.
+    :param graph_interval: The selected graph interval. Either 1 (Hourly), 2 (Daily), 3 (Weekly) or 4 (Monthly).
+    :return: None
+    """
+    pass
+
+
 if __name__ == "__main__":
     try:
         f = open("settings.txt", "r")
