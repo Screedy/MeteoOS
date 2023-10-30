@@ -96,7 +96,9 @@ def help_interrupt():
 
 
 def initial():
-    """Initiates the first time setup. This function is called when the settings.txt file is not found."""
+    """Initiates the first time setup. This function is called when the settings.txt file is not found.
+    Guides the user through the setup process and connects first thermal sensor and SD card.
+    """
     f = open("settings.txt", "w")
 
     wizard_start()
