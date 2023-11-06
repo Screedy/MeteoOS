@@ -39,7 +39,12 @@ def draw_arrow(x, y, size, direction):
 
 
 def draw_sd_card(x, y, connected = True):
-    """"""
+    """Draws an SD card icon on the display.
+
+    :param x: The x coordinate of the SD card.
+    :param y: The y coordinate of the SD card.
+    :param connected: Whether the SD card is connected or not. If not, a red line will be drawn.
+    """
 
     display.set_pen(main.WHITE)
 
@@ -57,10 +62,28 @@ def draw_sd_card(x, y, connected = True):
         display.set_pen(main.RED)
         display.line(x-3, y+12, x+11, y-2)
 
+
+def draw_clock(x, y):
+    """Draws a clock icon on the display.
+
+    :param x: The x coordinate of the clock.
+    :param y: The y coordinate of the clock.
+    """
+
+    display.set_pen(main.WHITE)
+    display.circle(x+5, y+5, 5)
+    display.set_pen(main.BLACK)
+    display.circle(x+5, y+5, 4)
+    display.set_pen(main.WHITE)
+    display.line(x+5, y+5, x+5, y+3)
+    display.line(x+5, y+5, x+8, y+5)
+
+
 if __name__ == "__main__":
     display.clear()
     draw_arrow(10, 10, 10, 0)
     draw_arrow(30, 10, 10, 180)
     draw_sd_card(10, 30, True)
     draw_sd_card(30, 30, False)
+    draw_clock(10, 50)
     display.update()
