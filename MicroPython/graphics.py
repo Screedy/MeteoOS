@@ -79,6 +79,45 @@ def draw_clock(x, y):
     display.line(x+5, y+5, x+8, y+5)
 
 
+def draw_thermometer(x, y):
+    """Draws a thermometer icon on the display.
+
+    :param x: The x coordinate of the thermometer.
+    :param y: The y coordinate of the thermometer.
+    """
+
+    #Base of thermometer
+    display.set_pen(main.WHITE)
+    display.circle(x+5, y+5, 3)
+    display.set_pen(main.BLACK)
+    display.circle(x+5, y+5, 2)
+    display.set_pen(main.WHITE)
+    display.circle(x+5, y+5, 1)
+
+    #Upper dome of thermometer
+    display.circle(x+5, y-3, 2)
+    display.set_pen(main.BLACK)
+    display.circle(x+5, y-3, 1)
+    display.rectangle(x+4, y-2, 2, 3)
+
+    #Thermometer line
+    display.set_pen(main.WHITE)
+    display.line(x+5, y+5, x+5, y-3)
+
+    #Thermometer side lines
+    display.set_pen(main.BLACK)
+    display.line(x+4, y+4, x+4, y-4)
+    display.line(x+6, y+4, x+6, y-4)
+    display.set_pen(main.WHITE)
+    display.line(x+3, y+4, x+3, y-4)
+    display.line(x+7, y+4, x+7, y-4)
+
+    #Lines on the side
+    display.line(x+9, y+2, x+11, y+2)
+    display.line(x+9, y, x+10, y)
+    display.line(x+9, y-2, x+11, y-2)
+
+
 if __name__ == "__main__":
     display.clear()
     draw_arrow(10, 10, 10, 0)
@@ -86,4 +125,6 @@ if __name__ == "__main__":
     draw_sd_card(10, 30, True)
     draw_sd_card(30, 30, False)
     draw_clock(10, 50)
+    draw_thermometer(30, 50)
     display.update()
+
