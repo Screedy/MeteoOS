@@ -118,6 +118,21 @@ def draw_thermometer(x, y):
     display.line(x+9, y-2, x+11, y-2)
 
 
+def draw_humidity(x, y):
+    """Draws a humidity icon on the display.
+
+    :param x: The x coordinate of the humidity.
+    :param y: The y coordinate of the humidity.
+    """
+
+    display.set_pen(main.WHITE)
+    display.circle(x+5, y+5, 5)
+    display.set_pen(main.BLACK)
+    display.circle(x+5, y+5, 4)
+    display.set_pen(main.WHITE)
+    display.text("H", x+3, y+2, 240, 1)
+
+
 if __name__ == "__main__":
     display.clear()
     draw_arrow(10, 10, 10, 0)
@@ -126,5 +141,6 @@ if __name__ == "__main__":
     draw_sd_card(30, 30, False)
     draw_clock(10, 50)
     draw_thermometer(30, 50)
+    draw_humidity(50, 50)
     display.update()
 
