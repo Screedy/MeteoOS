@@ -38,8 +38,29 @@ def draw_arrow(x, y, size, direction):
     display.triangle(triangle[0][0], triangle[0][1], triangle[1][0], triangle[1][1], triangle[2][0], triangle[2][1])
 
 
+def draw_sd_card(x, y, connected = True):
+    """"""
+
+    display.set_pen(main.WHITE)
+
+    display.line(x+2, y, x+8, y)
+    display.line(x+8, y, x+8, y+10)
+    display.line(x+8, y+10, x, y+10)
+    display.line(x, y+10, x, y+7)
+    display.line(x, y+7, x+2, y+6)
+    display.line(x+2, y+6, x+2, y+4)
+    display.line(x+2, y+4, x, y+4)
+    display.line(x, y+4, x, y+2)
+    display.line(x, y+2, x+2, y)
+
+    if not connected:
+        display.set_pen(main.RED)
+        display.line(x-3, y+12, x+11, y-2)
+
 if __name__ == "__main__":
     display.clear()
     draw_arrow(10, 10, 10, 0)
     draw_arrow(30, 10, 10, 180)
+    draw_sd_card(10, 30, True)
+    draw_sd_card(30, 30, False)
     display.update()
