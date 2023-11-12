@@ -23,13 +23,14 @@ def rotate_point(param, param1, direction):
                                                                                                                    cy))
 
 
-def draw_arrow(x, y, size, direction):
+def draw_arrow(x: int, y: int, size: int, direction: int):
     """Draws an arrow on the display with 360-degree rotation.
 
     :param x: The x coordinate of the arrow.
     :param y: The y coordinate of the arrow.
     :param size: The size of the arrow.
     :param direction: The direction of the arrow. 0 is up, 90 is right, 180 is down, 270 is left.
+    :return: None
     """
 
     display.set_pen(main.WHITE)
@@ -39,12 +40,28 @@ def draw_arrow(x, y, size, direction):
     display.triangle(triangle[0][0], triangle[0][1], triangle[1][0], triangle[1][1], triangle[2][0], triangle[2][1])
 
 
-def draw_sd_card(x, y, connected=True):
+def draw_empty_circle(x: int, y: int, radius: int):
+    """Draws an empty circle on the display. With x and y being the center of the circle.
+
+    :param x: The x coordinate of the middle of the circle.
+    :param y: The y coordinate of the middle of the circle.
+    :param radius: The radius of the circle.
+    :return: None
+    """
+
+    display.set_pen(main.WHITE)
+    display.circle(x, y, radius)
+    display.set_pen(main.BLACK)
+    display.circle(x, y, radius - 1)
+
+
+def draw_sd_card(x: int, y: int, connected: bool = True):
     """Draws an SD card icon on the display.
 
     :param x: The x coordinate of the SD card.
     :param y: The y coordinate of the SD card.
     :param connected: Whether the SD card is connected or not. If not, a red line will be drawn.
+    :return: None
     """
 
     display.set_pen(main.WHITE)
@@ -64,27 +81,26 @@ def draw_sd_card(x, y, connected=True):
         display.line(x-3, y+12, x+11, y-2)
 
 
-def draw_clock(x, y):
+def draw_clock(x: int, y: int):
     """Draws a clock icon on the display.
 
     :param x: The x coordinate of the clock.
     :param y: The y coordinate of the clock.
+    :return: None
     """
 
-    display.set_pen(main.WHITE)
-    display.circle(x+5, y+5, 5)
-    display.set_pen(main.BLACK)
-    display.circle(x+5, y+5, 4)
+    draw_empty_circle(x+5, y+5, 5)
     display.set_pen(main.WHITE)
     display.line(x+5, y+5, x+5, y+3)
     display.line(x+5, y+5, x+8, y+5)
 
 
-def draw_thermometer(x, y):
+def draw_thermometer(x: int, y: int):
     """Draws a thermometer icon on the display.
 
     :param x: The x coordinate of the thermometer.
     :param y: The y coordinate of the thermometer.
+    :return: None
     """
 
     # Base of thermometer
@@ -119,17 +135,15 @@ def draw_thermometer(x, y):
     display.line(x+9, y-2, x+11, y-2)
 
 
-def draw_humidity(x, y):
+def draw_humidity(x: int, y: int):
     """Draws a humidity icon on the display.
 
     :param x: The x coordinate of the humidity.
     :param y: The y coordinate of the humidity.
+    :return: None
     """
 
-    display.set_pen(main.WHITE)
-    display.circle(x+5, y+5, 5)
-    display.set_pen(main.BLACK)
-    display.circle(x+5, y+5, 4)
+    draw_empty_circle(x+5, y+5, 5)
     display.set_pen(main.WHITE)
     display.text("H", x+3, y+2, 240, 1)
 
