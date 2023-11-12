@@ -4,6 +4,7 @@ from picographics import DISPLAY_PICO_DISPLAY  # Class for this display model
 from picographics import PEN_P4  # Class for the color depth used
 
 import main
+import graphics_text
 from main import display, clear_fast
 import time
 
@@ -11,7 +12,7 @@ helped = False
 pins = ["GP0", "GP1", "GP2", "GP3", "GP4", "GP5", "GP6", "GP7", "GP8", "GP9", "GP14", "GP15", "GP16", "GP17", "GP18",
         "GP19"]
 selected_pin = 0
-storage_pin = 0
+storage_pins = ["GP2", "GP3", "GP4", "GP5"]
 
 
 def wizard_start():
@@ -39,7 +40,8 @@ def pin_setup():
         display.set_pen(main.WHITE)
         display.text("Setup wizard", 2, 0, 236, 2)
         display.text("Please select the correct pin for your first thermal sensor with A and B buttons", 2, 20, 236, 2)
-        display.text("OK", main.X_MAX - 30, main.Y_MAX - 20, 240, 2)
+        graphics_text.text_ok(main.X_MAX - 25, main.Y_MAX - 17, display)
+        graphics_text.text_help(main.X_MAX - 45, 2, display)
 
     render_screen()
 
@@ -63,16 +65,15 @@ def pin_setup():
 def storage_pin_setup():
     """Sets up the pins for the SD card adapter."""
 
-    global storage_pin
-
     def render_screen():
         clear_fast()
         display.set_pen(main.WHITE)
         display.text("Setup wizard", 2, 0, 236, 2)
-        display.text("Please connect the SD card adapter to the following pins:", 2, 20, 236, 2)
+        display.text("Please connect the SD card to the following pins:", 2, 20, 180, 2)
         display.text("SCK -> GP2, MOSI -> GP3, "
                      "MISO -> GP4, CS -> GP5, VCC -> +5V, GND -> GND", 2, 70, 236, 2)
-        display.text("OK", main.X_MAX - 30, main.Y_MAX - 20, 240, 2)
+        graphics_text.text_ok(main.X_MAX - 25, main.Y_MAX - 17, display)
+        graphics_text.text_help(main.X_MAX - 45, 2, display)
         display.update()
 
     render_screen()
@@ -94,6 +95,12 @@ def help_interrupt():
 
     qr_code.render_help()
 
+    graphics_text.text_ok(main.X_MAX - 25, main.Y_MAX - 17, main.BLACK, display)
+    display.update()
+
+    while not main.button_y.read():
+        time.sleep(.15)
+
 
 def initial():
     """Initiates the first time setup. This function is called when the settings.txt file is not found.
@@ -105,8 +112,14 @@ def initial():
     pin_setup()
     storage_pin_setup()
 
+    f.write(f"PIN: {pins[selected_pin]}\n")
+    f.write(f"STORAGE: {storage_pins[0]} {storage_pins[1]} {storage_pins[2]} {storage_pins[3]}\n")
 
-def wait_for_y(parent_function):
+
+def wait_for_y(parent_function: callable):
+    """Waits for the Y button to be pressed and then returns to the parent function.
+    If the X button is pressed, the help screen is displayed with QR code to the GitHub repository."""
+
     while True:
         if main.button_y.read():
             return
@@ -116,6 +129,8 @@ def wait_for_y(parent_function):
 
 
 def clear_pin():
+    """Clears the pin number on the screen."""
+
     main.display.set_pen(main.BLACK)
     main.display.rectangle(0, main.Y_MAX - 40, 120, main.Y_MAX - 20)
     main.display.set_pen(main.WHITE)
@@ -124,3 +139,4 @@ def clear_pin():
 if __name__ == "__main__":
     print("Initial testing of setup file")
     initial()
+    print("Setup file tested successfully")
