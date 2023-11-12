@@ -44,7 +44,7 @@ def draw_qr_code(ox, oy, size, code):
                 display.rectangle(ox + x * module_size, oy + y * module_size, module_size, module_size)
 
 
-def render_help(url="https://github.com/Screedy/MeteoOS"):
+def render_help(url: str = "https://github.com/Screedy/MeteoOS"):
     """
     Renders QR code with the given URL address and displays it on the screen.
 
@@ -67,7 +67,3 @@ def render_help(url="https://github.com/Screedy/MeteoOS"):
     draw_qr_code(left, top, max_size, code)
 
     display.update()
-
-    while not main.button_y.read():
-        time.sleep(.15)
-
