@@ -1,6 +1,7 @@
-import main
+# import main
 
-display = main.display
+import main
+# display = main.display
 
 
 def rotate_point(param, param1, direction):
@@ -23,13 +24,14 @@ def rotate_point(param, param1, direction):
                                                                                                                    cy))
 
 
-def draw_arrow(x: int, y: int, size: int, direction: int):
+def draw_arrow(x: int, y: int, size: int, direction: int, display):
     """Draws an arrow on the display with 360-degree rotation.
 
     :param x: The x coordinate of the arrow.
     :param y: The y coordinate of the arrow.
     :param size: The size of the arrow.
     :param direction: The direction of the arrow. 0 is up, 90 is right, 180 is down, 270 is left.
+    :param display: The display object where the arrow will be drawn.
     :return: None
     """
 
@@ -40,12 +42,13 @@ def draw_arrow(x: int, y: int, size: int, direction: int):
     display.triangle(triangle[0][0], triangle[0][1], triangle[1][0], triangle[1][1], triangle[2][0], triangle[2][1])
 
 
-def draw_empty_circle(x: int, y: int, radius: int):
+def draw_empty_circle(x: int, y: int, radius: int, display):
     """Draws an empty circle on the display. With x and y being the center of the circle.
 
     :param x: The x coordinate of the middle of the circle.
     :param y: The y coordinate of the middle of the circle.
     :param radius: The radius of the circle.
+    :param display: The display object where the circle will be drawn.
     :return: None
     """
 
@@ -55,11 +58,12 @@ def draw_empty_circle(x: int, y: int, radius: int):
     display.circle(x, y, radius - 1)
 
 
-def draw_sd_card(x: int, y: int, connected: bool = True):
+def draw_sd_card(x: int, y: int, display, connected: bool = True):
     """Draws an SD card icon on the display.
 
     :param x: The x coordinate of the SD card.
     :param y: The y coordinate of the SD card.
+    :param display: The display object where the SD card will be drawn.
     :param connected: Whether the SD card is connected or not. If not, a red line will be drawn.
     :return: None
     """
@@ -81,25 +85,27 @@ def draw_sd_card(x: int, y: int, connected: bool = True):
         display.line(x-3, y+12, x+11, y-2)
 
 
-def draw_clock(x: int, y: int):
+def draw_clock(x: int, y: int, display):
     """Draws a clock icon on the display.
 
     :param x: The x coordinate of the clock.
     :param y: The y coordinate of the clock.
+    :param display: The display object where the clock will be drawn.
     :return: None
     """
 
-    draw_empty_circle(x+5, y+5, 5)
+    draw_empty_circle(x+5, y+5, 5, display)
     display.set_pen(main.WHITE)
     display.line(x+5, y+5, x+5, y+3)
     display.line(x+5, y+5, x+8, y+5)
 
 
-def draw_thermometer(x: int, y: int):
+def draw_thermometer(x: int, y: int, display):
     """Draws a thermometer icon on the display.
 
     :param x: The x coordinate of the thermometer.
     :param y: The y coordinate of the thermometer.
+    :param display: The display object where the thermometer will be drawn.
     :return: None
     """
 
@@ -135,26 +141,28 @@ def draw_thermometer(x: int, y: int):
     display.line(x+9, y-2, x+11, y-2)
 
 
-def draw_humidity(x: int, y: int):
+def draw_humidity(x: int, y: int, display):
     """Draws a humidity icon on the display.
 
     :param x: The x coordinate of the humidity.
     :param y: The y coordinate of the humidity.
+    :param display: The display object where the humidity will be drawn.
     :return: None
     """
 
-    draw_empty_circle(x+5, y+5, 5)
+    draw_empty_circle(x+5, y+5, 5, display)
     display.set_pen(main.WHITE)
     display.text("H", x+3, y+2, 240, 1)
 
 
 if __name__ == "__main__":
+    from main import display
     display.clear()
-    draw_arrow(10, 10, 10, 0)
-    draw_arrow(30, 10, 10, 180)
-    draw_sd_card(10, 30, True)
-    draw_sd_card(30, 30, False)
-    draw_clock(10, 50)
-    draw_thermometer(30, 50)
-    draw_humidity(50, 50)
+    draw_arrow(10, 10, 10, 0, display)
+    draw_arrow(30, 10, 10, 180, display)
+    draw_sd_card(10, 30, display, True)
+    draw_sd_card(30, 30, display,False)
+    draw_clock(10, 50, display)
+    draw_thermometer(30, 50, display)
+    draw_humidity(50, 50, display)
     display.update()
