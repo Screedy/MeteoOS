@@ -20,8 +20,8 @@ def rotate_point(param, param1, direction):
     x, y = param
     cx, cy = param1
     angle = radians(direction)
-    return int(cx + cos(angle) * (x - cx) - sin(angle) * (y - cy)), int(cy + sin(angle) * (x - cx) + cos(angle) * (y -
-                                                                                                                   cy))
+    return (int(cx + cos(angle) * (x - cx) - sin(angle) * (y - cy)),
+            int(cy + sin(angle) * (x - cx) + cos(angle) * (y - cy)))
 
 
 def draw_arrow(x: int, y: int, size: int, direction: int, display):
