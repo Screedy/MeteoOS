@@ -1,7 +1,4 @@
-# import main
-
-import main
-# display = main.display
+from config import Colors, display as dp
 
 
 def rotate_point(param, param1, direction):
@@ -35,7 +32,7 @@ def draw_arrow(x: int, y: int, size: int, direction: int, display):
     :return: None
     """
 
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     triangle = [(x, y), (x + size, y), (x + size / 2, y + size)]
     for i in range(len(triangle)):
         triangle[i] = rotate_point(triangle[i], (x + size / 2, y + size / 2), direction)
@@ -52,9 +49,9 @@ def draw_empty_circle(x: int, y: int, radius: int, display):
     :return: None
     """
 
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.circle(x, y, radius)
-    display.set_pen(main.BLACK)
+    display.set_pen(Colors.BLACK)
     display.circle(x, y, radius - 1)
 
 
@@ -68,7 +65,7 @@ def draw_sd_card(x: int, y: int, display, connected: bool = True):
     :return: None
     """
 
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
 
     display.line(x+2, y, x+8, y)
     display.line(x+8, y, x+8, y+10)
@@ -81,7 +78,7 @@ def draw_sd_card(x: int, y: int, display, connected: bool = True):
     display.line(x, y+2, x+2, y)
 
     if not connected:
-        display.set_pen(main.RED)
+        display.set_pen(Colors.RED)
         display.line(x-3, y+12, x+11, y-2)
 
 
@@ -95,7 +92,7 @@ def draw_clock(x: int, y: int, display):
     """
 
     draw_empty_circle(x+5, y+5, 5, display)
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.line(x+5, y+5, x+5, y+3)
     display.line(x+5, y+5, x+8, y+5)
 
@@ -110,28 +107,28 @@ def draw_thermometer(x: int, y: int, display):
     """
 
     # Base of thermometer
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.circle(x+5, y+5, 3)
-    display.set_pen(main.BLACK)
+    display.set_pen(Colors.BLACK)
     display.circle(x+5, y+5, 2)
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.circle(x+5, y+5, 1)
 
     # Upper dome of thermometer
     display.circle(x+5, y-3, 2)
-    display.set_pen(main.BLACK)
+    display.set_pen(Colors.BLACK)
     display.circle(x+5, y-3, 1)
     display.rectangle(x+4, y-2, 2, 3)
 
     # Thermometer line
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.line(x+5, y+5, x+5, y-3)
 
     # Thermometer side lines
-    display.set_pen(main.BLACK)
+    display.set_pen(Colors.BLACK)
     display.line(x+4, y+4, x+4, y-4)
     display.line(x+6, y+4, x+6, y-4)
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.line(x+3, y+4, x+3, y-4)
     display.line(x+7, y+4, x+7, y-4)
 
@@ -151,18 +148,19 @@ def draw_humidity(x: int, y: int, display):
     """
 
     draw_empty_circle(x+5, y+5, 5, display)
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.text("H", x+3, y+2, 240, 1)
 
 
 if __name__ == "__main__":
-    from main import display
-    display.clear()
-    draw_arrow(10, 10, 10, 0, display)
-    draw_arrow(30, 10, 10, 180, display)
-    draw_sd_card(10, 30, display, True)
-    draw_sd_card(30, 30, display,False)
-    draw_clock(10, 50, display)
-    draw_thermometer(30, 50, display)
-    draw_humidity(50, 50, display)
-    display.update()
+
+    dp.clear()
+    draw_arrow(10, 10, 10, 0, dp)
+    draw_arrow(30, 10, 10, 180, dp)
+    draw_sd_card(10, 30, dp, True)
+    draw_sd_card(30, 30, dp, False)
+    draw_clock(10, 50, dp)
+    draw_thermometer(30, 50, dp)
+    draw_humidity(50, 50, dp)
+    dp.update()
+
