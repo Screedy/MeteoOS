@@ -1,11 +1,7 @@
-from pimoroni import Button  # Import Buttons
-from picographics import PicoGraphics  # Import universal graphics library (part of custom UF2 file)
-from picographics import DISPLAY_PICO_DISPLAY  # Class for this display model
-from picographics import PEN_P4  # Class for the color depth used
-
-import main
+from config import Colors, display, X_MAX, Y_MAX
+from config import button_a, button_b, button_x, button_y
 import graphics_text
-from main import display, clear_fast
+from main import clear_fast
 import time
 
 helped = False
@@ -19,10 +15,10 @@ def wizard_start():
     """Starts the wizard for first time setup."""
 
     clear_fast()
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.text("Setup wizard", 2, 0, 240, 2)
     display.text("Welcome to your new thermal buddy!\nLet's get everything setup.", 2, 20, 240, 2)
-    display.text("Press Y to continue", 2, main.Y_MAX - 20, 240, 2)
+    display.text("Press Y to continue", 2, Y_MAX - 20, 240, 2)
     display.update()
 
     wait_for_y(wizard_start)
@@ -37,27 +33,27 @@ def pin_setup():
         """Renders the pin setup screen."""
 
         clear_fast()
-        display.set_pen(main.WHITE)
+        display.set_pen(Colors.WHITE)
         display.text("Setup wizard", 2, 0, 236, 2)
         display.text("Please select the correct pin for your first thermal sensor with A and B buttons", 2, 20, 236, 2)
-        graphics_text.text_ok(main.X_MAX - 25, main.Y_MAX - 17, display)
-        graphics_text.text_help(main.X_MAX - 45, 2, display)
+        graphics_text.text_ok(X_MAX - 25, Y_MAX - 17, display)
+        graphics_text.text_help(X_MAX - 45, 2, display)
 
     render_screen()
 
-    while not main.button_y.read():
-        if main.button_x.read():
+    while not button_y.read():
+        if button_x.read():
             help_interrupt()
             render_screen()
 
-        if main.button_a.read():
+        if button_a.read():
             selected_pin = (selected_pin + 1) % len(pins)
 
-        if main.button_b.read():
+        if button_b.read():
             selected_pin = (selected_pin - 1) % len(pins)
 
         clear_pin()
-        display.text(f"PIN: {pins[selected_pin]}", 2, main.Y_MAX - 40, 200, 2)
+        display.text(f"PIN: {pins[selected_pin]}", 2, Y_MAX - 40, 200, 2)
         display.update()
         time.sleep(.15)
 
@@ -67,20 +63,20 @@ def storage_pin_setup():
 
     def render_screen():
         clear_fast()
-        display.set_pen(main.WHITE)
+        display.set_pen(Colors.WHITE)
         display.text("Setup wizard", 2, 0, 236, 2)
         display.text("Please connect the SD card to the following pins:", 2, 20, 180, 2)
         display.text("SCK -> GP2, MOSI -> GP3, "
                      "MISO -> GP4, CS -> GP5, VCC -> +5V, GND -> GND", 2, 70, 236, 2)
-        graphics_text.text_ok(main.X_MAX - 25, main.Y_MAX - 17, display)
-        graphics_text.text_help(main.X_MAX - 45, 2, display)
+        graphics_text.text_ok(X_MAX - 25, Y_MAX - 17, display)
+        graphics_text.text_help(X_MAX - 45, 2, display)
         display.update()
 
     render_screen()
 
     wait_for_y(storage_pin_setup)
 
-    from device_test import test_storage
+    from device_tests import test_storage
     if not test_storage():
         clear_fast()
         display.text("SD card not detected, please check the connections and try again.", 2, 100, 236, 2)
@@ -95,10 +91,10 @@ def help_interrupt():
 
     qr_code.render_help()
 
-    graphics_text.text_ok(main.X_MAX - 25, main.Y_MAX - 17, main.BLACK, display)
+    graphics_text.text_ok(X_MAX - 25, Y_MAX - 17, display, Colors.BLACK)
     display.update()
 
-    while not main.button_y.read():
+    while not button_y.read():
         time.sleep(.15)
 
 
@@ -121,9 +117,9 @@ def wait_for_y(parent_function: callable):
     If the X button is pressed, the help screen is displayed with QR code to the GitHub repository."""
 
     while True:
-        if main.button_y.read():
+        if button_y.read():
             return
-        if main.button_x.read():
+        if button_x.read():
             help_interrupt()
             return parent_function()
 
@@ -131,9 +127,9 @@ def wait_for_y(parent_function: callable):
 def clear_pin():
     """Clears the pin number on the screen."""
 
-    main.display.set_pen(main.BLACK)
-    main.display.rectangle(0, main.Y_MAX - 40, 120, main.Y_MAX - 20)
-    main.display.set_pen(main.WHITE)
+    display.set_pen(Colors.BLACK)
+    display.rectangle(0, Y_MAX - 40, 120, Y_MAX - 20)
+    display.set_pen(Colors.WHITE)
 
 
 if __name__ == "__main__":
