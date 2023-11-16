@@ -1,11 +1,6 @@
 import qrcode
 
-import main
-import time
-
-
-display = main.display
-WIDTH, HEIGHT = display.get_bounds()
+from config import Colors, X_MAX as WIDTH, Y_MAX as HEIGHT, display
 
 
 def measure_qr_code(size, code):
@@ -35,9 +30,9 @@ def draw_qr_code(ox, oy, size, code):
 
     size, module_size = measure_qr_code(size, code)
 
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.rectangle(ox, oy, size, size)
-    display.set_pen(main.BLACK)
+    display.set_pen(Colors.BLACK)
     for x in range(size):
         for y in range(size):
             if code.get_module(x, y):
@@ -55,9 +50,9 @@ def render_help(url: str = "https://github.com/Screedy/MeteoOS"):
     code = qrcode.QRCode()
     code.set_text(url)
 
-    display.set_pen(main.WHITE)
+    display.set_pen(Colors.WHITE)
     display.clear()
-    display.set_pen(main.BLACK)
+    display.set_pen(Colors.BLACK)
 
     max_size = min(WIDTH, HEIGHT)
 
