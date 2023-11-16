@@ -1,5 +1,5 @@
 """This file includes all the tests for the devices connected to the Pico."""
-from machine import Pin
+from machine import Pin, SPI
 import os
 
 
@@ -16,7 +16,6 @@ def test_storage(spi_controller=0, sck=Pin(2), mosi=Pin(3), miso=Pin(0), cs=Pin(
     :return: True if the test was successful, False otherwise.
     """
 
-    from machine import SPI
     import sdcard
 
     spi = SPI(spi_controller, baudrate=40000000, sck=sck,
