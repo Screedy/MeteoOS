@@ -1,9 +1,7 @@
-import main
-
-# display = main.display
+from config import Colors
 
 
-def text_ok(x: int, y: int, display, color: int = main.WHITE):
+def text_ok(x: int, y: int, display, color: int = Colors.WHITE):
     """Draws an OK text on the display at the given coordinates.
     Uses the global display object.
 
@@ -18,7 +16,7 @@ def text_ok(x: int, y: int, display, color: int = main.WHITE):
     display.text("OK", x, y, 20, 1)
 
 
-def text_help(x: int, y: int, display, color: int = main.WHITE):
+def text_help(x: int, y: int, display, color: int = Colors.WHITE):
     """Draws a help text on the display at the given coordinates.
     Uses the global display object.
 
