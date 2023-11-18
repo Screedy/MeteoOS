@@ -5,6 +5,7 @@ from config import *
 # import graphics_text
 import graphics
 import page_elements
+import temp_sensor
 
 
 def clear_fast():
@@ -53,7 +54,7 @@ def main_task():
             # TODO: change the sensor to next one
             pass
 
-        print("Main task running")
+        render_homepage(last_sensor, last_graph_interval)
         time.sleep(5)
 
 
@@ -77,7 +78,5 @@ if __name__ == "__main__":
     last_sensor = int(fr_homepage.readline())
     last_graph_interval = int(fr_homepage.readline())
     fr_homepage.close()
-
-    render_homepage(last_sensor, last_graph_interval)
 
     _thread.start_new_thread(main_task, ())
