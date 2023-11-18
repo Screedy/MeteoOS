@@ -1,5 +1,8 @@
+import time
+
 from config import Colors
 from graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
+import temp_sensor
 
 
 def render_nav_arrows(x: int, display, color: int = Colors.WHITE):
@@ -18,6 +21,24 @@ def render_nav_arrows(x: int, display, color: int = Colors.WHITE):
     draw_arrow(x, 100, 10, 0, display)
 
 
+def parse_time(t):
+    """Parses the given time tuple into a string.
+
+    :param t: The time tuple to parse.
+    :return: The parsed time tuple as a string.
+    """
+
+    hours = t[3]
+    minutes = t[4]
+
+    if hours < 10:
+        hours = f"0{hours}"
+    if minutes < 10:
+        minutes = f"0{minutes}"
+
+    return f"{hours}:{minutes}"
+
+
 def render_sensor_details(x: int, display, sensor_id: int):
     """Draws the sensor details on the screen with the given coordinates.
 
@@ -27,10 +48,14 @@ def render_sensor_details(x: int, display, sensor_id: int):
     :return: None
     """
 
-    display.text("SENS1", x, 15, 240, 2)   # TODO: draw sensor name
+    test_sensor = temp_sensor.DHT11(4, "test")
+
+    display.text(test_sensor.name, x, 15, 240, 2)   # TODO: change to real sensor
     draw_clock(x, 35, display)
-    display.text("10:43", x+15, 34, 240, 2)   # TODO: draw time next to the clock
+    current_time = time.localtime()
+    display.text(parse_time(current_time), x+15, 34, 240, 2)
     draw_thermometer(x, 63, display)
-    display.text("21°C", x+15, 58, 240, 2)    # TODO: draw temperature next to the thermometer
+
+    display.text(f"{test_sensor.temperature}°C", x+15, 58, 240, 2)    # TODO: draw temperature next to the thermometer
     draw_humidity(x, 85, display)
-    display.text("63%", x+15, 83, 240, 2)     # TODO: draw humidity next to the humidity icon
+    display.text(f"{test_sensor.humidity}%", x+15, 83, 240, 2)     # TODO: draw humidity next to the humidity icon
