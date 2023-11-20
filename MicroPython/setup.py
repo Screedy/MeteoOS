@@ -5,10 +5,9 @@ from main import clear_fast
 import time
 
 helped = False
-pins = ["GP0", "GP1", "GP2", "GP3", "GP4", "GP5", "GP6", "GP7", "GP8", "GP9", "GP14", "GP15", "GP16", "GP17", "GP18",
-        "GP19"]
+pins = ["GP4", "GP5", "GP9", "GP10", "GP11", "GP20", "GP21", "GP22"]
 selected_pin = 0
-storage_pins = ["GP2", "GP3", "GP4", "GP5"]
+storage_pins = ["GP0", "GP1", "GP2", "GP3"]
 
 
 def wizard_start():
