@@ -1,8 +1,8 @@
-from config import Colors, display, X_MAX, Y_MAX
+from config import Colors, Display
 from config import button_a, button_b, button_x, button_y
 import graphics_text
-from main import clear_fast
 import time
+from page_elements import clear_fast
 
 helped = False
 pins = ["GP4", "GP5", "GP9", "GP10", "GP11", "GP20", "GP21", "GP22"]
@@ -13,12 +13,14 @@ storage_pins = ["GP0", "GP1", "GP2", "GP3"]
 def wizard_start():
     """Starts the wizard for first time setup."""
 
+    display = Display()
+
     clear_fast()
-    display.set_pen(Colors.WHITE)
-    display.text("Setup wizard", 2, 0, 240, 2)
-    display.text("Welcome to your new thermal buddy!\nLet's get everything setup.", 2, 20, 240, 2)
-    display.text("Press Y to continue", 2, Y_MAX - 20, 240, 2)
-    display.update()
+    display().set_pen(Colors.WHITE)
+    display().text("Setup wizard", 2, 0, 240, 2)
+    display().text("Welcome to your new thermal buddy!\nLet's get everything setup.", 2, 20, 240, 2)
+    display().text("Press Y to continue", 2, display.y_max - 20, 240, 2)
+    display().update()
 
     wait_for_y(wizard_start)
 
@@ -28,15 +30,17 @@ def pin_setup():
 
     global selected_pin
 
+    display = Display()
+
     def render_screen():
         """Renders the pin setup screen."""
 
         clear_fast()
-        display.set_pen(Colors.WHITE)
-        display.text("Setup wizard", 2, 0, 236, 2)
-        display.text("Please select the correct pin for your first thermal sensor with A and B buttons", 2, 20, 236, 2)
-        graphics_text.text_ok(X_MAX - 25, Y_MAX - 17, display)
-        graphics_text.text_help(X_MAX - 45, 2, display)
+        display().set_pen(Colors.WHITE)
+        display().text("Setup wizard", 2, 0, 236, 2)
+        display().text("Please select the correct pin for your first thermal sensor with A and B buttons", 2, 20, 236, 2)
+        graphics_text.text_ok(display.x_max - 25, display.y_max - 17, display)
+        graphics_text.text_help(display.x_max - 45, 2, display)
 
     render_screen()
 
@@ -52,24 +56,26 @@ def pin_setup():
             selected_pin = (selected_pin - 1) % len(pins)
 
         clear_pin()
-        display.text(f"PIN: {pins[selected_pin]}", 2, Y_MAX - 40, 200, 2)
-        display.update()
+        display().text(f"PIN: {pins[selected_pin]}", 2, display.y_max - 40, 200, 2)
+        display().update()
         time.sleep(.15)
 
 
 def storage_pin_setup():
     """Sets up the pins for the SD card adapter."""
 
+    display = Display()
+
     def render_screen():
         clear_fast()
-        display.set_pen(Colors.WHITE)
-        display.text("Setup wizard", 2, 0, 236, 2)
-        display.text("Please connect the SD card to the following pins:", 2, 20, 180, 2)
-        display.text("SCK -> GP2, MOSI -> GP3, "
+        display().set_pen(Colors.WHITE)
+        display().text("Setup wizard", 2, 0, 236, 2)
+        display().text("Please connect the SD card to the following pins:", 2, 20, 180, 2)
+        display().text("SCK -> GP2, MOSI -> GP3, "
                      "MISO -> GP4, CS -> GP5, VCC -> +5V, GND -> GND", 2, 70, 236, 2)
-        graphics_text.text_ok(X_MAX - 25, Y_MAX - 17, display)
-        graphics_text.text_help(X_MAX - 45, 2, display)
-        display.update()
+        graphics_text.text_ok(display.x_max - 25, display.y_max - 17, display)
+        graphics_text.text_help(display.x_max - 45, 2, display)
+        display().update()
 
     render_screen()
 
@@ -78,8 +84,8 @@ def storage_pin_setup():
     from device_tests import test_storage
     if not test_storage():
         clear_fast()
-        display.text("SD card not detected, please check the connections and try again.", 2, 100, 236, 2)
-        display.update()
+        display().text("SD card not detected, please check the connections and try again.", 2, 100, 236, 2)
+        display().update()
         time.sleep(5)
         storage_pin_setup()
 
@@ -88,10 +94,12 @@ def help_interrupt():
     """Interrupts the current function and displays the help screen."""
     import qr_code
 
+    display = Display()
+
     qr_code.render_help()
 
-    graphics_text.text_ok(X_MAX - 25, Y_MAX - 17, display, Colors.BLACK)
-    display.update()
+    graphics_text.text_ok(display.x_max - 25, display.y_max - 17, display, Colors.BLACK)
+    display().update()
 
     while not button_y.read():
         time.sleep(.15)
@@ -126,9 +134,11 @@ def wait_for_y(parent_function: callable):
 def clear_pin():
     """Clears the pin number on the screen."""
 
-    display.set_pen(Colors.BLACK)
-    display.rectangle(0, Y_MAX - 40, 120, Y_MAX - 20)
-    display.set_pen(Colors.WHITE)
+    display = Display()
+
+    display().set_pen(Colors.BLACK)
+    display().rectangle(0, display.y_max - 40, 120, display.y_max - 20)
+    display().set_pen(Colors.WHITE)
 
 
 if __name__ == "__main__":
