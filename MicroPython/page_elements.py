@@ -5,6 +5,15 @@ from graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
 import temp_sensor
 
 
+def clear_fast():
+    """Clears the display without refreshing the display to remove flickering."""
+
+    display = Display()
+
+    display().set_pen(Colors.BLACK)  # Set pen color to black
+    display().clear()  # Clear display
+
+
 def render_nav_arrows(x: int, color: int = Colors.WHITE):
     """Draws navigation arrows on the screen with the given coordinates.
     Keeps the arrows height consistent across screens.
