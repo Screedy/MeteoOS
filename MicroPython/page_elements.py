@@ -1,24 +1,28 @@
 import time
 
-from config import Colors
+from config import Colors, GraphInterval, Display
 from graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
 import temp_sensor
 
 
-def render_nav_arrows(x: int, display, color: int = Colors.WHITE):
+def render_nav_arrows(x: int, color: int = Colors.WHITE):
     """Draws navigation arrows on the screen with the given coordinates.
     Keeps the arrows height consistent across screens.
 
     :param x: The x coordinate of the arrows.
-    :param display: The display object where the arrows will be drawn.
     :param color: The color of the arrows. Uses the pico_graphics create_pen() function to create a color.
         (Default: Colors.WHITE)
     :return: None
     """
 
-    display.set_pen(color)
-    draw_arrow(x, 20, 10, 180, display)
-    draw_arrow(x, 100, 10, 0, display)
+    display = Display()
+
+    display().set_pen(color)
+    # draw_arrow(x, 20, 10, 180, display)
+    # draw_arrow(x, 100, 10, 0, display)
+
+    draw_arrow(x, 7, 16, 180)
+    draw_arrow(x-1, 113, 17, 0)
 
 
 def parse_time(t):
@@ -39,23 +43,79 @@ def parse_time(t):
     return f"{hours}:{minutes}"
 
 
-def render_sensor_details(x: int, display, sensor_id: int):
+def render_sensor_details(x: int, sensor_id: int):
     """Draws the sensor details on the screen with the given coordinates.
 
     :param x: The x coordinate of the sensor details.
-    :param display: The display object where the sensor details will be drawn.
     :param sensor_id: The sensor id of the sensor to draw the details of.
     :return: None
     """
 
-    test_sensor = temp_sensor.DHT11(4, "test")
+    display = Display()
 
-    display.text(test_sensor.name, x, 15, 240, 2)   # TODO: change to real sensor
-    draw_clock(x, 35, display)
+    test_sensor = temp_sensor.DHT11(0, "TOILET")  # TODO: change to real sensor
+
+    display().text(test_sensor.name, 34, 7, 250, 2)
+    draw_clock(14, 41)
     current_time = time.localtime()
-    display.text(parse_time(current_time), x+15, 34, 240, 2)
-    draw_thermometer(x, 63, display)
+    display().text(parse_time(current_time), 34, 34, 250, 2)
+    draw_thermometer(14, 68)
 
-    display.text(f"{test_sensor.temperature}°C", x+15, 58, 240, 2)    # TODO: draw temperature next to the thermometer
-    draw_humidity(x, 85, display)
-    display.text(f"{test_sensor.humidity}%", x+15, 83, 240, 2)     # TODO: draw humidity next to the humidity icon
+    display().text(f"{test_sensor.temperature}°C", 34, 61, 250, 2)
+    draw_humidity(14, 96)
+    display().text(f"{test_sensor.humidity}%", 34, 88, 250, 2)     # TODO: draw humidity next to the humidity icon
+
+
+def render_homepage_buttons(interval: GraphInterval = GraphInterval.Daily):
+    """Draws the homepage buttons on the screen.
+
+    :param interval: The interval to display on the button. (Default: "D") Can be "D" (Daily), "W" (Weekly) or
+        "M" (Monthly).
+    :return: None
+    """
+
+    display = Display()
+
+    active_color = Colors.WHITE
+    inactive_color = Colors.BLACK
+
+    display().set_pen(active_color) if interval == GraphInterval.Daily else display().set_pen(inactive_color)
+    display().rectangle(189, 8, 13, 13)
+    display().set_pen(inactive_color) if interval == GraphInterval.Daily else display().set_pen(active_color)
+    display().text("D", 190, 7, 250, 2)
+
+    display().set_pen(active_color) if interval == GraphInterval.Weekly else display().set_pen(inactive_color)
+    display().rectangle(204, 8, 13, 13)
+    display().set_pen(inactive_color) if interval == GraphInterval.Weekly else display().set_pen(active_color)
+    display().text("W", 205, 7, 250, 2)
+
+    display().set_pen(active_color) if interval == GraphInterval.Monthly else display().set_pen(inactive_color)
+    display().rectangle(219, 8, 13, 13)
+    display().set_pen(inactive_color) if interval == GraphInterval.Monthly else display().set_pen(active_color)
+    display().text("M", 220, 7, 250, 2)
+
+    display().text("MENU", 190, 115, 250, 2)
+
+
+def render_settings_buttons():
+    """Draws the settings buttons on the screen.
+
+    :return: None
+    """
+
+    display = Display()
+
+    display().text("Settings", 135, 7, 250, 2)
+    display().text("BACK", 190, 115, 250, 2)
+
+
+def render_settings_items(selected_item: int = 0):
+    """Draws the settings items on the screen.
+
+    :param selected_item: The selected item to highlight. (Default: 0)
+    :return: None
+    """
+
+    display = Display()
+
+    display().text("ADD SENSOR", 125, 34, 250, 2)
