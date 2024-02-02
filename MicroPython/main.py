@@ -7,15 +7,7 @@ import graphics
 import page_elements
 import temp_sensor
 # from homepage import homepage_loop
-
-
-def clear_fast():
-    """Clears the display without refreshing the display to remove flickering."""
-
-    display = Display()
-
-    display().set_pen(Colors.BLACK)  # Set pen color to black
-    display().clear()  # Clear display
+import settings
 
 
 def render_homepage(sensor_number, graph_interval):
@@ -28,7 +20,7 @@ def render_homepage(sensor_number, graph_interval):
 
     display = Display()
 
-    clear_fast()
+    page_elements.clear_fast()
     display().set_pen(Colors.WHITE)
     page_elements.render_nav_arrows(6)
     page_elements.render_sensor_details(30, 1)
@@ -42,56 +34,32 @@ def render_homepage(sensor_number, graph_interval):
     # print("Homepage rendered")
 
 
-def render_settings():
-    """Renders the settings page."""
-
-    display = Display()
-
-    clear_fast()
-    display().set_pen(Colors.WHITE)
-    page_elements.render_sensor_details(30, 1)
-    page_elements.render_nav_arrows(110)
-
-    display().line(101, 16, 101, 120, 3)
-
-    page_elements.render_settings_buttons()
-    page_elements.render_settings_items()
-
-    display().update()
-
-    # print("Settings rendered")
-
-
 def main_task():
     """The main task that runs in the background."""
 
     graph_interval = GraphInterval.Daily
     page = Page.Homepage
 
-    while True:
+    while True:     # Homepage loop
         if button_x.read():
             # TODO: change the graph interval
 
-            if page is Page.Homepage:
-                if graph_interval is GraphInterval.Daily:
-                    graph_interval = GraphInterval.Weekly
-                elif graph_interval is GraphInterval.Weekly:
-                    graph_interval = GraphInterval.Monthly
-                elif graph_interval is GraphInterval.Monthly:
-                    graph_interval = GraphInterval.Daily
+            if graph_interval is GraphInterval.Daily:
+                graph_interval = GraphInterval.Weekly
+            elif graph_interval is GraphInterval.Weekly:
+                graph_interval = GraphInterval.Monthly
+            elif graph_interval is GraphInterval.Monthly:
+                graph_interval = GraphInterval.Daily
 
-                print("Graph interval changed")
-                render_homepage(last_sensor, graph_interval)
+            print("Graph interval changed")
+            render_homepage(last_sensor, graph_interval)
 
         if button_y.read():
             # TODO: go to settings, back etc
 
-            if page is Page.Homepage:
-                page = Page.Settings
-                print("Settings page opened")
-            elif page is Page.Settings:
-                page = Page.Homepage
-                print("Homepage opened")
+            print("Opening settings")
+            settings.settings_loop()
+            print("Settings closed, back to homepage")
 
         if button_a.read():
             # TODO: change the sensor to previous one
@@ -100,11 +68,7 @@ def main_task():
             # TODO: change the sensor to next one
             pass
 
-        if page is Page.Homepage:
-            render_homepage(last_sensor, graph_interval)
-        elif page is Page.Settings:
-            render_settings()
-
+        render_homepage(last_sensor, graph_interval)
         time.sleep(0.1)
 
 
