@@ -109,3 +109,4 @@ if __name__ == "__main__":
     display_test().update()
 
     print(display_test.x_max)
+
