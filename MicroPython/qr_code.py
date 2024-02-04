@@ -1,6 +1,6 @@
 import qrcode
 
-from config import Colors, X_MAX as WIDTH, Y_MAX as HEIGHT, display
+from config.config import Colors, Display
 
 
 def measure_qr_code(size, code):
@@ -28,15 +28,17 @@ def draw_qr_code(ox, oy, size, code):
     :return: None
     """
 
+    display = Display()
+
     size, module_size = measure_qr_code(size, code)
 
-    display.set_pen(Colors.WHITE)
-    display.rectangle(ox, oy, size, size)
-    display.set_pen(Colors.BLACK)
+    display().set_pen(Colors.WHITE)
+    display().rectangle(ox, oy, size, size)
+    display().set_pen(Colors.BLACK)
     for x in range(size):
         for y in range(size):
             if code.get_module(x, y):
-                display.rectangle(ox + x * module_size, oy + y * module_size, module_size, module_size)
+                display().rectangle(ox + x * module_size, oy + y * module_size, module_size, module_size)
 
 
 def render_help(url: str = "https://github.com/Screedy/MeteoOS"):
@@ -47,18 +49,20 @@ def render_help(url: str = "https://github.com/Screedy/MeteoOS"):
     :return: None
     """
 
+    display = Display()
+
     code = qrcode.QRCode()
     code.set_text(url)
 
-    display.set_pen(Colors.WHITE)
-    display.clear()
-    display.set_pen(Colors.BLACK)
+    display().set_pen(Colors.WHITE)
+    display().clear()
+    display().set_pen(Colors.BLACK)
 
-    max_size = min(WIDTH, HEIGHT)
+    max_size = min(display.x_max, display.y_max)
 
     size, module_size = measure_qr_code(max_size, code)
-    left = int((WIDTH // 2) - (size // 2))
-    top = int((HEIGHT // 2) - (size // 2))
+    left = int((display.x_max // 2) - (size // 2))
+    top = int((display.y_max // 2) - (size // 2))
     draw_qr_code(left, top, max_size, code)
 
-    display.update()
+    display().update()
