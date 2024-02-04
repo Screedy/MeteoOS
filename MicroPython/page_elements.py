@@ -3,6 +3,7 @@ import time
 from config import Colors, GraphInterval, Display
 from graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
 import temp_sensor
+from settings import SettingItems
 
 
 def clear_fast():
@@ -126,5 +127,21 @@ def render_settings_items(selected_item: int = 0):
     """
 
     display = Display()
+    number_of_items = len(SettingItems.list_of_items())
+    page_start_item = selected_item - (selected_item % 3)
 
-    display().text("ADD SENSOR", 125, 34, 250, 2)
+    for i in range(3):
+        if page_start_item + i >= number_of_items:
+            break
+
+        display().set_pen(Colors.WHITE) if i == selected_item % 3 else display().set_pen(Colors.BLACK)
+        display().rectangle(120, 34 + (i * 27), 110, 15)
+        display().set_pen(Colors.BLACK) if i == selected_item % 3 else display().set_pen(Colors.WHITE)
+        display().text(SettingItems.list_of_items()[page_start_item + i], 123, 34 + (i * 27), 250, 2)
+
+        if i == selected_item % 3:
+            display().set_pen(Colors.WHITE)
+            display().text(">", 110, 34 + (i * 27), 250, 2)
+        else:
+            display().set_pen(Colors.BLACK)
+            display().rectangle(110, 34 + (i * 27), 10, 15)
