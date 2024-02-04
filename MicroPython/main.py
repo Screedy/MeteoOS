@@ -1,13 +1,13 @@
 import time
 import _thread
 
-from config import *
-# import graphics_text
-import graphics
+from config.config import *
+# import graphics.graphics_text
+import graphics.graphics
 import page_elements
 import temp_sensor
 # from homepage import homepage_loop
-import settings
+import pages.settings as settings
 
 
 def render_homepage(sensor_number, graph_interval):
