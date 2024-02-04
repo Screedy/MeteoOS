@@ -2,7 +2,7 @@ import network
 import time
 import socket
 
-from config import Colors, display
+from config.config import Colors, Display
 
 
 debug = False

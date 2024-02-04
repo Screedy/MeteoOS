@@ -1,6 +1,6 @@
-from config import Colors, Display
-from config import button_a, button_b, button_x, button_y
-import graphics_text
+from config.config import Colors, Display
+from config.config import button_a, button_b, button_x, button_y
+import graphics.graphics_text as graphics_text
 import time
 from page_elements import clear_fast
 
