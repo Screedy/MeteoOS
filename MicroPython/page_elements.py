@@ -1,9 +1,9 @@
 import time
 
-from config import Colors, GraphInterval, Display
-from graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
+from config.config import Colors, GraphInterval, Display
+from graphics.graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
 import temp_sensor
-from settings import SettingItems
+from pages.settings import SettingItems
 
 
 def clear_fast():
