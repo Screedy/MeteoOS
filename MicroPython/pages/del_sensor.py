@@ -10,10 +10,12 @@ def render_del_sensor():
 
     selected_sensor = select_sensor()
     if selected_sensor is None:
-        return
+        return False
 
     sensors = SensorManager()
     sensors.remove_sensor(selected_sensor)
+
+    return True
 
 
 def select_sensor():
