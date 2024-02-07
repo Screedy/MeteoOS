@@ -1,6 +1,8 @@
 import time
 from config.config import *
 import page_elements
+from pages.add_sensor import render_add_sensor as add_sensor
+from pages.del_sensor import render_del_sensor as remove_sensor
 
 
 class SettingItems:
@@ -59,13 +61,14 @@ class Settings:
         """Adds a sensor to the list of sensors."""
 
         print("Adding sensor...")
-        pass
+        print("Sensor added") if add_sensor() else print("Sensor not added")
 
     @classmethod
     def remove_sensor(cls):
         """Removes a sensor from the list of sensors."""
 
-        pass
+        print("Removing sensor...")
+        print("Sensor removed") if remove_sensor() else print("Sensor not removed")
 
     @classmethod
     def change_brightness(cls):
