@@ -17,22 +17,24 @@ def render_add_sensor():
 
     selected_sensor = select_sensor_type()
     if selected_sensor is None:
-        return
+        return False
 
     selected_pin = select_sensor_pin()
     if selected_pin is None:
-        return
+        return False
 
     selected_name = select_sensor_name()
     if selected_name is "":
-        return
+        return False
 
     selected_interval = select_interval()
     if selected_interval is None:
-        return
+        return False
 
     sensors = SensorManager()
     sensors.add_sensor(DHT11(selected_pin, selected_name, selected_interval))
+
+    return True
 
 
 def select_sensor_type():
