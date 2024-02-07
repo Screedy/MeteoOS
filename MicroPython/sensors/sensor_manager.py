@@ -1,8 +1,8 @@
-from config.config import Singleton
+from config.config import singleton
 from sensors.dht11 import DHT11
 
 
-@Singleton
+@singleton
 class SensorManager:
     """A singleton class for managing all sensors connected to the Pico."""
 
@@ -119,3 +119,24 @@ class SensorManager:
         with open("sensors.txt", "w") as fw_sensors:
             for sensor in self._sensors:
                 fw_sensors.write(f"{sensor.pin};{sensor.name};{sensor.interval}\n")
+
+
+class AvailableSensors:
+    """An enum class for listing the available sensors.
+
+    :cvar DHT11: The DHT11 sensor.
+    :cvar DS18B20: The DS18B20 sensor.
+    """
+
+    DHT11 = 0
+    DS18B20 = 1
+
+    @staticmethod
+    def list_sensors():
+        """Lists the available sensors.
+
+        :return: A list of available sensors
+        """
+
+        return [sensor for sensor in AvailableSensors.__dict__.keys() if not sensor.startswith("__") and
+                not sensor.startswith("_") and not callable(getattr(AvailableSensors, sensor))]
