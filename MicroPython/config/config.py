@@ -69,6 +69,7 @@ class Colors:
     WHITE = display().create_pen(255, 255, 255)  # Create color white
     RED = display().create_pen(255, 0, 0)  # Create color red
     GREEN = display().create_pen(0, 255, 0)  # Create color green
+    GREY = display().create_pen(128, 128, 128)  # Create color grey
 
 
 class Page:
