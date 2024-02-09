@@ -5,7 +5,7 @@ import sdcard
 
 
 @singleton
-class SDCard:
+class SDCardManager:
     """Singleton class managing the SD card"""
 
     _spi = None
