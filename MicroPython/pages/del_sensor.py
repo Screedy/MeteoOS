@@ -2,7 +2,6 @@ import time
 from config.config import *
 from sensors.sensor_manager import SensorManager, AvailableSensors
 import page_elements
-from sensors.dht11 import DHT11
 
 
 def render_del_sensor():
