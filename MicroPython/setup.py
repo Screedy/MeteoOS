@@ -13,6 +13,8 @@ storage_pins = ["GP0", "GP1", "GP2", "GP3"]
 def wizard_start():
     """Starts the wizard for first time setup."""
 
+    set_defaults()
+
     display = Display()
 
     clear_fast()
@@ -139,6 +141,13 @@ def clear_pin():
     display().set_pen(Colors.BLACK)
     display().rectangle(0, display.y_max - 40, 120, display.y_max - 20)
     display().set_pen(Colors.WHITE)
+
+
+def set_defaults():
+    """Sets the default values for the settings.txt file."""    # TODO: Add more settings
+
+    with open("settings.txt", "w") as f:
+        f.write("brightness:0.5\n")
 
 
 if __name__ == "__main__":
