@@ -1,5 +1,5 @@
 from machine import Pin, SPI
-import os
+import uos
 from config.config import singleton
 import sdcard
 
@@ -29,12 +29,11 @@ class SDCardManager:
 
         try:
             sd = sdcard.SDCard(self._spi, Pin(5))
+            vfs = uos.VfsFat(sd)
+            uos.mount(vfs, "/sd")
         except OSError:
             print("SD card was unable to open")
             return False
-
-        cfs = os.VfsFat(sd)
-        os.mount(cfs, "/sd")
 
         return True
 
@@ -46,7 +45,7 @@ class SDCardManager:
         """
 
         try:
-            os.umount("/sd")
+            uos.umount("/sd")
         except OSError:
             print("SD card was unable to unmount")
             return False
@@ -89,7 +88,7 @@ class SDCardManager:
         """
 
         self._sck = sck
-        self._spi.init(sck=sck)     # TODO: check for only correct pins
+        self._spi.init(sck=sck)  # TODO: check for only correct pins
 
     @property
     def mosi(self):
@@ -108,7 +107,7 @@ class SDCardManager:
         """
 
         self._mosi = mosi
-        self._spi.init(mosi=mosi)     # TODO: check for only correct pins
+        self._spi.init(mosi=mosi)  # TODO: check for only correct pins
 
     @property
     def miso(self):
@@ -127,7 +126,7 @@ class SDCardManager:
         """
 
         self._miso = miso
-        self._spi.init(miso=miso)     # TODO: check for only correct pins
+        self._spi.init(miso=miso)  # TODO: check for only correct pins
 
     @property
     def cs(self):
@@ -146,7 +145,7 @@ class SDCardManager:
         """
 
         self._cs = cs
-        self._spi.init(cs=cs)     # TODO: check for only correct pins
+        self._spi.init(cs=cs)  # TODO: check for only correct pins
 
     @property
     def spi(self):
@@ -164,15 +163,44 @@ class SDCardManager:
         :return: True if the SD card is mounted, False otherwise
         """
 
-        return "/sd" in os.listdir("/")
+        return "sd" in uos.listdir("/")
 
     def format_sd(self):
         """Formats the SD card."""
 
-        if self.is_mounted():
-            os.mkfs("/sd")
+        if not self.is_mounted():
+            print("SD card is not mounted or not accessible")
+            return False
 
-            return True
+        # Delete all files on the SD card
 
-        print("SD card is not mounted or not accessible")
-        return False
+        try:
+            for file in uos.listdir("/sd"):
+                if file.startswith("."):
+                    continue
+
+                print(f"Removing {file}")
+                uos.chdir("/sd")
+                uos.remove(file)
+        except OSError:
+            raise OSError("Error while deleting files on the SD card")
+        finally:
+            uos.chdir("/")
+        return True
+
+
+if __name__ == "__main__":
+    sd = SDCardManager()
+    sd.mount()
+    print(sd.is_mounted())
+
+    with open("/sd/test.txt", "w") as f:
+        f.write("Hello, world!")
+
+    with open("/sd/test.txt", "r") as f:
+        print(f.read())
+
+    sd.unmount()
+
+    sd.mount()
+    sd.format_sd()
