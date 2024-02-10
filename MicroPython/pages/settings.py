@@ -3,6 +3,7 @@ from config.config import *
 import page_elements
 from pages.add_sensor import render_add_sensor as add_sensor
 from pages.del_sensor import render_del_sensor as remove_sensor
+from pages.brightness import render_brightness as change_brightness
 
 
 class SettingItems:
@@ -73,8 +74,8 @@ class Settings:
     @classmethod
     def change_brightness(cls):
         """Changes the brightness of the display."""
-
-        pass
+        print("Changing brightness...")
+        print("Brightness changed") if change_brightness() else print("Brightness not changed")
 
     @classmethod
     def format_sd(cls):
