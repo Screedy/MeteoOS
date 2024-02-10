@@ -5,7 +5,13 @@ import page_elements
 
 
 def render_brightness():
-    """Renders the page for changing the brightness of the display."""
+    """Renders the page for changing the brightness of the display.
+
+
+    rationale brightness: The brightness is a number between 0 and 1. Using floats in MicroPython resulted in the
+        value being not implemented correctly. Therefore, the brightness is multiplied by 10 to be an integer and
+        divided by 10 when setting the backlight of the display.
+    """
 
     display = Display()
     brightness = load_brightness() * 10
@@ -29,10 +35,11 @@ def render_brightness():
                 brightness = brightness + 1
             print(brightness)
         elif button_b.read():
-            if brightness > 0:
+            if brightness > 1:
                 brightness = brightness - 1
             print(brightness)
-        display().set_backlight(brightness/10)
+
+        display().set_backlight(brightness / 10)    # TODO: Change the config
         display().update()
 
 
