@@ -1,4 +1,4 @@
-from config.brightness import load_brightness
+from pages.brightness import load_brightness
 from config.config import singleton
 
 
@@ -32,11 +32,17 @@ class SettingsManager:
         :param brightness: The brightness of the display.
         """
 
+        if brightness < 1 or brightness > 10:
+            raise ValueError("Brightness must be between 1 and 10")
+
         self._brightness = brightness
         self.save_brightness()
 
     def save_brightness(self):
         """Used to save the brightness to a file."""
+
+        lines = None
+        has_brightness = False
 
         with open("settings.txt", "r") as fr_settings:
             lines = fr_settings.readlines()
@@ -44,7 +50,20 @@ class SettingsManager:
             for i in range(len(lines)):
                 if "brightness:" in lines[i]:
                     lines[i] = f"brightness:{self._brightness}\n"
+                    has_brightness = True
                     break
 
         with open("settings.txt", "w") as fw_settings:
-            fw_settings.writelines(lines)
+            for line in lines:
+                fw_settings.write(line)
+
+            if not has_brightness:
+                print("No brightness found, adding new line")
+                fw_settings.write(f"brightness:{self._brightness}\n")
+
+
+if __name__ == "__main__":
+    settings = SettingsManager()
+    print(settings.brightness)
+
+    settings.brightness = 9
