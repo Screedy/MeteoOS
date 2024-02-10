@@ -13,5 +13,3 @@ def startup():
         setup.initial()
 
     settings = SettingsManager()    # Initialize the settings manager
-
-    
