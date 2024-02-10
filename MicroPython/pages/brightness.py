@@ -2,6 +2,7 @@ import time
 from config.config import *
 from sensors.sensor_manager import SensorManager, AvailableSensors
 import page_elements
+from config.settings_manager import SettingsManager, load_brightness
 
 
 def render_brightness():
@@ -14,7 +15,8 @@ def render_brightness():
     """
 
     display = Display()
-    brightness = load_brightness() * 10
+    brightness = load_brightness()
+    old_brightness = brightness
 
     page_elements.clear_fast()
     display().set_pen(Colors.WHITE)
@@ -24,7 +26,7 @@ def render_brightness():
 
     display().update()
 
-    while not button_y.read():
+    while not button_x.read():
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
         display().text("Change brightness", 2, 0, 236, 2)
@@ -38,20 +40,17 @@ def render_brightness():
             if brightness > 1:
                 brightness = brightness - 1
             print(brightness)
+        elif button_y.read():
+            display().set_backlight(old_brightness / 10)
+            return False
 
-        display().set_backlight(brightness / 10)    # TODO: Change the config
+        display().set_backlight(brightness / 10)
         display().update()
 
+    settings = SettingsManager()
+    settings.brightness = brightness
 
-def load_brightness():
-    """Loads the brightness from the config file."""
-
-    with open("settings.txt", "r") as fr:
-        for line in fr:
-            if line.startswith("brightness"):
-                return float(line.split(":")[1])
-
-    return 0.5
+    return True
 
 
 def render_nice_slider(brightness):
