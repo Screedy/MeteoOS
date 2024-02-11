@@ -4,6 +4,7 @@ import page_elements
 from pages.add_sensor import render_add_sensor as add_sensor
 from pages.del_sensor import render_del_sensor as remove_sensor
 from pages.brightness import render_brightness as change_brightness
+from pages.format_sd import render_format_sd as format_sd
 
 
 class SettingItems:
@@ -80,8 +81,8 @@ class Settings:
     @classmethod
     def format_sd(cls):
         """Formats the SD card."""
-
-        pass
+        print("Formatting SD card...")
+        print("SD card formatted") if format_sd() else print("SD card not formatted")
 
 
 def render_settings(selected_item: int = 0):
@@ -91,7 +92,7 @@ def render_settings(selected_item: int = 0):
 
     page_elements.clear_fast()
     display().set_pen(Colors.WHITE)
-    # page_elements.render_sensor_details(30, 1)
+    page_elements.render_sensor_details()
     page_elements.render_nav_arrows(110)
 
     display().line(101, 16, 101, 120, 3)
