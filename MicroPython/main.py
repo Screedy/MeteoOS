@@ -8,12 +8,13 @@ import page_elements
 import temp_sensor
 # from homepage import homepage_loop
 import pages.settings as settings
+from config.startup import startup
+from sensors.sensor_manager import SensorManager
 
 
-def render_homepage(sensor_number, graph_interval):
+def render_homepage(graph_interval):
     """Renders the homepage with information about the selected sensor and selected graph interval.
 
-    :param sensor_number: The selected sensor number.
     :param graph_interval: The selected graph interval. Either 1 (Hourly), 2 (Daily), 3 (Weekly) or 4 (Monthly).
     :return: None
     """
@@ -23,7 +24,7 @@ def render_homepage(sensor_number, graph_interval):
     page_elements.clear_fast()
     display().set_pen(Colors.WHITE)
     page_elements.render_nav_arrows(6)
-    page_elements.render_sensor_details(30, 1)
+    page_elements.render_sensor_details()
 
     display().line(101, 16, 101, 120, 3)
 
@@ -38,7 +39,8 @@ def main_task():
     """The main task that runs in the background."""
 
     graph_interval = GraphInterval.Daily
-    page = Page.Homepage
+    sensor_manager = SensorManager()
+    sensor = 0
 
     while True:     # Homepage loop
         if button_x.read():
@@ -52,34 +54,24 @@ def main_task():
                 graph_interval = GraphInterval.Daily
 
             print("Graph interval changed")
-            render_homepage(last_sensor, graph_interval)
 
         if button_y.read():
-            # TODO: go to settings, back etc
-
             print("Opening settings")
             settings.settings_loop()
             print("Settings closed, back to homepage")
 
         if button_a.read():
-            # TODO: change the sensor to previous one
-            pass
-        if button_b.read():
-            # TODO: change the sensor to next one
-            pass
+            sensor_manager.next_sensor()
 
-        render_homepage(last_sensor, graph_interval)
+        if button_b.read():
+            sensor_manager.previous_sensor()
+
+        render_homepage(graph_interval)
         time.sleep(0.1)
 
 
 if __name__ == "__main__":
-    try:
-        f = open("settings.txt", "r")
-        # continue with the file.
-    except OSError:  # open failed (file not found)
-        import setup
-
-        setup.initial()
+    startup()
 
     try:
         fr_homepage = open("homepage_settings.txt", "r")
