@@ -7,6 +7,7 @@ class SensorManager:
     """A singleton class for managing all sensors connected to the Pico."""
 
     _sensors: list
+    _active_sensor: int
     _available_pins: list
 
     def __init__(self):
@@ -17,6 +18,7 @@ class SensorManager:
         """
 
         self._sensors = self.load_sensors()
+        self._active_sensor = 0
         self._available_pins = self.load_available_pins()
 
     @staticmethod
@@ -90,6 +92,34 @@ class SensorManager:
 
         return self._available_pins
 
+    @property
+    def active_sensor(self):
+        """Returns the index of the active sensor.
+
+        :return: The index of the active sensor.
+        """
+
+        if len(self._sensors) <= self._active_sensor:
+            self._active_sensor = 0
+
+        return self._active_sensor
+
+    def next_sensor(self):
+        """Changes the active sensor to the next one.
+
+        :return: None
+        """
+
+        self._active_sensor = (self._active_sensor + 1) % len(self._sensors)
+
+    def previous_sensor(self):
+        """Changes the active sensor to the previous one.
+
+        :return: None
+        """
+
+        self._active_sensor = (self._active_sensor - 1) % len(self._sensors)
+
     def add_sensor(self, sensor: DHT11):
         """Adds a sensor to the list of sensors. Also saves the sensor to the file.
 
@@ -103,6 +133,20 @@ class SensorManager:
         with open("sensors.txt", "a") as fw_sensors:
             fw_sensors.write(f"{sensor.pin};{sensor.name};{sensor.interval}\n")
 
+    def sensor_list_position(self, pin: int):
+        """Returns the position of the sensor in the list of sensors.
+
+        :param pin: The pin of the sensor
+
+        :return: The position of the sensor in the list of sensors or -1 if the sensor is not in the list.
+        """
+
+        for sensor in self._sensors:
+            if sensor.pin == pin:
+                return self._sensors.index(sensor)
+
+        return -1
+
     def remove_sensor(self, pin: int):
         """Removes a sensor from the list of sensors. Also removes the sensor from the file.
 
@@ -111,10 +155,16 @@ class SensorManager:
         :return: None
         """
 
-        for sensor in self._sensors:
-            if sensor.pin == pin:
-                self._sensors.remove(sensor)
-                break
+        position = self.sensor_list_position(pin)
+        active_sensor_position = self.sensor_list_position(self._active_sensor)
+
+        if position == -1:
+            raise ValueError("The given pin is not in the list of sensors.")
+
+        self._sensors.pop(position)
+
+        if position >= active_sensor_position:
+            self.next_sensor()
 
         with open("sensors.txt", "w") as fw_sensors:
             for sensor in self._sensors:
