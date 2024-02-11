@@ -1,6 +1,8 @@
 import config.config as config
 import setup
-import config.settings_manager.SettingsManager as SettingsManager
+from config.settings_manager import SettingsManager
+from config.sdcard_manager import SDCardManager
+from sensors.sensor_manager import SensorManager
 
 
 def startup():
@@ -13,3 +15,7 @@ def startup():
         setup.initial()
 
     settings = SettingsManager()    # Initialize the settings manager
+    sensor_manager = SensorManager()    # Initialize the sensor manager
+
+    sd = SDCardManager()
+    sd.mount()
