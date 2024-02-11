@@ -2,7 +2,7 @@ import time
 
 from config.config import Colors, GraphInterval, Display
 from graphics.graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
-import temp_sensor
+from sensors.sensor_manager import SensorManager
 from pages.settings import SettingItems
 
 
@@ -53,27 +53,26 @@ def parse_time(t):
     return f"{hours}:{minutes}"
 
 
-def render_sensor_details(x: int, sensor_id: int):
+def render_sensor_details():
     """Draws the sensor details on the screen with the given coordinates.
 
-    :param x: The x coordinate of the sensor details.
-    :param sensor_id: The sensor id of the sensor to draw the details of.
     :return: None
     """
 
     display = Display()
+    sensor_manager = SensorManager()
 
-    test_sensor = temp_sensor.DHT11(0, "TOILET")  # TODO: change to real sensor
+    current_sensor = sensor_manager.sensors[sensor_manager.active_sensor]
 
-    display().text(test_sensor.name, 34, 7, 250, 2)
+    display().text(current_sensor.name, 34, 7, 250, 2)
     draw_clock(14, 41)
     current_time = time.localtime()
     display().text(parse_time(current_time), 34, 34, 250, 2)
     draw_thermometer(14, 68)
 
-    display().text(f"{test_sensor.temperature}°C", 34, 61, 250, 2)
+    display().text(f"{current_sensor.temperature}°C", 34, 61, 250, 2)
     draw_humidity(14, 96)
-    display().text(f"{test_sensor.humidity}%", 34, 88, 250, 2)     # TODO: draw humidity next to the humidity icon
+    display().text(f"{current_sensor.humidity}%", 34, 88, 250, 2)
 
 
 def render_homepage_buttons(interval: GraphInterval = GraphInterval.Daily):
