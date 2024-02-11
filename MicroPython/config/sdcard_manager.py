@@ -11,15 +11,15 @@ class SDCardManager:
     _spi = None
 
     _baudrate = 40000000
-    _sck = Pin(2)
-    _mosi = Pin(3)
-    _miso = Pin(4)
-    _cs = Pin(5)
+    _sck = Pin(10)
+    _mosi = Pin(11)
+    _miso = Pin(8)
+    _cs = Pin(9, Pin.OUT)
 
     def __init__(self):
         """Initializes the SD card"""
 
-        self._spi = SPI(0, baudrate=self._baudrate, sck=self._sck, mosi=self._mosi, miso=self._miso)
+        self._spi = SPI(1, baudrate=self._baudrate, sck=self._sck, mosi=self._mosi, miso=self._miso)
 
     def mount(self):
         """Mounts the SD card as /sd
@@ -28,7 +28,7 @@ class SDCardManager:
         """
 
         try:
-            sd = sdcard.SDCard(self._spi, Pin(5))
+            sd = sdcard.SDCard(self._spi, self._cs)
             vfs = uos.VfsFat(sd)
             uos.mount(vfs, "/sd")
         except OSError:
@@ -169,14 +169,12 @@ class SDCardManager:
         """Formats the SD card."""
 
         if not self.is_mounted():
-            print("SD card is not mounted or not accessible")
-            return False
+            raise OSError("SD card is not mounted")
 
         # Delete all files on the SD card
-
         try:
             for file in uos.listdir("/sd"):
-                if file.startswith("."):
+                if file.startswith(".") or file == "System Volume Information":
                     continue
 
                 print(f"Removing {file}")
