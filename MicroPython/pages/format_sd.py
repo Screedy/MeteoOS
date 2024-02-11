@@ -23,9 +23,7 @@ def render_format_sd():
             return False
         time.sleep(0.1)
 
-    format_sd()
-
-    return True
+    return format_sd()
 
 
 def format_sd():
@@ -34,7 +32,7 @@ def format_sd():
     sd = SDCardManager()
 
     if sd.is_mounted():
-        sd.format()
+        sd.format_sd()
 
         return True
 
