@@ -21,14 +21,16 @@ class SensorManager:
         self._active_sensor = 0
         self._available_pins = self.load_available_pins()
 
-    @staticmethod
-    def load_sensors():
+    def load_sensors(self):
         """Loads the sensors from the file sensors.txt.
 
         :return: A list of sensors
         """
 
         fr_sensors = None
+
+        if self.sensors is not None:
+            return self.sensors
 
         try:
             fr_sensors = open("sensors.txt", "r")
