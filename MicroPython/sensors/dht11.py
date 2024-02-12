@@ -1,6 +1,9 @@
 import utime
-from machine import Pin, RTC
+from machine import Pin, RTC, Timer
 import dht
+import _thread
+import uasyncio as asyncio
+from config.sdcard_manager import SDCardManager
 
 
 class DHT11:
@@ -12,6 +15,7 @@ class DHT11:
     _temperature: float
     _humidity: float
     _interval: int
+    _timer: Timer
 
     def __init__(self, pin: int, name: str, interval: int = 5):
         """Initialize the DHT11 sensor.
@@ -28,6 +32,10 @@ class DHT11:
         self._humidity = 0
         self._interval = interval
 
+        # _thread.start_new_thread(self.measure, ())
+
+        # Alternative option using an interrupt
+        self._timer = Timer(mode=Timer.PERIODIC, period=1000 * interval, callback=self.measure)
 
     @property
     def name(self):
@@ -87,25 +95,21 @@ class DHT11:
 
     @property
     def temperature(self):
-        """Measures the temperature and returns it.
+        """Returns the temperature measured in the given interval.
 
         :return: The temperature in °C
         """
 
-        self._sensor.measure()
-        self._temperature = self._sensor.temperature()
-        return self._temperature
+        return self.sensor.temperature()
 
     @property
     def humidity(self):
-        """Measures the humidity and returns it.
+        """Returns the humidity measured in the given interval.
 
         :return: The humidity in %
         """
 
-        self._sensor.measure()
-        self._humidity = self._sensor.humidity()
-        return self._humidity
+        return self.sensor.humidity()
 
     @property
     def interval(self):
@@ -127,14 +131,58 @@ class DHT11:
         if 0 < interval < 3600:
             self._interval = interval
 
-    def read(self):
-        """Reads the sensors data and returns it.
+    def measure(self, timer):
+        """Measures the temperature and humidity in the given interval.
 
-        :return: Returns temperature, humidity and timestring
+        :param timer: The timer object
+        :return: None
         """
 
         self._sensor.measure()
-        self._temperature = self._sensor.temperature()
-        self._humidity = self._sensor.humidity()
+        self.write_to_file()
 
-        return self._temperature, self._humidity
+    def write_to_file(self):
+        """Writes the sensor data to a file.
+
+        :return: None
+        """
+
+        sd = SDCardManager()
+        if not sd.is_mounted:
+            try:
+                sd.mount()
+            except OSError as e:
+                print(f"Failed to mount SD card: {e}, unable to write to file")
+                return
+
+        with open("sd/measurements/" + self.name+".txt", "a") as fw_sensor:
+            fw_sensor.write(f"{RTC().datetime()};{self.temperature};{self.humidity}\n")
+
+    """
+    async def ameasure(self):
+        while True:
+            try:
+                self.sensor.measure()
+            except OSError as e:
+                print(f"Failed to measure sensor {self._name}: {e}")
+            finally:
+                await asyncio.sleep(self.interval)
+    """
+
+
+if __name__ == "__main__":
+    sensor = DHT11(0, "DHT11", 5)
+
+    while True:
+        print(f"Time: {RTC().datetime()}")
+        print(f"Temperature: {sensor.temperature}°C, Humidity: {sensor.humidity}%")
+        utime.sleep(2.5)
+
+    """
+    try:
+        asyncio.run(sensor.ameasure())
+    except KeyboardInterrupt:
+        print("Interrupted")
+    finally:
+        asyncio.new_event_loop()
+    """
