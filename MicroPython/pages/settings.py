@@ -5,6 +5,7 @@ from pages.add_sensor import render_add_sensor as add_sensor
 from pages.del_sensor import render_del_sensor as remove_sensor
 from pages.brightness import render_brightness as change_brightness
 from pages.format_sd import render_format_sd as format_sd
+from pages.del_data import render_del_data as del_data
 
 
 class SettingItems:
@@ -20,6 +21,7 @@ class SettingItems:
     RemSensor = 1
     Brightness = 2
     FormatSD = 3
+    DelData = 4
 
     @staticmethod
     def list_of_items():
@@ -48,6 +50,8 @@ class SettingItems:
             return Settings.change_brightness()
         elif selected_item == SettingItems.FormatSD:
             return Settings.format_sd()
+        elif selected_item == SettingItems.DelData:
+            return Settings.del_data()
 
 
 class Settings:
@@ -83,6 +87,12 @@ class Settings:
         """Formats the SD card."""
         print("Formatting SD card...")
         print("SD card formatted") if format_sd() else print("SD card not formatted")
+
+    @classmethod
+    def del_data(cls):
+        """Deletes data from the SD card."""
+        print("Deleting data...")
+        print("Data deleted") if del_data() else print("Data not deleted")
 
 
 def render_settings(selected_item: int = 0):
