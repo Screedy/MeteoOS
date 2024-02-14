@@ -195,6 +195,22 @@ class SDCardManager:
         """
         return uos.listdir(path)
 
+    @staticmethod
+    def delete_file(path):
+        """Deletes a file from the SD card.
+
+        :param path: The path of the file to delete.
+        :return: True if the file was deleted successfully, False otherwise
+        """
+
+        try:
+            uos.remove(path)
+        except OSError:
+            print(f"Error while deleting {path}")
+            return False
+
+        return True
+
 
 if __name__ == "__main__":
     sd = SDCardManager()
