@@ -118,15 +118,16 @@ def render_settings_buttons():
     display().text("BACK", 190, 115, 250, 2)
 
 
-def render_settings_items(selected_item: int = 0):
+def render_items_list(selected_item: int = 0, page: list = SettingItems.list_of_items()):
     """Draws the settings items on the screen.
 
     :param selected_item: The selected item to highlight. (Default: 0)
+    :param page: The list of items to display. (Default: List for setting items.)
     :return: None
     """
 
     display = Display()
-    number_of_items = len(SettingItems.list_of_items())
+    number_of_items = len(page)
     page_start_item = selected_item - (selected_item % 3)
 
     for i in range(3):
@@ -136,7 +137,7 @@ def render_settings_items(selected_item: int = 0):
         display().set_pen(Colors.WHITE) if i == selected_item % 3 else display().set_pen(Colors.BLACK)
         display().rectangle(120, 34 + (i * 27), 110, 15)
         display().set_pen(Colors.BLACK) if i == selected_item % 3 else display().set_pen(Colors.WHITE)
-        display().text(SettingItems.list_of_items()[page_start_item + i], 123, 34 + (i * 27), 250, 2)
+        display().text(page[page_start_item + i], 123, 34 + (i * 27), 250, 2)
 
         if i == selected_item % 3:
             display().set_pen(Colors.WHITE)
