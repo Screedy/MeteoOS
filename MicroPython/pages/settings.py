@@ -98,7 +98,7 @@ def render_settings(selected_item: int = 0):
     display().line(101, 16, 101, 120, 3)
 
     page_elements.render_settings_buttons()
-    page_elements.render_settings_items(selected_item)
+    page_elements.render_items_list(selected_item)
 
     display().update()
 
