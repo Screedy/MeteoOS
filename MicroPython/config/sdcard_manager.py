@@ -186,6 +186,15 @@ class SDCardManager:
             uos.chdir("/")
         return True
 
+    @staticmethod
+    def list_files(path="/"):
+        """Lists all files on the SD card.
+
+        :param path: The path to list files from. Default is the root directory.
+        :return: A list of all files on the SD card
+        """
+        return uos.listdir(path)
+
 
 if __name__ == "__main__":
     sd = SDCardManager()
@@ -201,4 +210,4 @@ if __name__ == "__main__":
     sd.unmount()
 
     sd.mount()
-    sd.format_sd()
+    # sd.format_sd()
