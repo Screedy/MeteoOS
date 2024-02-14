@@ -1,8 +1,6 @@
 import utime
 from machine import Pin, RTC, Timer
 import dht
-import _thread
-import uasyncio as asyncio
 from config.sdcard_manager import SDCardManager
 
 
@@ -15,7 +13,6 @@ class DHT11:
     _temperature: float
     _humidity: float
     _interval: int
-    _timer: Timer
 
     def __init__(self, pin: int, name: str, interval: int = 5):
         """Initialize the DHT11 sensor.
@@ -147,6 +144,10 @@ class DHT11:
         :return: None
         """
 
+        if RTC().datetime()[0] < 2022:
+            print("RTC not set, unable to write to file")
+            return
+
         sd = SDCardManager()
         if not sd.is_mounted:
             try:
@@ -158,17 +159,6 @@ class DHT11:
         with open("sd/measurements/" + self.name+".txt", "a") as fw_sensor:
             fw_sensor.write(f"{RTC().datetime()};{self.temperature};{self.humidity}\n")
 
-    """
-    async def ameasure(self):
-        while True:
-            try:
-                self.sensor.measure()
-            except OSError as e:
-                print(f"Failed to measure sensor {self._name}: {e}")
-            finally:
-                await asyncio.sleep(self.interval)
-    """
-
 
 if __name__ == "__main__":
     sensor = DHT11(0, "DHT11", 5)
@@ -177,12 +167,3 @@ if __name__ == "__main__":
         print(f"Time: {RTC().datetime()}")
         print(f"Temperature: {sensor.temperature}°C, Humidity: {sensor.humidity}%")
         utime.sleep(2.5)
-
-    """
-    try:
-        asyncio.run(sensor.ameasure())
-    except KeyboardInterrupt:
-        print("Interrupted")
-    finally:
-        asyncio.new_event_loop()
-    """
