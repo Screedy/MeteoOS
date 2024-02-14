@@ -13,6 +13,7 @@ class DHT11:
     _temperature: float
     _humidity: float
     _interval: int
+    _timer: Timer
 
     def __init__(self, pin: int, name: str, interval: int = 5):
         """Initialize the DHT11 sensor.
