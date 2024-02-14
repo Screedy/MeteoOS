@@ -1,4 +1,3 @@
-import time
 from config.config import *
 import page_elements
 from config.sdcard_manager import SDCardManager
