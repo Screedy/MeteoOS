@@ -10,6 +10,8 @@ import temp_sensor
 import pages.settings as settings
 from config.startup import startup
 from sensors.sensor_manager import SensorManager
+from graphics.graph import ContextGraphInterval, GraphInterval, ConcreteStrategyDaily, ConcreteStrategyWeekly
+from machine import RTC
 
 
 def render_homepage(graph_interval):
@@ -20,19 +22,21 @@ def render_homepage(graph_interval):
     """
 
     display = Display()
+    graph = ContextGraphInterval()
+    sensor_manager = SensorManager()
 
     page_elements.clear_fast()
     display().set_pen(Colors.WHITE)
-    page_elements.render_nav_arrows(6)
-    page_elements.render_sensor_details()
-
-    display().line(101, 16, 101, 120, 3)
 
     page_elements.render_homepage_buttons(graph_interval)
+    page_elements.render_nav_arrows(6)
+    page_elements.render_sensor_details()
+    display().line(101, 16, 101, 120, 3)
+
+    active_sensor = sensor_manager.sensors[sensor_manager.active_sensor]
+    graph.render_graph((2024, 2, 15, 2), active_sensor, False)
 
     display().update()
-
-    # print("Homepage rendered")
 
 
 def main_task():
@@ -67,7 +71,7 @@ def main_task():
             sensor_manager.previous_sensor()
 
         render_homepage(graph_interval)
-        time.sleep(0.1)
+        time.sleep(0.5)
 
 
 if __name__ == "__main__":
