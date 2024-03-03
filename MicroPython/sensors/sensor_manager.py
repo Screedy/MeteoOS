@@ -16,6 +16,7 @@ class SensorManager:
         :raise OSError: If the file sensors.txt does not exist, it will be created.
         :return: None
         """
+        self._sensors = None
 
         self._sensors = self.load_sensors()
         self._active_sensor = 0
@@ -171,6 +172,24 @@ class SensorManager:
         with open("sensors.txt", "w") as fw_sensors:
             for sensor in self._sensors:
                 fw_sensors.write(f"{sensor.pin};{sensor.name};{sensor.interval}\n")
+
+    def pause_measure(self):
+        """Pauses the measurement of the active sensor.
+
+        :return: None
+        """
+
+        for sensor in self._sensors:
+            sensor.pause_measure()
+
+    def resume_measure(self):
+        """Resumes the measurement of the active sensor.
+
+        :return: None
+        """
+
+        for sensor in self._sensors:
+            sensor.resume_measure()
 
 
 class AvailableSensors:
