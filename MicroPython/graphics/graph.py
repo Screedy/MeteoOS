@@ -4,12 +4,15 @@ from config.config import *
 import page_elements
 from config.sdcard_manager import SDCardManager
 import sensors.sensor_manager as sm
+from config.config import singleton
+from sensors.sensor_manager import SensorManager
+import os
 
 
 class StrategyGraphInterval:
     """The strategy interface for rendering the graph."""
 
-    def render_graph(self, date, sensor, force=False) -> None:
+    def render_graph(self, date, sensor, force) -> None:
         """Renders the graph using the strategy pattern.
 
         :param date: The day to reference the graph to.
@@ -23,7 +26,7 @@ class StrategyGraphInterval:
 class ConcreteStrategyDaily(StrategyGraphInterval):
     """The concrete strategy for rendering the daily graph."""
 
-    def render_graph(self, date, sensor, force=False) -> None:
+    def render_graph(self, date, sensor, force) -> None:
         """Renders the daily graph using the strategy pattern.
 
         :param date: The day to referer the week to. If set to Friday 16th of the month, the graph will
@@ -51,7 +54,7 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
 class ConcreteStrategyWeekly(StrategyGraphInterval):
     """The concrete strategy for rendering the weekly graph."""
 
-    def render_graph(self, date, sensor, force=False) -> None:
+    def render_graph(self, date, sensor, force) -> None:
         """Renders the weekly graph using the strategy pattern.
 
         :param date: The day to referer the month to. If set to 16th of January, the graph will be
@@ -76,13 +79,13 @@ class ConcreteStrategyWeekly(StrategyGraphInterval):
         render_weekly_graph((list(temp)), list(hum))
 
 
-class ContextGraphInterval():
+@singleton
+class ContextGraphInterval:
     """The context class for the strategy pattern to render the graphs."""
 
     _strategy = None
-    _data = None
 
-    def __init__(self, strategy) -> None:
+    def __init__(self, strategy=ConcreteStrategyDaily()) -> None:
         """Initializes the context class with the strategy.
 
         :param strategy: The strategy to use for rendering the graph.
@@ -91,7 +94,7 @@ class ContextGraphInterval():
         self._strategy = strategy
 
     @property
-    def strategy(self) -> StrategyGraphInterval:
+    def strategy(self):
         """The strategy to use for rendering the graph."""
 
         return self._strategy
@@ -101,14 +104,33 @@ class ContextGraphInterval():
         """Sets the strategy to use for rendering the graph."""
 
         self._strategy = strategy
-        self._data = None
 
-    def render_graph(self, date, sensor, force=False) -> None:
+    def render_graph(self, date, sensor, force) -> None:
         """Renders the graph using the strategy pattern."""
 
         display = Display()
 
         display().set_pen(Colors.WHITE)
+
+        is_loaded = True
+
+        strategy_str = str(self.strategy)[17]
+
+        if strategy_str == "D":
+            try:
+                os.stat("/sensors/measurements/" + sensor.name + "daily.txt")
+            except OSError:
+                is_loaded = False
+
+        if strategy_str == "W":
+            try:
+                os.stat("/sensors/measurements/" + sensor.name + "weekly.txt")
+            except OSError:
+                is_loaded = False
+
+        if not is_loaded:
+            force = True
+
         display().line(125, 103, 234, 103, 1)
         display().line(125, 103, 125, 20, 1)
 
@@ -133,14 +155,14 @@ def day_data(date, file):
     # year, month, day = str(date[0]), str(date[1]), str(date[2])
 
     while True:
-        lines = read_n_lines(file, 350)
+        lines = read_n_lines(file, 300)
         rollback_chars = 0
 
         if not lines:
             break
 
         for line in lines:
-            print("-------------------")
+            # print("-------------------")
             # print(line)
             date_file, temp_file, hum_file = line.split(";")
             date_file = date_file.replace("(", "").replace(" ", "").replace(")", "").split(",")
@@ -149,7 +171,7 @@ def day_data(date, file):
 
             print(date_file, temp_file, hum_file)
             # print(year, month, day)
-            print("-------------------")
+            # print("-------------------")
 
             if compate_dates(date, date_file) == 0:
                 temp_sum += float(temp_file)
@@ -403,7 +425,7 @@ def render_daily_graph(temperatures, humidity):
         if temperatures[i + 1] != -404:
             display().pixel(130 + (i + 1) * 16, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)))
 
-    display().update()
+    # display().update()
 
 
 def render_weekly_graph(temperatures, humidity):
@@ -438,7 +460,7 @@ def render_weekly_graph(temperatures, humidity):
         if temperatures[i + 1] != -404:
             display().pixel(130 + (i + 1) * 32, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)))
 
-    display().update()
+    # display().update()
 
 
 def temperature_to_pixel(temperature, max_temp, min_temp, pixel_min=20, pixel_max=100):
@@ -487,9 +509,11 @@ def get_measurements(sensor):
     :return: Two lists containing the temperature and humidity measurements.
     """
 
+
     with open("/sensors/measurements/" + sensor.name + "daily.txt", "r") as fr:
         line = fr.readline()
         temp, hum = line.split(";")
+
 
     temp = temp.replace("[", "").replace("]", "").split(", ")
     hum = hum.replace("[", "").replace("]", "").split(", ")
@@ -508,23 +532,23 @@ if __name__ == "__main__":
     sensor = sensor_manager.sensors[0]
 
     # temp, hum = days_data((2024, 2, 15, 3), sensor)
-    temp = [22.25736, 23.50342, 23.37879, 22.43661, 24.4356, 20.3456, 23.4464]
-    hum = [35.8522, 32.9066, 33.10038, 35.83953, -404, -404, -404]
+    # temp = [22.25736, 23.50342, 23.37879, 22.43661, 24.4356, 20.3456, 23.4464]
+    # hum = [35.8522, 32.9066, 33.10038, 35.83953, -404, -404, -404]
     # print(temp, hum)
 
     # render_daily_graph(temp, hum)
 
-    # graph = ContextGraphInterval(ConcreteStrategyDaily())
-    # graph.render_graph((2024, 2, 15, 3), sensor, True)
-    # print("Graph rendered")
+    graph = ContextGraphInterval(ConcreteStrategyDaily())
+    graph.render_graph((2024, 2, 15, 3), sensor, True)
+    print("Graph rendered")
     # graph.render_graph((2024, 2, 15, 3), sensor, False)
     # print("Graph rendered again from memory.")
 
     graph = ContextGraphInterval(ConcreteStrategyWeekly())
     # graph.render_graph((2024, 2, 15, 3), sensor, True)
     # print("Graph rendered")
-    graph.render_graph((2024, 2, 15, 3), sensor, False)
-    print("Graph rendered again from memory.")
+    # graph.render_graph((2024, 2, 15, 3), sensor, False)
+    # print("Graph rendered again from memory.")
 
     utime.sleep(5)
-    page_elements.clear_fast()
+    # page_elements.clear_fast()
