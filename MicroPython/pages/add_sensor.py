@@ -163,7 +163,7 @@ def select_interval():
             interval_time -= 1 if interval_time > 0 else 0
 
         if button_x.read():
-            return interval_time
+            return interval_time * 60
 
         if button_y.read():
             return None
@@ -171,7 +171,7 @@ def select_interval():
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
         display().text(f"Select the refresh interval of the sensor", 2, 20, 236, 2)
-        display().text(f"Interval: {interval_time} s", 2, 40, 236, 2)
+        display().text(f"Interval: {interval_time} m", 2, 40, 236, 2)
         display().update()
         time.sleep(.15)
 
