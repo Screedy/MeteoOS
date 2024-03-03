@@ -14,6 +14,7 @@ class DHT11:
     _humidity: float
     _interval: int
     _timer: Timer
+    _write: bool
 
     def __init__(self, pin: int, name: str, interval: int = 5):
         """Initialize the DHT11 sensor.
@@ -34,6 +35,7 @@ class DHT11:
 
         # Alternative option using an interrupt
         self._timer = Timer(mode=Timer.PERIODIC, period=1000 * interval, callback=self.measure)
+        self._write = True
 
     @property
     def name(self):
@@ -129,6 +131,24 @@ class DHT11:
         if 0 < interval < 3600:
             self._interval = interval
 
+    @property
+    def write(self):
+        """Returns the write to file status.
+
+        :return: The write to file status
+        """
+
+        return self._write
+
+    @write.setter
+    def write(self, write_to_file: bool):
+        """Sets the write to file status.
+
+        :param write_to_file: The write to file status
+        """
+
+        self._write = write_to_file
+
     def measure(self, timer):
         """Measures the temperature and humidity in the given interval.
 
@@ -145,6 +165,10 @@ class DHT11:
         :return: None
         """
 
+        if not self.write:
+            return
+
+        print("Writing to file")
         if RTC().datetime()[0] < 2022:
             print("RTC not set, unable to write to file")
             return
@@ -159,6 +183,22 @@ class DHT11:
 
         with open("sd/measurements/" + self.name+".txt", "a") as fw_sensor:
             fw_sensor.write(f"{RTC().datetime()};{self.temperature};{self.humidity}\n")
+
+    def pause_measure(self):
+        """Pauses the measurement of the sensor.
+
+        :return: None
+        """
+
+        self.write = False
+
+    def resume_measure(self):
+        """Resumes the measurement of the sensor.
+
+        :return: None
+        """
+
+        self.write = True
 
 
 if __name__ == "__main__":
