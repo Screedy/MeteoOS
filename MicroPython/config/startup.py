@@ -14,8 +14,8 @@ def startup():
     except OSError:  # open failed (file not found)
         setup.initial()
 
-    settings = SettingsManager()    # Initialize the settings manager
-    sensor_manager = SensorManager()    # Initialize the sensor manager
-
     sd = SDCardManager()
     sd.mount()
+
+    settings = SettingsManager()    # Initialize the settings manager
+    sensor_manager = SensorManager()    # Initialize the sensor manager
