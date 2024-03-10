@@ -30,3 +30,12 @@ C++/MeteoOS.bin
 C++/Makefile
 C++/libpico_graphics.a
 C++/libbitmap_fonts.a
+C++/pico-boilerplate/cmake-build-debug/.cmake/api/v1/query/cache-v2
+C++/pico-boilerplate/cmake-build-debug/.cmake/api/v1/query/cmakeFiles-v1
+C++/pico-boilerplate/cmake-build-debug/CMakeCache.txt
+C++/pico-boilerplate/cmake-build-debug/.cmake/api/v1/query/toolchains-v1
+C++/pico-boilerplate/cmake-build-debug/.cmake/api/v1/query/codemodel-v2
+C++/pico-boilerplate/cmake-build-debug/CMakeFiles/clion-Debug-log.txt
+C++/pico-boilerplate/cmake-build-debug/CMakeFiles/clion-environment.txt
+C++/pico-boilerplate/cmake-build-debug/CMakeFiles/cmake.check_cache
+
