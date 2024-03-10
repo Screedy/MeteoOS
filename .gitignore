@@ -11,8 +11,7 @@ MicroPython/.DS_Store
 .idea/copilot/chatSessions/xd.lck
 .idea/copilot/chatSessions/blobs/version
 .idea/copilot/chatSessions/00000000000.xd
-pico-sdk/
-C++/pico-sdk/
+C++/pico-sdk
 C++/pimoroni-pico
 C++/CMakeFiles
 C++/elf2uf2
