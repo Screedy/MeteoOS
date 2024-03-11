@@ -1,6 +1,3 @@
-#include "drivers/st7789/st7789.hpp"
-#include "libraries/pico_graphics/pico_graphics.hpp"
-#include "pico_display.hpp"
 #include "pico/stdlib.h"
 
 #include <string.h>
@@ -10,28 +7,39 @@
 #include <stdio.h>
 
 #include "config/config.h"
+#include "config/Display.h"
 
 //#include "rgbled.hpp"
 
 using namespace pimoroni;
 
-ST7789 st7789(PicoDisplay::WIDTH, PicoDisplay::HEIGHT, ROTATE_0, false, get_spi_pins(BG_SPI_FRONT));
-PicoGraphics_PenRGB332 graphics(st7789.width, st7789.height, nullptr);
-
+Display& display = Display::get_instance();
+ST7789& st7789 = *display.get_display();
+PicoGraphics_PenRGB332& graphics = *display.get_graphics();
 Buttons Buttons;
+
+void render_homepage(){
+
+}
 
 int main() {
     stdio_init_all();
 
-    st7789.set_backlight(100);
+    //st7789.set_backlight(100);
 
     Point p1 = {0, 0};
     Point p2 = {100, 100};
     while(true){
-        if (Buttons.is_button_a_pressed()) {
-            p1.x += 10;
-        } else {
-            p1.x = 0;
+        if (Buttons.is_button_x_pressed()){
+            //TODO: change the graph interval
+        } else if (Buttons.is_button_y_pressed()){
+            printf("Opening menu\n");
+
+            printf("Menu closed\n");
+        } else if (Buttons.is_button_a_pressed()){
+            printf("Button A pressed\n");
+        } else if (Buttons.is_button_b_pressed()){
+            printf("Button B pressed\n");
         }
 
 
