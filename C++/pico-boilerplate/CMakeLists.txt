@@ -21,6 +21,13 @@ add_executable(${NAME}
     config/config.h
     config/Display.cpp
     config/Display.h # <-- Add source files here!
+#    config/Point.h
+    graphics/graphics.cpp
+    graphics/graphics.h
+#    graphics/page_elements.cpp
+#    graphics/page_elements.h
+#    config/globals.h
+#    config/globals.cpp
 )
 
 # Include required libraries
