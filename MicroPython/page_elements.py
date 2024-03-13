@@ -54,7 +54,7 @@ def parse_time(t):
 
 
 def render_sensor_details():
-    """Draws the sensor details on the screen with the given coordinates.
+    """Draws the sensor details on the screen.
 
     :return: None
     """
