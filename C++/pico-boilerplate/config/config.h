@@ -1,16 +1,24 @@
 //
-// Created by Petr Jurásek on 10.03.2024.
+// Created by Petr Jurásek on 13.03.2024.
 //
 
 #ifndef PICO_BOILERPLATE_CONFIG_H
 #define PICO_BOILERPLATE_CONFIG_H
 
 #include "pico/stdlib.h"
+#include "./Display.h"
+#include "drivers/st7789/st7789.hpp"
 
 #define BUTTON_A 12
 #define BUTTON_B 13
 #define BUTTON_X 14
 #define BUTTON_Y 15
+
+namespace Config{
+    extern Display& display;
+    extern pimoroni::ST7789& driver;
+    extern pimoroni::PicoGraphics_PenRGB332& graphics;
+}
 
 class Buttons {
 public:
@@ -20,6 +28,15 @@ public:
     bool is_button_b_pressed();
     bool is_button_x_pressed();
     bool is_button_y_pressed();
+};
+
+struct Colors {
+    static int WHITE;
+    static int BLACK;
+    static int RED;
+    static int GREEN;
+    static int BLUE;
+    static int GRAY;
 };
 
 #endif //PICO_BOILERPLATE_CONFIG_H

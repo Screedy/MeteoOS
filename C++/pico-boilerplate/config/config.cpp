@@ -1,9 +1,16 @@
 //
-// Created by Petr Jurásek on 10.03.2024.
+// Created by Petr Jurásek on 13.03.2024.
 //
 
 #include "config.h"
 
+using namespace Config;
+
+namespace Config{
+    Display& display = Display::getInstance();
+    pimoroni::ST7789& driver = display.getDriver();
+    pimoroni::PicoGraphics_PenRGB332& graphics = display.getGraphics();
+}
 
 Buttons::Buttons() {
     gpio_init(BUTTON_A);
@@ -37,3 +44,10 @@ bool Buttons::is_button_x_pressed() {
 bool Buttons::is_button_y_pressed() {
     return !gpio_get(BUTTON_Y);
 }
+
+int Colors::WHITE = graphics.create_pen(255, 255, 255);
+int Colors::BLACK = graphics.create_pen(0, 0, 0);
+int Colors::RED = graphics.create_pen(255, 0, 0);
+int Colors::GREEN = graphics.create_pen(0, 255, 0);
+int Colors::BLUE = graphics.create_pen(0, 0, 255);
+int Colors::GRAY = graphics.create_pen(128, 128, 128);
