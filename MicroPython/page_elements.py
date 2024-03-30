@@ -103,6 +103,7 @@ def render_homepage_buttons(interval: GraphInterval = GraphInterval.Daily):
     display().set_pen(inactive_color) if interval == GraphInterval.Monthly else display().set_pen(active_color)
     display().text("M", 220, 7, 250, 2)
 
+    display().set_pen(Colors.WHITE)
     display().text("MENU", 190, 115, 250, 2)
 
 
