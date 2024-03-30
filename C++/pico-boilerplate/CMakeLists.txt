@@ -24,10 +24,12 @@ add_executable(${NAME}
 #    config/Point.h
     graphics/graphics.cpp
     graphics/graphics.h
-#    graphics/page_elements.cpp
-#    graphics/page_elements.h
+    graphics/page_elements.cpp
+    graphics/page_elements.h
 #    config/globals.h
 #    config/globals.cpp
+    sensors/DHT11.h
+    sensors/DHT11.cpp
 )
 
 # Include required libraries
@@ -45,6 +47,9 @@ target_link_libraries(${NAME}
     pico_explorer # <-- List libraries here!
     pico_display
 )
+
+pico_enable_stdio_usb(${NAME} 1) # I added this for picotool and screen functionality
+pico_enable_stdio_uart(${NAME} 0)
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(${NAME})
