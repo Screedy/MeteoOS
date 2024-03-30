@@ -51,3 +51,7 @@ int Colors::RED = graphics.create_pen(255, 0, 0);
 int Colors::GREEN = graphics.create_pen(0, 255, 0);
 int Colors::BLUE = graphics.create_pen(0, 0, 255);
 int Colors::GRAY = graphics.create_pen(128, 128, 128);
+
+int GraphInterval::DAILY = 0;
+int GraphInterval::WEEKLY = 1;
+int GraphInterval::MONTHLY = 2;

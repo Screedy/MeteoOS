@@ -39,4 +39,10 @@ struct Colors {
     static int GRAY;
 };
 
+struct GraphInterval {
+    static int DAILY;
+    static int WEEKLY;
+    static int MONTHLY;
+};
+
 #endif //PICO_BOILERPLATE_CONFIG_H
