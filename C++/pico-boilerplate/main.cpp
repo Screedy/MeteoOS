@@ -10,6 +10,8 @@
 #include "config/config.h"
 #include "config/Display.h"
 #include "graphics/graphics.h"
+#include "graphics/page_elements.h"
+#include "sensors/DHT11.h"
 
 //#include "rgbled.hpp"
 
@@ -26,55 +28,69 @@ auto& graphics = display.getGraphics();
 
 Buttons Buttons;
 
-void render_homepage(){
+void render_homepage(int graph_interval){
 
     clear_fast();
     graphics.set_pen(Colors::WHITE);
 
-    //render_homepage_buttons(graph_interval;
-    //render_nav_arrows(6);
+    render_homepage_buttons(graph_interval);
+    render_nav_arrows(6);
     //render_sensor_details();
-    graphics.line({101, 16}, {120, 3});
 
     //auto active_sensor = sensor_manager.sensors[sensor_manager.active_sensor];
     //graph.render_graph(//TODO: graph_interval, active_sensor);
 
-    graphics.update();
+    driver.update(&graphics);
 }
 
 int main() {
-
-
     stdio_init_all();
 
-    pimoroni::Point p1 = {0, 0};
-    pimoroni::Point p2 = {240, 240};
+    int graph_interval = GraphInterval::DAILY;
 
-    graphics.set_pen(0, 0, 0);
+    graphics.set_pen(Colors::WHITE);
     graphics.clear();
+
+    DHT11 sensor1(0, "TOILET", 30);
 
     while(true){
         if (Buttons.is_button_x_pressed()){
-            graphics.set_pen(0, 255, 0);
             //TODO: change the graph interval
+
+            if (graph_interval == GraphInterval::DAILY){
+                graph_interval = GraphInterval::WEEKLY;
+            } else if (graph_interval == GraphInterval::WEEKLY){
+                graph_interval = GraphInterval::MONTHLY;
+            } else if (graph_interval == GraphInterval::MONTHLY){
+                graph_interval = GraphInterval::DAILY;
+            }
         } else if (Buttons.is_button_y_pressed()){
             printf("Opening menu\n");
-            graphics.set_pen(255, 0, 0);
+            //TODO: open menu
             printf("Menu closed\n");
         } else if (Buttons.is_button_a_pressed()){
             printf("Button A pressed\n");
-            graphics.set_pen(0, 0, 255);
+            //TODO: Next sensor
         } else if (Buttons.is_button_b_pressed()){
             printf("Button B pressed\n");
+            //TODO: Previous sensor
         }
 
-        //graphics.set_pen(0, 0, 0);
-        //graphics.clear();
-        //graphics.set_pen(255, 0, 0);
-        graphics.line(p1, p2);
-        draw_clock(120, 120);
-        driver.update(&graphics);
-        sleep_ms(1000);
+        render_homepage(graph_interval);
+
+        sleep_ms(10000);
+        printf("Starting to read sensor\n");
+
+        auto err = sensor1.read();
+        if (err != 0){
+            printf("Error reading sensor\n");
+            printf("Error code: %d\n", err);
+            continue;
+        }
+        printf("Temperature: %f\n", sensor1.getTemperature());
+        printf("Humidity: %f\n", sensor1.getHumidity());
+
+        sleep_ms(10000);
     }
 
     return 0;
