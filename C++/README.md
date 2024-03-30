@@ -78,9 +78,9 @@ make
 ```BASH
 ./picotool help #This will print the help page.
 ```
-4. Make sure that the `CMakeLists.txt` file in pico-boilerplate has the `pico_enable_stdio_usb(${NAME} 1)` like uncommented. This should be done by default.
+4. Make sure that the `CMakeLists.txt` file in pico-boilerplate has the `pico_enable_stdio_usb(${NAME} 1)` uncommented. This should be done by default.
 5. Now you need to build the project again. After the build is done you will have the `MeteoOS.uf2` file in the directory. Now you need to use the [easy method](#The-easy-method) one more time.
-6. Now you can load your build like this (Assuming you are in the C++ directory):
+6. Now you can load your build like this:
 ```BASH
 picotool/build/picotool load -f MeteoOS.uf2
 ```
