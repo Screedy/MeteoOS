@@ -36,24 +36,18 @@ std::array<pimoroni::Point, 3> createTriangle(int x, int y, int size){
 }
 
 void draw_arrow(int x, int y, int size, int direction){
-    //Display &display = Display::get_instance();
-    //PicoGraphics_PenRGB332& graphics = *display.get_graphics();
-
     graphics.set_pen(Colors::WHITE);
     auto triangle = createTriangle(x, y, size);
     for (int i = 0; i < 3; i++){
         triangle[i] = rotate_point(triangle[i], pimoroni::Point{x + size / 2, y + size / 2}, direction);
     }
 
-    graphics.line({triangle[0].x, triangle[0].y},{triangle[1].x, triangle[1].y});
-    graphics.line({triangle[1].x, triangle[1].y}, {triangle[2].x, triangle[2].y});
-    graphics.line({triangle[2].x, triangle[2].y}, {triangle[0].x, triangle[0].y});
+    graphics.triangle(pimoroni::Point{triangle[0].x, triangle[0].y},
+                      pimoroni::Point{triangle[1].x, triangle[1].y},
+                      pimoroni::Point{triangle[2].x, triangle[2].y});
 }
 
 void draw_empty_circle(int x, int y, int radius){
-    //Display &display = Display::get_instance();
-    //PicoGraphics_PenRGB332& graphics = *display.get_graphics();
-
     graphics.set_pen(Colors::WHITE);
     graphics.circle({x, y}, radius);
     graphics.set_pen(Colors::BLACK);
@@ -61,9 +55,6 @@ void draw_empty_circle(int x, int y, int radius){
 }
 
 void draw_clock(int x, int y){
-    //Display &display = Display::get_instance();
-    //PicoGraphics_PenRGB332& graphics = *display.get_graphics();
-
     draw_empty_circle(x, y, 10);
     draw_empty_circle(x, y, 9);
     graphics.set_pen(Colors::WHITE);
@@ -72,9 +63,6 @@ void draw_clock(int x, int y){
 }
 
 void draw_thermometer(int x, int y){
-    //Display &display = Display::get_instance();
-    //PicoGraphics_PenRGB332& graphics = *display.get_graphics();
-
     draw_empty_circle(x, y + 5, 5);
 
     graphics.line({x - 2, y}, {x + 3, y});
@@ -98,9 +86,6 @@ void draw_thermometer(int x, int y){
 }
 
 void draw_humidity(int x, int y){
-    //Display &display = Display::get_instance();
-    //PicoGraphics_PenRGB332& graphics = *display.get_graphics();
-
     graphics.set_pen(Colors::WHITE);
     graphics.line({x, y - 9}, {x, y + 9});
 
@@ -118,9 +103,6 @@ void draw_humidity(int x, int y){
 }
 
 void clear_fast(){
-    //Display &display = Display::get_instance();
-    //PicoGraphics_PenRGB332& graphics = *display.get_graphics();
-
     graphics.set_pen(Colors::BLACK);
     graphics.clear();
 }
