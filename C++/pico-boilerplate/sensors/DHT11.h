@@ -11,6 +11,7 @@
 #include "hardware/timer.h"
 #include <cstring>
 #include <string>
+#include "Sensor.h"
 
 /*
  * The DHT11 class is responsible for reading the temperature and humidity from the DHT11 sensor.
@@ -29,7 +30,7 @@
  *
  *
  */
-class DHT11 {
+class DHT11 : public Sensor {
 private:
     unsigned int pin;
     std::string name;
