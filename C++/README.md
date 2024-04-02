@@ -84,3 +84,11 @@ make
 ```BASH
 picotool/build/picotool load -f MeteoOS.uf2
 ```
+
+### Debugging the App
+You can always access your app anytime using the `screen` command in terminal. This is used in conjunction with the `printf("");` function in your code and is going to print all lines.
+Example of connecting:
+```BASH
+screen /dev/cu.usbmodem11101 115200
+```
+The `/dev/cu.usbmodem11101` is an example to my usb port you need to change this to your specific one connected to the Pico. The timing `115200` is important and cannot be changed. 
