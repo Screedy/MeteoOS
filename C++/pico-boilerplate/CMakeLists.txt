@@ -16,20 +16,25 @@ pico_sdk_init()
 
 # Add your source files
 add_executable(${NAME}
-    main.cpp
-    config/config.cpp
-    config/config.h
-    config/Display.cpp
-    config/Display.h # <-- Add source files here!
-#    config/Point.h
-    graphics/graphics.cpp
-    graphics/graphics.h
-    graphics/page_elements.cpp
-    graphics/page_elements.h
-#    config/globals.h
-#    config/globals.cpp
-    sensors/DHT11.h
-    sensors/DHT11.cpp
+    	main.cpp
+    	config/config.cpp
+    	config/config.h
+    	config/Display.cpp
+    	config/Display.h # <-- Add source files here!
+#    	config/Point.h
+    	graphics/graphics.cpp
+    	graphics/graphics.h
+    	graphics/page_elements.cpp
+    	graphics/page_elements.h
+#   	config/globals.h
+#   	config/globals.cpp
+    	sensors/DHT11.h
+    	sensors/DHT11.cpp
+	sensors/Sensor.h
+	sensors/Sensor.cpp
+	sensors/SensorManager.cpp
+	sensors/SensorManager.h
+	
 )
 
 # Include required libraries
