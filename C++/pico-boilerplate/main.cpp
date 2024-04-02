@@ -12,6 +12,7 @@
 #include "graphics/graphics.h"
 #include "graphics/page_elements.h"
 #include "sensors/DHT11.h"
+#include "sensors/SensorManager.h"
 
 //#include "rgbled.hpp"
 
@@ -25,6 +26,8 @@ using namespace pimoroni;
 Display& display = Display::getInstance();
 auto& driver = display.getDriver();
 auto& graphics = display.getGraphics();
+
+auto& sensor_manager = SensorManager::getInstance();
 
 Buttons Buttons;
 
@@ -51,7 +54,8 @@ int main() {
     graphics.set_pen(Colors::WHITE);
     graphics.clear();
 
-    DHT11 sensor1(0, "TOILET", 30);
+    //DHT11 sensor1(0, "TOILET", 30);
+    auto& sensor1 = sensor_manager.getSensor(0);
 
     while(true){
         if (Buttons.is_button_x_pressed()){
@@ -81,14 +85,14 @@ int main() {
         sleep_ms(10000);
         printf("Starting to read sensor\n");
 
-        auto err = sensor1.read();
+        auto err = sensor1->read();
         if (err != 0){
             printf("Error reading sensor\n");
             printf("Error code: %d\n", err);
             continue;
         }
-        printf("Temperature: %f\n", sensor1.getTemperature());
-        printf("Humidity: %f\n", sensor1.getHumidity());
+        printf("Temperature: %f\n", sensor1->getTemperature());
+        printf("Humidity: %f\n", sensor1->getHumidity());
 
         sleep_ms(10000);
     }
