@@ -12,8 +12,8 @@ def text_ok(x: int, y: int, display, color: int = Colors.WHITE):
     :return: None
     """
 
-    display.set_pen(color)
-    display.text("OK", x, y, 20, 1)
+    display().set_pen(color)
+    display().text("OK", x, y, 20, 1)
 
 
 def text_help(x: int, y: int, display, color: int = Colors.WHITE):
@@ -27,5 +27,5 @@ def text_help(x: int, y: int, display, color: int = Colors.WHITE):
     :return: None
     """
 
-    display.set_pen(color)
-    display.text("HELP", x, y, 40, 1)
+    display().set_pen(color)
+    display().text("HELP", x, y, 40, 1)
