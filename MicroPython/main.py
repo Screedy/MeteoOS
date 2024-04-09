@@ -44,7 +44,6 @@ def main_task():
 
     graph_interval = GraphInterval.Daily
     sensor_manager = SensorManager()
-    sensor = 0
 
     while True:     # Homepage loop
         if button_x.read():
