@@ -40,9 +40,10 @@ def pin_setup():
         clear_fast()
         display().set_pen(Colors.WHITE)
         display().text("Setup wizard", 2, 0, 236, 2)
-        display().text("Please select the correct pin for your first thermal sensor with A and B buttons", 2, 20, 236, 2)
-        graphics_text.text_ok(display.x_max - 25, display.y_max - 17, display)
-        graphics_text.text_help(display.x_max - 45, 2, display)
+        display().text("Please select the correct pin for your first thermal sensor with A and B buttons",
+                       2, 20, 236, 2)
+        display().text("OK", display.x_max - 25, display.y_max - 17, 236, 2)
+        display().text("HELP", display.x_max - 45, 2, 236, 2)
 
     render_screen()
 
@@ -73,10 +74,10 @@ def storage_pin_setup():
         display().set_pen(Colors.WHITE)
         display().text("Setup wizard", 2, 0, 236, 2)
         display().text("Please connect the SD card to the following pins:", 2, 20, 180, 2)
-        display().text("SCK -> GP2, MOSI -> GP3, "
-                     "MISO -> GP4, CS -> GP5, VCC -> +5V, GND -> GND", 2, 70, 236, 2)
-        graphics_text.text_ok(display.x_max - 25, display.y_max - 17, display)
-        graphics_text.text_help(display.x_max - 45, 2, display)
+        display().text("SCK -> GP10, MOSI -> GP11, "
+                     "MISO -> GP8, CS -> GP9, VCC -> +5V, GND -> GND", 2, 70, 220, 2)
+        display().text("OK", display.x_max - 25, display.y_max - 17, 236, 2)
+        display().text("HELP", display.x_max - 45, 2, 236, 2)
         display().update()
 
     render_screen()
