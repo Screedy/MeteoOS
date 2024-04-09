@@ -70,7 +70,7 @@ def load_brightness():
     with open("settings.txt", "r") as fr:
         for line in fr:
             if line.startswith("brightness"):
-                return int(line.split(":")[1])
+                return float(line.split(":")[1])
 
     return 0.5
 
