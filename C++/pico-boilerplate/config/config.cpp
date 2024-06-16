@@ -45,6 +45,11 @@ bool Buttons::is_button_y_pressed() {
     return !gpio_get(BUTTON_Y);
 }
 
+Buttons& Buttons::getInstance() {
+    static Buttons instance;
+    return instance;
+}
+
 int Colors::WHITE = graphics.create_pen(255, 255, 255);
 int Colors::BLACK = graphics.create_pen(0, 0, 0);
 int Colors::RED = graphics.create_pen(255, 0, 0);

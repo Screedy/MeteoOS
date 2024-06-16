@@ -22,12 +22,17 @@ namespace Config{
 
 class Buttons {
 public:
-    Buttons();
+    //Buttons();
 
     bool is_button_a_pressed();
     bool is_button_b_pressed();
     bool is_button_x_pressed();
     bool is_button_y_pressed();
+
+    static Buttons& getInstance();
+
+private:
+    Buttons();
 };
 
 struct Colors {
