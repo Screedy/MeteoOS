@@ -49,3 +49,11 @@ void SensorManager::activeDown() {
 int SensorManager::getActiveSensor() {
     return activeSensor;
 }
+
+std::vector<int> SensorManager::getAvailablePins() {
+    std::vector<int> pins = availablePins;
+    for (auto& sensor : sensors) {
+        pins.erase(std::remove(pins.begin(), pins.end(), sensor->getPin()), pins.end());
+    }
+    return pins;
+}

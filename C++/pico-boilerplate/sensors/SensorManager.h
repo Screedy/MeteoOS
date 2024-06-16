@@ -11,6 +11,7 @@
 
 #include "Sensor.h"
 #include "DHT11.h"
+#include "../config/config.h"
 
 /*
  * A singleton class that manages all sensors connected to the Pico.
@@ -80,6 +81,14 @@ public:
      * @return The index of the active sensor.
      */
     int getActiveSensor();
+
+    /*
+     * Function that returns the available pins on the Pico.
+     *
+     * @return A vector<int> of available pins.
+     */
+    std::vector<int> getAvailablePins();
+
 private:
     /*
      * Constructor of the SensorManager.
