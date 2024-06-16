@@ -27,7 +27,9 @@
  * @function read() - reads the data from the sensor and stores it in the temperature and humidity fields.
  * @function getTemperature() - returns the temperature read from the sensor.
  * @function getHumidity() - returns the humidity read from the sensor.
- *
+ * @function getName() - returns the name of the sensor. Example "PC".
+ * @function getType() - returns the type of the sensor. In this case, it returns SensorType::DHT11.
+ * @function getPin() - returns the GPIO pin the sensor is connected to. Example 1.
  *
  */
 class DHT11 : public Sensor {
@@ -48,6 +50,8 @@ public:
     float getTemperature();
     float getHumidity();
     std::string getName();
+    SensorType getType();
+    int getPin();
 };
 
 #endif //PICO_BOILERPLATE_DHT11_H

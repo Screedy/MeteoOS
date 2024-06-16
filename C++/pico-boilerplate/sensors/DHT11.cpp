@@ -85,3 +85,11 @@ float DHT11::getHumidity() {
 std::string DHT11::getName() {
     return this->name;
 }
+
+SensorType DHT11::getType() {
+    return SensorType::DHT11;
+}
+
+int DHT11::getPin() {
+    return this->pin;
+}
