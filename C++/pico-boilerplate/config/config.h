@@ -50,4 +50,6 @@ struct GraphInterval {
     static int MONTHLY;
 };
 
+extern std::vector<int> availablePins;
+
 #endif //PICO_BOILERPLATE_CONFIG_H
