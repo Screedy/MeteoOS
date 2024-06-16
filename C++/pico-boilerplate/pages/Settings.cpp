@@ -3,6 +3,7 @@
 //
 
 #include "Settings.h"
+#include "add_sensor.h"
 
 namespace Settings{
     Display& display = Display::getInstance();
@@ -58,6 +59,7 @@ std::function<void()> SettingsItems::get_function(int selected_item) {
 void SettingsFunctions::add_sensor() {
     //TODO: Implement adding sensor page
     printf("Adding sensor\n");
+    render_add_sensor();
 }
 
 void SettingsFunctions::remove_sensor() {
