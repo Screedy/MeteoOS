@@ -34,6 +34,8 @@ add_executable(${NAME}
 	sensors/Sensor.cpp
 	sensors/SensorManager.cpp
 	sensors/SensorManager.h
+	pages/Settings.h
+	pages/Settings.cpp
 	
 )
 
