@@ -38,6 +38,8 @@ add_executable(${NAME}
 	pages/Settings.cpp
 	pages/add_sensor.h
 	pages/add_sensor.cpp
+	pages/brightness.h
+	pages/brightness.cpp
 	
 )
 
