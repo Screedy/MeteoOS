@@ -47,6 +47,7 @@ public:
     int read();
     float getTemperature();
     float getHumidity();
+    std::string getName();
 };
 
 #endif //PICO_BOILERPLATE_DHT11_H

@@ -81,3 +81,7 @@ float DHT11::getTemperature() {
 float DHT11::getHumidity() {
     return this->humidity;
 }
+
+std::string DHT11::getName() {
+    return this->name;
+}
