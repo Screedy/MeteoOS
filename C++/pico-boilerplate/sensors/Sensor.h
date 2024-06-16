@@ -8,6 +8,18 @@
 #include <string>
 #include "SensorType.h"
 
+/*
+ * An abstract class that represents a generic sensor.
+ * Includes all the common functions that a sensor needs to implement.
+ *
+ * @function read() - reads the data from the sensor.
+ * @function getTemperature() - returns the temperature read from the sensor.
+ * @function getHumidity() - returns the humidity read from the sensor.
+ * @function getName() - returns the name of the sensor.
+ * @function getType() - returns the type of the sensor.
+ * @function getPin() - returns the GPIO pin the sensor is connected to.
+ *
+ */
 class Sensor {
 public:
     virtual ~Sensor() {}
@@ -15,6 +27,8 @@ public:
     float virtual getHumidity() = 0;
     float virtual getTemperature() = 0;
     std::string virtual getName() = 0;
+    SensorType virtual getType() = 0;
+    int virtual getPin() = 0;
 };
 
 std::string sensor_type_to_string(SensorType type);
