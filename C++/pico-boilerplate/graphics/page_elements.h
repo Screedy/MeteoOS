@@ -8,6 +8,9 @@
 #include "../config/Display.h"
 #include "graphics.h"
 #include "../config/config.h"
+#include "../sensors/SensorManager.h"
+#include <cmath>
+#include "../pages/Settings.h"
 
 namespace PageElements{
     extern Display& display;
@@ -64,6 +67,6 @@ void render_settings_buttons();
  * @param page The list of items to display. Default is SettingsItems.list_of_items().
  * @return None
  */
-//void render_items_list(int selected_item = 0, auto page = SettingsItems.list_of_items()); //TODO: Implement this function
+void render_items_list(int selected_item, std::vector<std::string> page);
 
 #endif //PICO_BOILERPLATE_PAGE_ELEMENTS_H_H

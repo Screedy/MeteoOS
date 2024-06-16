@@ -8,6 +8,7 @@ namespace PageElements{
     Display& display = Display::getInstance();
     pimoroni::ST7789& driver = display.getDriver();
     pimoroni::PicoGraphics_PenRGB332& graphics = display.getGraphics();
+    auto& sensor_manager = SensorManager::getInstance();
 }
 
 using namespace PageElements;
@@ -20,7 +21,22 @@ void render_nav_arrows(int x, int colour){
 }
 
 void render_sensor_details(){
-    //TODO: Implement this function
+    auto& active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
+    auto current_time = "TMP"; //TODO: Implement this function
+    auto temperature = active_sensor->getTemperature();
+    auto humidity = active_sensor->getHumidity();
+
+    graphics.set_pen(Colors::WHITE);
+    graphics.text(active_sensor->getName(), pimoroni::Point{34, 7}, 250, 2);
+    draw_clock(14, 41);
+
+    graphics.text(current_time, pimoroni::Point{34, 34}, 250, 2);
+
+    draw_thermometer(14, 68);
+    graphics.text(std::to_string(std::lround(temperature)) + " °C", pimoroni::Point{34, 61}, 250, 2);
+
+    draw_humidity(14, 96);
+    graphics.text(std::to_string(std::lround(humidity)) + " %", pimoroni::Point{34, 88}, 250, 2);
 }
 
 void render_homepage_buttons(int interval){
@@ -58,3 +74,28 @@ void render_settings_buttons(){
     graphics.text("BACK", pimoroni::Point{190, 115}, 250, 2);
 }
 
+void render_items_list(int selected_item, std::vector<std::string> page){
+    graphics.set_pen(Colors::WHITE);
+
+    auto number_of_items = page.size();
+    auto page_start_item = selected_item - (selected_item % 3);
+
+    for (int i = 0; i < 3; i++){
+        if (page_start_item + i >= number_of_items){
+            break;
+        }
+
+        graphics.set_pen((i == selected_item % 3) ? Colors::WHITE : Colors::BLACK);
+        graphics.rectangle(Rect{120, 34 + (i * 27), 110, 15});
+        graphics.set_pen((i == selected_item % 3) ? Colors::BLACK : Colors::WHITE);
+        graphics.text(page[page_start_item + i], pimoroni::Point{123, 34 + (i * 27)}, 250, 2);
+
+        if (i == selected_item % 3){
+            graphics.set_pen(Colors::WHITE);
+            graphics.text(">", pimoroni::Point{110, 34 + (i * 27)}, 250, 2);
+        } else {
+            graphics.set_pen(Colors::BLACK);
+            graphics.text(">", pimoroni::Point{110, 34 + (i * 27)}, 250, 2);
+        }
+    }
+}
