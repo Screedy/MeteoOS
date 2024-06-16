@@ -6,30 +6,22 @@
 #include <cstdlib>
 #include <stdio.h>
 
-//#include "config/globals.h"
 #include "config/config.h"
 #include "config/Display.h"
 #include "graphics/graphics.h"
 #include "graphics/page_elements.h"
 #include "sensors/DHT11.h"
 #include "sensors/SensorManager.h"
-
-//#include "rgbled.hpp"
+#include "pages/Settings.h"
 
 using namespace pimoroni;
-
-//Display& display = Display::get_instance();
-//ST7789& st7789 = *display.get_display();
-//PicoGraphics_PenRGB332& graphics = *display.get_graphics();
 
 
 Display& display = Display::getInstance();
 auto& driver = display.getDriver();
 auto& graphics = display.getGraphics();
-
+auto& Buttons = Buttons::getInstance();
 auto& sensor_manager = SensorManager::getInstance();
-
-Buttons Buttons;
 
 void render_homepage(int graph_interval){
 
@@ -38,7 +30,11 @@ void render_homepage(int graph_interval){
 
     render_homepage_buttons(graph_interval);
     render_nav_arrows(6);
-    //render_sensor_details();
+    render_sensor_details();
+
+    graphics.line(Point{100, 16}, Point{100, 120});
+    graphics.line(Point{101, 16}, Point{101, 120});
+    graphics.line(Point{102, 16}, Point{102, 120});
 
     //auto active_sensor = sensor_manager.sensors[sensor_manager.active_sensor];
     //graph.render_graph(//TODO: graph_interval, active_sensor);
@@ -54,7 +50,6 @@ int main() {
     graphics.set_pen(Colors::WHITE);
     graphics.clear();
 
-    //DHT11 sensor1(0, "TOILET", 30);
     auto& sensor1 = sensor_manager.getSensor(0);
 
     while(true){
@@ -70,7 +65,7 @@ int main() {
             }
         } else if (Buttons.is_button_y_pressed()){
             printf("Opening menu\n");
-            //TODO: open menu
+            settings_loop();
             printf("Menu closed\n");
         } else if (Buttons.is_button_a_pressed()){
             printf("Button A pressed\n");
@@ -82,19 +77,17 @@ int main() {
 
         render_homepage(graph_interval);
 
-        sleep_ms(10000);
-        printf("Starting to read sensor\n");
-
         auto err = sensor1->read();
         if (err != 0){
             printf("Error reading sensor\n");
             printf("Error code: %d\n", err);
             continue;
         }
-        printf("Temperature: %f\n", sensor1->getTemperature());
-        printf("Humidity: %f\n", sensor1->getHumidity());
+        //printf("Temperature: %f\n", sensor1->getTemperature());
+        //printf("Humidity: %f\n", sensor1->getHumidity());
+        printf("Sensor1 temp: %f, hum: %f\n", sensor1->getTemperature(), sensor1->getHumidity());
 
-        sleep_ms(10000);
+        sleep_ms(300);
     }
 
     return 0;
