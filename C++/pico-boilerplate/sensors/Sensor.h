@@ -6,6 +6,7 @@
 #define PICO_BOILERPLATE_SENSOR_H
 
 #include <string>
+#include "SensorType.h"
 
 class Sensor {
 public:
@@ -14,11 +15,6 @@ public:
     float virtual getHumidity() = 0;
     float virtual getTemperature() = 0;
     std::string virtual getName() = 0;
-};
-
-enum class SensorType {
-    DHT11,
-    UNKNOWN
 };
 
 std::string sensor_type_to_string(SensorType type);
