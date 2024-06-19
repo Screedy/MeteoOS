@@ -74,3 +74,4 @@ C++/build/CPackSourceConfig.cmake
 C++/build/CPackConfig.cmake
 C++/build/CMakeCache.txt
 C++/build/cmake_install.cmake
+/C++/pico-boilerplate/lib/no-OS-FatFS-SD-SPI-RPi-Pico
