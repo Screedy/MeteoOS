@@ -1,23 +1,26 @@
-# C++ version
 
-- This folder contains all of the source code for MeteoOS in the pico-boilerplate folder.
+# MeteoOS C++ Source Code Documentation
+- This documentation outlines the procedures for working with the [MeteoOS](https://github.com/Screedy/MeteoOS.git) source code contained within the pico-boilerplate directory.
 
-- It is possible, to just load the prebuild file MeteoOS.uf2 to your pico. It contains the current stable version.
+## Prebuild Firmware
+- For quick deployment, you can directly load the prebuilt `MeteoOS.uf2` file onto your Raspberry Pi Pico. This file contains the current version of the firmware.
 
-## Building your own version
-- If you insist on building your own version you will need to follow these instructions:
+## Building Your Own Version
+- If you prefer to compile your own version of [MeteoOS](https://github.com/Screedy/MeteoOS.git), follow the detailed steps below for MacOS and Linux systems.
 
-### MacOS/Linux
-First you need to install the Pico SDK and other dependencies:
-1. Install CMake ,GCC cross compiler and build-essential:
+### Setup on MacOS/Linux
+1. **Install Development Tools:**
+	- Install CMake, the GCC cross-compiler, and essential build tools:
 ```BASH
 sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib build-essential
 ```
-2. Clone the [MeteoOS](https://github.com/Screedy/MeteoOS.git) repository:
+2. **Clone the MeteoOS Repository:**
+	- Retrieve the latest version of the [MeteoOS](https://github.com/Screedy/MeteoOS.git) source code:
 ```BASH
 git clone https://github.com/Screedy/MeteoOS.git
 ```
-4.  Clone the SDK locally:
+3. **Setup the [Pico SDK](https://github.com/raspberrypi/pico-sdk):**
+	- Obtain the SDK and initialize required submodules:
 ```BASH
 cd MeteoOS/C++
 git clone https://github.com/raspberrypi/pico-sdk.git
@@ -26,69 +29,95 @@ git submodule update --init
 export PICO_SDK_PATH=`pwd`
 cd ../
 ```
-3. Grab the [Pimoroni Pico libraries](https://github.com/pimoroni/pimoroni-pico):
-	- They should be in the C++ folder.
+4. **Clone [Pimoroni Pico](https://github.com/pimoroni/pimoroni-pico) Libraries:**
+	- These libraries are utilized for various hardware functionalities such as the display:
 ```BASH
 git clone https://github.com/pimoroni/pimoroni-pico
 ```
-
-#### Building the application
-First you need to navigate into the boilerplate (assuming you are in the C++ directory):
+5. **Clone the [no-OS-FatFS-SD-SPI-RPi-Pico](https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico) Library:**
+	- This library is necessary for SD card functionalities:
 ```BASH
-cd pico-boilerplate
+mkdir pico-boilerplate/lib
+cd pico-boilerplate/lib
+git clone https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico.git
 ```
 
-Make sure that the `CMakeLists.txt` is setup correctly with all source files and libraries you want (by default all used libraries and files needed for this project are included)
-
-Than run the CMake:
+#### Building the Application
+1. **Prepare the Build Environment:**
+	- Create and navigate to the build directory:
 ```BASH
-cmake ..
+pwd  # Ensure you are in the /{your_path}/MeteoOS/C++ directory
+mkdir build && cd build
+cmake ../pico-boilerplate/
 ```
-
-Now we can go back to the C++ folder and build the application:
+2. **Compile the Project:**
+	- Start the compilation process:
 ```BASH
-cd ..
 make
 ```
 
 ### Windows
 TBD
 
-### Getting the build onto the RP Pico
-#### The-easy-method
-To get your program onto the RP Pico there are two easy ways to do it. If you just want to get the final version of the program onto your device, the easiest way to do this is to hold the `BOOTSEL` button while plugging your device onto your computer. Than just simple drag your `MeteoOS.uf2` onto the drive called RPI-RP2
+---
 
-#### The better method
-If you don't want to be unplugging your device every time you change something in the build you can follow these steps to automatically force your Pico into bootsel mode and loading the build automatically:
-##### Linux/MacOS
-1. Clone the [picotool](https://github.com/raspberrypi/picotool) library. Destination is up to you but assuming it is in the C++ folder:
+### Deploying the build to the Raspberry Pi Pico
+
+#### Quick Deployment
+- To quickly load the final version of your application onto the Raspberry Pi Pico:
+
+1. **BOOTSEL Mode:**
+	- Press and hold the `BOOTSEL` button while plugging the Pico to your computer via USB.
+	- Release the button once connected. The Pico will mount as a mass storage device named `RPI-RP2`.
+	- Drag and drop your `MeteoOS.uf2` file onto the `RPI-RP2` drive.
+
+#### Automated Deployment
+- For a more seamless experience that doesn’t require manually entering `BOOTSEL` mode after every change and needing to unplug and plug your device back again:
+
+**On Linux/MacOS:**
+1. **Install Dependencies and Clone picotool:**
+	- Install required packages and clone the [picotool](https://github.com/raspberrypi/picotool) repository into your project directory:
+```BASH
+pwd
+# > /{your_path}/MeteoOS/C++ <--- You should be here
+```
 ```BASH
 sudo apt install build-essential pkg-config libusb-1.0-0-dev cmake
 git clone https://github.com/raspberrypi/picotool.git
 ```
-2. Build the [picotool](https://github.com/raspberrypi/picotool):
+2. **Build picotool:**
+	- Navigate into the cloned directory, set up the build environment, and compile picotool:
 ```BASH
-mkdir build
-cd build
-export PICO_SDK_PATH=../../pico-sdk #Make sure to change this to your pico-sdk library.
+cd picotool
+mkdir build && cd build
+export PICO_SDK_PATH=../../pico-sdk # Adjust this path to where your pico-sdk resides.
 cmake ..
 make
 ```
-3. Once the build has finished you should have the picotool binary in your build directory. You can verify if it works like this:
+3. **Verify picotool Installation:**
+	- Ensure picotool is correctly built and operational:
 ```BASH
-./picotool help #This will print the help page.
+./picotool help # Outputs help information.
 ```
-4. Make sure that the `CMakeLists.txt` file in pico-boilerplate has the `pico_enable_stdio_usb(${NAME} 1)` uncommented. This should be done by default.
-5. Now you need to build the project again. After the build is done you will have the `MeteoOS.uf2` file in the directory. Now you need to use the [easy method](#The-easy-method) one more time.
-6. Now you can load your build like this:
+4. **Prepare the Project:**
+	- Ensure `pico_enable_stdio_usb(${NAME} 1)` is active in `C++/pico-boilerplate/CMakeLists.txt` to **enable USB output**, **enabled by default**.
+5. **Rebuild Your Project:**
+	- Rebuild your project to update the `MeteoOS.uf2` file.
+6. **Load the Application:**
+	- Use picotool to automatically upload the UF2 file to the Pico:
 ```BASH
-picotool/build/picotool load -f MeteoOS.uf2
+../picotool/build/picotool load -f MeteoOS.uf2
 ```
 
+---
+
 ### Debugging the App
-You can always access your app anytime using the `screen` command in terminal. This is used in conjunction with the `printf("");` function in your code and is going to print all lines.
-Example of connecting:
+- For real-time debugging and output monitoring:
+
+- **Using the screen Command:**
+	- Open a terminal session connected to your Pico using `screen`. Adjust the USB port path as necessary for your setup:
 ```BASH
 screen /dev/cu.usbmodem11101 115200
 ```
-The `/dev/cu.usbmodem11101` is an example to my usb port you need to change this to your specific one connected to the Pico. The timing `115200` is important and cannot be changed. 
+- The port `/dev/cu.usbmodem11101` is an example; replace it with the actual port connected to your Pico.
+- The baud rate `115200` is fixed and **should not** be modified.
