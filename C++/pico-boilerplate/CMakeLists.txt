@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.12)
 
-# Change your executable name to something creative!
-set(NAME MeteoOS) # <-- Name your project/executable here!
+# Project name
+set(NAME MeteoOS)
+
+# Set the pico_sdk path
+# !IMPORTANT If your path to pico-sdk is different either change it here 
+# or if you have PICO_SDK_PATH setup in Shell Environment you can comment this line.
+set(PICO_SDK_PATH "../pico-sdk")
 
 include(pico_sdk_import.cmake)
 include(pimoroni_pico_import.cmake)
@@ -14,13 +19,13 @@ set(CMAKE_CXX_STANDARD 17)
 # Initialize the SDK
 pico_sdk_init()
 
-# Add your source files
+# Tell CMake where to find the executable source file
 add_executable(${NAME}
     	main.cpp
     	config/config.cpp
     	config/config.h
     	config/Display.cpp
-    	config/Display.h # <-- Add source files here!
+    	config/Display.h 
 #    	config/Point.h
     	graphics/graphics.cpp
     	graphics/graphics.h
@@ -43,6 +48,9 @@ add_executable(${NAME}
 	
 )
 
+# Tell CMake where to find other source code
+add_subdirectory(lib/no-OS-FatFS-SD-SPI-RPi-Pico/example)
+
 # Include required libraries
 # This assumes `pimoroni-pico` is stored alongside your project
 include(common/pimoroni_i2c)
@@ -52,6 +60,7 @@ include(libraries/hershey_fonts/hershey_fonts)
 include(libraries/pico_explorer/pico_explorer)
 include(libraries/pico_display/pico_display)
 
+
 # Don't forget to link the libraries you need!
 target_link_libraries(${NAME}
     pimoroni_i2c
@@ -59,10 +68,11 @@ target_link_libraries(${NAME}
     pico_display
 )
 
-pico_enable_stdio_usb(${NAME} 1) # I added this for picotool and screen functionality
+# Use USB instead of UART for picotool and screen functionality
+pico_enable_stdio_usb(${NAME} 1)
 pico_enable_stdio_uart(${NAME} 0)
 
-# create map/bin/hex file etc.
+# Create map/bin/hex file etc.
 pico_add_extra_outputs(${NAME})
 
 # Set up files for the release packages
