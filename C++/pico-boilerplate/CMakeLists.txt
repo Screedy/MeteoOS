@@ -49,7 +49,8 @@ add_executable(${NAME}
 )
 
 # Tell CMake where to find other source code
-add_subdirectory(lib/no-OS-FatFS-SD-SPI-RPi-Pico/example)
+add_subdirectory(lib/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI)
+# add_subdirectory(../no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI)
 
 # Include required libraries
 # This assumes `pimoroni-pico` is stored alongside your project
@@ -64,8 +65,9 @@ include(libraries/pico_display/pico_display)
 # Don't forget to link the libraries you need!
 target_link_libraries(${NAME}
     pimoroni_i2c
-    pico_explorer # <-- List libraries here!
+    pico_explorer
     pico_display
+    FatFs_SPI
 )
 
 # Use USB instead of UART for picotool and screen functionality
