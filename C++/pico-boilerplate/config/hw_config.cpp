@@ -2,7 +2,10 @@
 // Created by Petr Jurásek on 19.06.2024.
 //
 
-#include "sd_card_config.h"
+#include <string.h>
+
+#include "hw_config.h"
+#include "ff.h"
 #include "diskio.h"
 
 /*
@@ -10,11 +13,11 @@
  */
 static spi_t spis[] = {
         {
-        .hw_inst = spi0,
+        .hw_inst = spi1,
         .miso_gpio = 8,
         .mosi_gpio = 11,
         .sck_gpio = 10,
-        .baud_rate = 12500 * 1000 // 12.5 MHz
+        .baud_rate = 12 * 1000 * 1000
         }
 };
 
@@ -27,8 +30,7 @@ static sd_card_t sd_cards[] = {
             .spi = &spis[0],
             .ss_gpio = 9, // CS pin
             .use_card_detect = false,
-            .card_detect_gpio = 0,
-            .card_detect_true = 1
+            .card_detected_true = 1
         }
 };
 
