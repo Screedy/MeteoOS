@@ -3,7 +3,7 @@
 //
 
 #include "Settings.h"
-#include "add_sensor.h"
+
 
 namespace Settings{
     Display& display = Display::getInstance();
@@ -57,7 +57,7 @@ std::function<void()> SettingsItems::get_function(int selected_item) {
 }
 
 void SettingsFunctions::add_sensor() {
-    //TODO: Implement adding sensor page
+    //TODO: Implement adding sensor page (needs implementing saving to config file and sensormanager)
     printf("Adding sensor\n");
     render_add_sensor();
 }
@@ -70,6 +70,7 @@ void SettingsFunctions::remove_sensor() {
 void SettingsFunctions::change_brightness() {
     //TODO: Implement changing brightness page
     printf("Changing brightness\n");
+    render_brightness();
 }
 
 void SettingsFunctions::format_sd() {

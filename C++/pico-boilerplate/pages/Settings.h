@@ -13,6 +13,10 @@
 #include "../graphics/page_elements.h"
 #include "../config/config.h"
 
+//Include all the pages that are used in the settings page
+#include "add_sensor.h"
+#include "brightness.h"
+
 namespace Settings{
     extern Display& display;
     extern pimoroni::ST7789& driver;
