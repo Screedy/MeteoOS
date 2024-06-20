@@ -13,6 +13,9 @@
 #include "sensors/DHT11.h"
 #include "sensors/SensorManager.h"
 #include "pages/Settings.h"
+#include "config/sd_card_manager.h"
+
+#include "rtc.h"
 
 using namespace pimoroni;
 
@@ -42,8 +45,61 @@ void render_homepage(int graph_interval){
     driver.update(&graphics);
 }
 
+void test_sd(){
+    sleep_ms(3000);
+    printf("Testing SD card\n");
+
+    auto* sd_card_manager = sd_card_manager::get_instance();
+    printf("SD card singleton created\n");
+
+    sleep_ms(1000);
+
+    // printf("Mounting SD card\n");
+    // sd_card_manager->mount_sd_card();
+    // printf("SD card mounted(?)\n");
+
+    sleep_ms(1000);
+
+    auto fr = f_open(&sd_card_manager->get_fil(), "test.txt", FA_WRITE | FA_CREATE_ALWAYS);
+    if (fr != FR_OK){
+        printf("Failed to open file\n");
+        return;
+    }
+    printf("File opened\n");
+
+    sleep_ms(1000);
+
+    const char* text = "Hello world!";
+
+    if (f_printf(&sd_card_manager->get_fil(), text) < 0){
+        printf("Failed to write to file\n");
+        return;
+    }
+    printf("Text written to file\n");
+
+    sleep_ms(1000);
+
+    f_close(&sd_card_manager->get_fil());
+    printf("File closed\n");
+
+    sleep_ms(1000);
+
+    sd_card_manager->unmount_sd_card();
+    printf("SD card unmounted\n");
+}
+
+
 int main() {
     stdio_init_all();
+
+    sleep_ms(1000);
+    time_init();
+    test_sd();
+    for(;;){
+        sleep_ms(1000);
+        printf("SD test loop\n");
+    }
+
 
     int graph_interval = GraphInterval::DAILY;
 
