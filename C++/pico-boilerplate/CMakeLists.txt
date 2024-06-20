@@ -45,12 +45,15 @@ add_executable(${NAME}
 	pages/add_sensor.cpp
 	pages/brightness.h
 	pages/brightness.cpp
-	
+	#config/sd_card_config.h
+	config/hw_config.cpp
+	config/sd_card_manager.h
+	config/sd_card_manager.cpp
+
 )
 
 # Tell CMake where to find other source code
 add_subdirectory(lib/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI)
-# add_subdirectory(../no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI)
 
 # Include required libraries
 # This assumes `pimoroni-pico` is stored alongside your project
