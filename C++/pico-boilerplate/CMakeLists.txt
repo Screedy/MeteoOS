@@ -16,8 +16,15 @@ project(${NAME} C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
+# Set compile options for both C and C++ files
+add_compile_options(-fexceptions)
+
+# Enable exceptions on the Pico itself
+set(PICO_CXX_ENABLE_EXCEPTIONS 1)
+
 # Initialize the SDK
 pico_sdk_init()
+
 
 # Tell CMake where to find the executable source file
 add_executable(${NAME}
@@ -49,7 +56,14 @@ add_executable(${NAME}
 	config/hw_config.cpp
 	config/sd_card_manager.h
 	config/sd_card_manager.cpp
-
+	config/startup.h
+	config/startup.cpp
+	config/setup.h
+	config/setup.cpp
+#	QRMicroLib/qrencode.h
+#	QRMicroLib/qrencode.cpp
+	lib/QR-Code-generator/qrcodegen.hpp
+	lib/QR-Code-generator/qrcodegen.cpp
 )
 
 # Tell CMake where to find other source code
@@ -65,7 +79,7 @@ include(libraries/pico_explorer/pico_explorer)
 include(libraries/pico_display/pico_display)
 
 
-# Don't forget to link the libraries you need!
+# Link the required libraries
 target_link_libraries(${NAME}
     pimoroni_i2c
     pico_explorer
