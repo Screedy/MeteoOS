@@ -14,6 +14,8 @@
 #include "sensors/SensorManager.h"
 #include "pages/Settings.h"
 #include "config/sd_card_manager.h"
+#include "config/startup.h"
+#include "lib/QR-Code-generator/qrcodegen.hpp"
 
 #include "rtc.h"
 
@@ -45,6 +47,11 @@ void render_homepage(int graph_interval){
     driver.update(&graphics);
 }
 
+/*
+ * This is how I tested the SD card functionality for the very first time. Code will stay here for demonstation
+ * in my bachelor thesis to directly compare with the MicroPython implementation.
+ * This code should be removed but will stay here.
+ */
 void test_sd(){
     sleep_ms(3000);
     printf("Testing SD card\n");
@@ -89,9 +96,39 @@ void test_sd(){
 }
 
 
+static void printQr(const qrcodegen::QrCode &qr) {
+    int border = 4;
+    for (int y = -border; y < qr.getSize() + border; y++) {
+        for (int x = -border; x < qr.getSize() + border; x++) {
+            std::cout << (qr.getModule(x, y) ? "##" : "  ");
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+
 int main() {
     stdio_init_all();
 
+    const char *text = "https://github.com/Screedy/MeteoOS";
+    const qrcodegen::QrCode::Ecc errCorLvl = qrcodegen::QrCode::Ecc::LOW;
+
+    const qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(text, errCorLvl);
+    for(;;){
+        sleep_ms(1000);
+        printf("QR code test\n");
+        printQr(qr);
+    }
+
+
+
+
+    startup();
+
+    // This code is part of the SD card testing done in the function test_sd(). It wont be removed for demonstration
+    // purposes.
+    /*
     sleep_ms(1000);
     time_init();
     test_sd();
@@ -99,7 +136,7 @@ int main() {
         sleep_ms(1000);
         printf("SD test loop\n");
     }
-
+    */
 
     int graph_interval = GraphInterval::DAILY;
 
@@ -111,7 +148,6 @@ int main() {
     while(true){
         if (Buttons.is_button_x_pressed()){
             //TODO: change the graph interval
-
             if (graph_interval == GraphInterval::DAILY){
                 graph_interval = GraphInterval::WEEKLY;
             } else if (graph_interval == GraphInterval::WEEKLY){
