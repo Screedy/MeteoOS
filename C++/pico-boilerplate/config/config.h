@@ -14,6 +14,9 @@
 #define BUTTON_X 14
 #define BUTTON_Y 15
 
+#define DISPLAY_WIDTH 240
+#define DISPLAY_HEIGHT 135
+
 namespace Config{
     extern Display& display;
     extern pimoroni::ST7789& driver;
