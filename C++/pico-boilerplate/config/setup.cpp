@@ -193,13 +193,11 @@ void wait_for_y(std::function<void()> func){ // TODO: Check if this is correct.
 
 void clear_pin(){
     Display& display = Display::getInstance();
-    //auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
 
     graphics.set_pen(Colors::BLACK);
     graphics.rectangle(pimoroni::Rect(2, DISPLAY_HEIGHT-40, 120, DISPLAY_HEIGHT-20));
     graphics.set_pen(Colors::WHITE);
-    //driver.update(&graphics);
 }
 
 void set_defaults(){
