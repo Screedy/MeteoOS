@@ -29,7 +29,10 @@ public:
     std::string virtual getName() = 0;
     SensorType virtual getType() = 0;
     int virtual getPin() = 0;
+    virtual char* getSensorType() = 0;
+    virtual int getInterval() = 0;
 };
+
 
 std::string sensor_type_to_string(SensorType type);
 
