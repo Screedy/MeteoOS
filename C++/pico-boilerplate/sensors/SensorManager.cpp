@@ -3,6 +3,7 @@
 //
 
 #include "SensorManager.h"
+#include "../config/sd_card_manager.h"
 
 SensorManager::SensorManager()
 : activeSensor(0), sensorCount(0) { //TODO: Implement the sensorCount when file for adding sensor is implemented
@@ -24,7 +25,30 @@ std::unique_ptr<Sensor>& SensorManager::getSensor(int index) {
 }
 
 void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
-    //TODO: Implement adding sensor to file
+    //TODO: Implement adding sensor to file -- DONE, needs testing
+    sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
+    FIL fil = sd_card_manager->get_fil();
+    FRESULT fr;
+
+    const char* path = "0:/config/sensors.txt";
+
+    //append to 0:/config/sensors.txt
+    //format: sensorPin;sensorType;sensorName;sensorInterval
+    fr = f_open(&fil, path, FA_WRITE | FA_OPEN_APPEND);
+    if(fr != FR_OK){
+        printf("Failed to open file %s\n", path);
+    }
+
+    std::string sensorStr =
+            std::to_string(sensor->getPin()) + ";" +
+            sensor->getSensorType() + ";" +
+            sensor->getName() + ";" +
+            std::to_string(sensor->getInterval()) + "\n";
+
+    f_puts(sensorStr.c_str(), &fil);
+    f_close(&fil);
+
+    //add sensor to vector of sensors.
     sensors.push_back(std::move(sensor));
 }
 
