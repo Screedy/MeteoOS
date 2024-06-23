@@ -40,6 +40,7 @@ private:
     float temperature;
     float humidity;
     bool write;
+    char* sensorType;
 
     bool waitForChange(bool state, unsigned int timeout_us);
     std::uint8_t readByte();
@@ -52,6 +53,8 @@ public:
     std::string getName();
     SensorType getType();
     int getPin();
+    char* getSensorType();
+    int getInterval();
 };
 
 #endif //PICO_BOILERPLATE_DHT11_H

@@ -7,6 +7,10 @@
 DHT11::DHT11(unsigned int pin, std::string name, int interval)
     : pin(pin), interval(interval), temperature(0), humidity(0) {
 
+    const char* sensorType = "DHT11";
+    this->sensorType = new char[strlen(sensorType) + 1];
+    strcpy(this->sensorType, sensorType);
+
     gpio_init(this->pin);
 
     //Copy first 6 characters of the name and add null terminator
@@ -92,4 +96,12 @@ SensorType DHT11::getType() {
 
 int DHT11::getPin() {
     return this->pin;
+}
+
+char* DHT11::getSensorType() {
+    return this->sensorType;
+}
+
+int DHT11::getInterval() {
+    return this->interval;
 }
