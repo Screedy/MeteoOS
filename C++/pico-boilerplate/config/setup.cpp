@@ -5,20 +5,23 @@
 
 #include "config.h"
 #include "setup.h"
+#include "../graphics/qrcode_graphics.h"
 
 void wizard_start(){
-    set_defaults();
+    //set_defaults(); //TODO: Look into this later (optional)
 
     // Display the welcome screen
     Display& display = Display::getInstance();
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
 
+    graphics.set_pen(Colors::BLACK);
     graphics.clear();
     graphics.set_pen(Colors::WHITE);
+
     graphics.text("Setup wizard", Point{2, 0}, 240, 2);
     graphics.text("Welcome to your new thermal buddy!\nLet's get everything setup.", Point{2, 20}, 240, 2);
-    graphics.text("Press Y to continue", Point{2, DISPLAY_WIDTH - 20}, 240, 2);
+    graphics.text("Press Y to continue", Point{2, DISPLAY_HEIGHT - 20}, 240, 2);
     driver.update(&graphics);
 
     wait_for_y(wizard_start);
@@ -29,6 +32,7 @@ void pin_setup_render(int pin){
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
 
+    graphics.set_pen(Colors::BLACK);
     graphics.clear();
     graphics.set_pen(Colors::WHITE);
     graphics.text("Setup wizard", Point{2, 0}, 240, 2);
@@ -46,6 +50,8 @@ int pin_setup(){
     int pin = 0;
 
     pin_setup_render(pin);
+
+    sleep_ms(150);
 
     Buttons& buttons = Buttons::getInstance();
     while(!buttons.is_button_y_pressed()){
@@ -74,8 +80,12 @@ void sd_card_setup(){
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
 
+    sleep_ms(150);
+
+    graphics.set_pen(Colors::BLACK);
     graphics.clear();
     graphics.set_pen(Colors::WHITE);
+
     graphics.text("Setup wizard", Point{2, 0}, 236, 2);
     graphics.text("Please connect the SD card to the following pins:", Point{2, 20}, 180, 2);
     graphics.text("SCK -> GP10, MOSI -> GP11, MISO -> GP8, CS -> GP9, VCC -> +5V, GND -> GND",
@@ -86,18 +96,51 @@ void sd_card_setup(){
 
     wait_for_y(sd_card_setup);
 
-    //TODO: Test the SD card connection.
+    while (!sd_card_manager::get_instance()->is_mounted()){
+        graphics.set_pen(Colors::BLACK);
+        graphics.clear();
+
+        qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("https://github.com/Screedy/MeteoOS/tree/main/C%2B%2B",
+                                                             qrcodegen::QrCode::Ecc::LOW);
+
+        int left_offset = 80;
+        int top_offset = 10;
+
+        draw_qr_code(qr, left_offset, top_offset, 4);
+
+        printf("Failed to mount SD card. Waiting...\n");
+        graphics.set_pen(Colors::RED);
+        graphics.text("Failed to mount SD card", Point{2, 2}, true);
+        driver.update(&graphics);
+        sleep_ms(10000);
+        sd_card_manager::get_instance()->mount_sd_card();
+    }
 }
 
 void help_interrupt(){
-    // TODO: QR code.
-}
-
-void initial(){
-    // Initialize the Display and it's singleton
     Display& display = Display::getInstance();
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
+
+    graphics.set_pen(Colors::BLACK);
+    graphics.clear();
+    graphics.set_pen(Colors::WHITE);
+
+    qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("https://github.com/Screedy/MeteoOS/tree/main/C%2B%2B",
+                                                         qrcodegen::QrCode::Ecc::LOW);
+
+    draw_qr_code(qr, 10, 10, 4);
+    graphics.text("Scan for help", Point{135, 10}, DISPLAY_WIDTH - 135, 2);
+    graphics.text("BACK", Point{DISPLAY_WIDTH - 45, DISPLAY_HEIGHT - 17}, 236, 2);
+
+    driver.update(&graphics);
+
+    while(!Buttons::getInstance().is_button_y_pressed()){
+        sleep_ms(150);
+    }
+}
+
+void initial(){
 
     wizard_start();
     auto pin = pin_setup();
@@ -105,12 +148,10 @@ void initial(){
     const char* pinCStr = pinStr.c_str(); // Conversion needed for the f_puts function
     sd_card_setup();
 
-
     // Initialize the SD card
     auto* sd_card = sd_card_manager::get_instance();
 
     // Create the config directory and the settings.txt file
-    //FATFS fs = sd_card->
     FIL fil = sd_card->get_fil();
     FRESULT fr;
 
@@ -152,19 +193,19 @@ void wait_for_y(std::function<void()> func){ // TODO: Check if this is correct.
 
 void clear_pin(){
     Display& display = Display::getInstance();
-    auto& driver = display.getDriver();
+    //auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
 
     graphics.set_pen(Colors::BLACK);
     graphics.rectangle(pimoroni::Rect(2, DISPLAY_HEIGHT-40, 120, DISPLAY_HEIGHT-20));
     graphics.set_pen(Colors::WHITE);
-    driver.update(&graphics);
+    //driver.update(&graphics);
 }
 
 void set_defaults(){
-    auto* sd_card = sd_card_manager::get_instance();
-    auto fil = sd_card->get_fil();
-    auto fr = sd_card->get_fr();
+    sd_card_manager* sd_card = sd_card_manager::get_instance();
+    FIL fil = sd_card->get_fil();
+    FRESULT fr;
 
     fr = f_open(&fil, "0:/config/settings.txt", FA_WRITE | FA_CREATE_ALWAYS);
     if(fr != FR_OK){
