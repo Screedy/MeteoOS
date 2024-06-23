@@ -19,7 +19,7 @@ void draw_qr_code(qrcodegen::QrCode &qr, int x_offset, int y_offset, int scale);
  * @param message The message to be rendered.
  * @return None.
  */
-void render_help(const char *message);
+void render_help(const char *message, int left_offset, int top_offset);
 
 
 #endif //PICO_BOILERPLATE_QRCODE_GRAPHICS_H
