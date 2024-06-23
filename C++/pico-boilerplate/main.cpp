@@ -15,7 +15,8 @@
 #include "pages/Settings.h"
 #include "config/sd_card_manager.h"
 #include "config/startup.h"
-#include "lib/QR-Code-generator/qrcodegen.hpp"
+//#include "lib/QR-Code-generator/qrcodegen.hpp"
+#include "graphics/qrcode_graphics.h"
 
 #include "rtc.h"
 
@@ -111,7 +112,7 @@ static void printQr(const qrcodegen::QrCode &qr) {
 int main() {
     stdio_init_all();
 
-    const char *text = "https://github.com/Screedy/MeteoOS";
+    /*const char *text = "https://github.com/Screedy/MeteoOS";
     const qrcodegen::QrCode::Ecc errCorLvl = qrcodegen::QrCode::Ecc::LOW;
 
     const qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(text, errCorLvl);
@@ -119,6 +120,13 @@ int main() {
         sleep_ms(1000);
         printf("QR code test\n");
         printQr(qr);
+    }*/
+
+    for(;;){
+        sleep_ms(1000);
+        printf("Printing QR code on the display\n");
+        const char *text = "https://github.com/Screedy/MeteoOS";
+        render_help(text);
     }
 
 
