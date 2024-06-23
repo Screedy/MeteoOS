@@ -112,26 +112,6 @@ static void printQr(const qrcodegen::QrCode &qr) {
 int main() {
     stdio_init_all();
 
-    /*const char *text = "https://github.com/Screedy/MeteoOS";
-    const qrcodegen::QrCode::Ecc errCorLvl = qrcodegen::QrCode::Ecc::LOW;
-
-    const qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(text, errCorLvl);
-    for(;;){
-        sleep_ms(1000);
-        printf("QR code test\n");
-        printQr(qr);
-    }*/
-
-    for(;;){
-        sleep_ms(1000);
-        printf("Printing QR code on the display\n");
-        const char *text = "https://github.com/Screedy/MeteoOS";
-        render_help(text);
-    }
-
-
-
-
     startup();
 
     // This code is part of the SD card testing done in the function test_sd(). It wont be removed for demonstration
