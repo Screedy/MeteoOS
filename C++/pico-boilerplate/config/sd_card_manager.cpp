@@ -42,11 +42,13 @@ bool sd_card_manager::mount_sd_card() {
 
     this->fr = f_mount(&this->pSD->fatfs, this->pSD->pcName, 1);
 
+
     if(fr != FR_OK){
         printf("Failed to mount SD card error:%d\n", fr);
         return false;
     }
 
+    this->mounted = true;
     return true;
 }
 
