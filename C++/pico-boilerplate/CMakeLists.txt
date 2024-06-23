@@ -38,6 +38,8 @@ add_executable(${NAME}
     	graphics/graphics.h
     	graphics/page_elements.cpp
     	graphics/page_elements.h
+	graphics/qrcode_graphics.h
+	graphics/qrcode_graphics.cpp
 #   	config/globals.h
 #   	config/globals.cpp
     	sensors/DHT11.h
