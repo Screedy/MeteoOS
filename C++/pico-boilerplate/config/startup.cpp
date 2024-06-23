@@ -7,6 +7,9 @@
 #include "sd_card_manager.h"
 #include "Display.h"
 #include "../sensors/SensorManager.h"
+#include "../graphics/qrcode_graphics.h"
+#include "../lib/QR-Code-generator/qrcodegen.hpp"
+
 
 void startup() {
     // Initialize the Display and it's singleton.
@@ -15,16 +18,36 @@ void startup() {
     auto& graphics = display.getGraphics();
 
     // Initialize the SD card. If it fails, the system should not continue.
-    // Print an error message on the display and exit.
+    // Print an error message on the display and console. The system will be stuck in this loop.
     if(!sd_card_manager::get_instance()->is_mounted()){
-        printf("Failed to mount SD card. Exiting...\n");
-        graphics.set_pen(Colors::RED);
-        graphics.text("Failed to mount SD card", Point{2, 2}, true);
-        driver.update(&graphics);
+        int left_offset = 80;
+        int top_offset = 10;
+        qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("https://github.com/Screedy/MeteoOS/tree/main/C%2B%2B",
+                                                             qrcodegen::QrCode::Ecc::LOW);
+
+        while(!sd_card_manager::get_instance()->is_mounted()){
+            graphics.set_pen(Colors::BLACK);
+            graphics.clear();
+
+            draw_qr_code(qr, left_offset, top_offset, 4);
+
+            printf("Failed to mount SD card. Waiting...\n");
+            graphics.set_pen(Colors::RED);
+            graphics.text("Failed to mount SD card", Point{2, 2}, true);
+            driver.update(&graphics);
+            sleep_ms(10000);
+            sd_card_manager::get_instance()->mount_sd_card();
+        }
     }
 
-    //TODO: Check if correct.
-    initial();
+    //Check if 0:/config/settings.txt exists. If not, initialize the setup wizard.
+    FRESULT fr;
+    FILINFO fno;
+    const char *path = "0:/config/settings.txt";
+    fr = f_stat(path, &fno);
+    if(fr != FR_OK){
+        initial();
+    }
 
     // Initialize the sensor manager.
     SensorManager::getInstance();
