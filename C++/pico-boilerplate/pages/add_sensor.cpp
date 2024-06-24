@@ -88,7 +88,7 @@ int select_sensor_pin() {
         if (buttons.is_button_a_pressed()) {
             selected_pin_index = (selected_pin_index + 1) % pin_list_length;
         } else if (buttons.is_button_b_pressed()) {
-            if (selected_pin_index == 0) { //C++ modulo operator does not work with negative numbers has to be handled this way
+            if (selected_pin_index == 0) { //C++ modulo operator doesn't work with neg numbers has to be done this way
                 selected_pin_index = pin_list_length;
             }
             selected_pin_index = selected_pin_index - 1;
