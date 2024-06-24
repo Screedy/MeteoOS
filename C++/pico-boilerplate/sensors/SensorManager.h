@@ -89,6 +89,20 @@ public:
      */
     std::vector<int> getAvailablePins();
 
+    /*
+     * Function that loads the sensors from their save file.
+     *
+     * @return None.
+     */
+    void loadSensors();
+
+    /*
+     * Function that gets the number of sensors.
+     *
+     * @return The number of sensors.
+     */
+    int getSensorCount();
+
 private:
     /*
      * Constructor of the SensorManager.
@@ -98,7 +112,16 @@ private:
     std::vector<std::unique_ptr<Sensor>> sensors;
     int activeSensor;
     int sensorCount;
-    int pins[4] = {0, 1, 2, 3};
+    std::vector<int> avPins;
+
+    /*
+     * Function that splits a string by a delimiter.
+     *
+     * @param str The string to be split.
+     * @param delimiter The delimiter to split the string by.
+     * @return A vector of strings.
+     */
+    std::vector<std::string> split(const std::string& str, char delimiter);
 };
 
 
