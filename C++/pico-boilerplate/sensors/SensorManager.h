@@ -103,6 +103,13 @@ public:
      */
     int getSensorCount();
 
+    /*
+     * Function that reloads the sensor count.
+     *
+     * @return None.
+     */
+    void reloadSensorCount();
+
 private:
     /*
      * Constructor of the SensorManager.

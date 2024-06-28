@@ -20,6 +20,7 @@ SensorManager::SensorManager()
     // Add a DHT11 sensor for testing
     sensors.push_back(std::make_unique<DHT11>(DHT11(0, "TEST", 30))); // TODO: This is temporary to test the DHT11 sensor
 
+    reloadSensorCount();
 
 }
 
@@ -62,7 +63,7 @@ void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
 
     //add sensor to vector of sensors.
     sensors.push_back(std::move(sensor));
-    sensorCount++;
+    reloadSensorCount();
 }
 
 void SensorManager::removeSensor(int index) {
@@ -105,7 +106,7 @@ void SensorManager::removeSensor(int index) {
 
     // remove the sensor from the vector
     sensors.erase(sensors.begin() + index);
-    sensorCount--;
+    reloadSensorCount();
 }
 
 void SensorManager::activeUp() {
@@ -146,7 +147,6 @@ void SensorManager::loadSensors() {
         printf("Failed to open file %s\n", path);
     }
 
-    int sCount = 0;
     char buffer[100]; // Enough for the longest line in the file
     while (f_gets(buffer, sizeof(buffer), &fil)) {
         std::string line(buffer);
@@ -162,11 +162,9 @@ void SensorManager::loadSensors() {
         } else if (sensorType == "DS18B20") {
             //sensors.push_back(std::make_unique<DS18B20>(DS18B20(pin, name, interval)));
         }
-
-        sCount++;
     }
     f_close(&fil);
-    sensorCount = sCount;
+    reloadSensorCount();
 }
 
 std::vector<std::string> SensorManager::split(const std::string& str, char delimiter) {
@@ -183,4 +181,8 @@ std::vector<std::string> SensorManager::split(const std::string& str, char delim
 
 int SensorManager::getSensorCount() {
     return sensorCount;
+}
+
+void SensorManager::reloadSensorCount() {
+    sensorCount = sensors.size();
 }
