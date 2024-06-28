@@ -69,4 +69,14 @@ void render_settings_buttons();
  */
 void render_items_list(int selected_item, std::vector<std::string> page);
 
+/*
+ * This function is like render_items_list, but it renders the items on a full screen not just the right part.
+ *
+ * @param selected_item - the index of the selected item
+ * @param page - the list of items to render
+ *
+ * @return void
+ */
+void render_items_list_full_page(int selected_item, std::vector<std::string> page);
+
 #endif //PICO_BOILERPLATE_PAGE_ELEMENTS_H_H

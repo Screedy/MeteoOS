@@ -99,3 +99,37 @@ void render_items_list(int selected_item, std::vector<std::string> page){
         }
     }
 }
+
+/*
+ * This function is like render_items_list, but it renders the items on a full screen not just the right part.
+ *
+ * @param selected_item - the index of the selected item
+ * @param page - the list of items to render
+ *
+ * @return void
+ */
+void render_items_list_full_page(int selected_item, std::vector<std::string> page){
+    graphics.set_pen(Colors::WHITE);
+
+    auto number_of_items = page.size();
+    auto page_start_item = selected_item - (selected_item % 3);
+
+    for (int i = 0; i < 3; i++){
+        if (page_start_item + i >= number_of_items){
+            break;
+        }
+
+        graphics.set_pen((i == selected_item % 3) ? Colors::WHITE : Colors::BLACK);
+        graphics.rectangle(Rect{0, 34 + (i * 27), 240, 15});
+        graphics.set_pen((i == selected_item % 3) ? Colors::BLACK : Colors::WHITE);
+        graphics.text(page[page_start_item + i], pimoroni::Point{3, 34 + (i * 27)}, 250, 2);
+
+        if (i == selected_item % 3){
+            graphics.set_pen(Colors::WHITE);
+            graphics.text(">", pimoroni::Point{0, 34 + (i * 27)}, 250, 2);
+        } else {
+            graphics.set_pen(Colors::BLACK);
+            graphics.text(">", pimoroni::Point{0, 34 + (i * 27)}, 250, 2);
+        }
+    }
+}
