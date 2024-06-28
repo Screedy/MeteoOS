@@ -9,10 +9,10 @@
 #include "../sensors/SensorManager.h"
 #include "../graphics/qrcode_graphics.h"
 #include "../lib/QR-Code-generator/qrcodegen.hpp"
+#include "../pages/brightness.h"
 
 
-void startup() {
-    // Initialize the Display and it's singleton.
+void sd_card_initialize(){
     Display& display = Display::getInstance();
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
@@ -35,10 +35,24 @@ void startup() {
             graphics.set_pen(Colors::RED);
             graphics.text("Failed to mount SD card", Point{2, 2}, true);
             driver.update(&graphics);
-            sleep_ms(10000);
+            sleep_ms(5000);
             sd_card_manager::get_instance()->mount_sd_card();
         }
     }
+}
+
+void startup() {
+    // Initialize the Display and it's singleton.
+    Display& display = Display::getInstance();
+    auto& driver = display.getDriver();
+    auto& graphics = display.getGraphics();
+
+    // Initialize the SD card. If it fails, the system should not continue and will wait before an SD card is inserted.
+    sd_card_initialize();
+
+    // Set the display's brightness to value in the settings.txt.
+    // If there is none, set it to 50% (127) and save it to the file.
+    initialize_brightness();
 
     //Check if 0:/config/settings.txt exists. If not, initialize the setup wizard.
     FRESULT fr;
@@ -49,6 +63,6 @@ void startup() {
         initial();
     }
 
-    // Initialize the sensor manager.
+    // Initialize the sensor manager. This will load the sensors from the file and initialize them.
     SensorManager::getInstance();
 }
