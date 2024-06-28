@@ -25,6 +25,12 @@ set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 # Initialize the SDK
 pico_sdk_init()
 
+# Option for test build
+option(TEST_BUILD "Build for testing" ON)
+if(TEST_BUILD)
+    add_compile_definitions(TEST_BUILD)
+endif()
+
 
 # Tell CMake where to find the executable source file
 add_executable(${NAME}
@@ -33,15 +39,12 @@ add_executable(${NAME}
     	config/config.h
     	config/Display.cpp
     	config/Display.h 
-#    	config/Point.h
     	graphics/graphics.cpp
     	graphics/graphics.h
     	graphics/page_elements.cpp
     	graphics/page_elements.h
 	graphics/qrcode_graphics.h
 	graphics/qrcode_graphics.cpp
-#   	config/globals.h
-#   	config/globals.cpp
     	sensors/DHT11.h
     	sensors/DHT11.cpp
 	sensors/Sensor.h
@@ -54,6 +57,12 @@ add_executable(${NAME}
 	pages/add_sensor.cpp
 	pages/brightness.h
 	pages/brightness.cpp
+	pages/del_data.h
+	pages/del_data.cpp
+	pages/del_sensor.h
+	pages/del_sensor.cpp
+	pages/format_sd.h
+	pages/format_sd.cpp
 	#config/sd_card_config.h
 	config/hw_config.cpp
 	config/sd_card_manager.h
@@ -62,8 +71,6 @@ add_executable(${NAME}
 	config/startup.cpp
 	config/setup.h
 	config/setup.cpp
-#	QRMicroLib/qrencode.h
-#	QRMicroLib/qrencode.cpp
 	lib/QR-Code-generator/qrcodegen.hpp
 	lib/QR-Code-generator/qrcodegen.cpp
 )
