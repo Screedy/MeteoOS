@@ -62,3 +62,5 @@ int GraphInterval::WEEKLY = 1;
 int GraphInterval::MONTHLY = 2;
 
 std::vector<int> availablePins = {0, 1, 2, 3, 4, 5, 21, 22, 26, 27, 28};
+
+std::vector<std::string> sensorTypes = {"DHT11", "DS18B20"};
