@@ -16,6 +16,10 @@
 //Include all the pages that are used in the settings page
 #include "add_sensor.h"
 #include "brightness.h"
+#include "del_sensor.h"
+#include "format_sd.h"
+#include "del_data.h"
+
 
 namespace Settings{
     extern Display& display;

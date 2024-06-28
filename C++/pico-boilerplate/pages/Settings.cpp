@@ -5,6 +5,7 @@
 #include "Settings.h"
 
 
+
 namespace Settings{
     Display& display = Display::getInstance();
     pimoroni::ST7789& driver = display.getDriver();
@@ -57,30 +58,29 @@ std::function<void()> SettingsItems::get_function(int selected_item) {
 }
 
 void SettingsFunctions::add_sensor() {
-    //TODO: Implement adding sensor page (needs implementing saving to config file and sensormanager)
     printf("Adding sensor\n");
     render_add_sensor();
 }
 
 void SettingsFunctions::remove_sensor() {
-    //TODO: Implement removing sensor page§
     printf("Removing sensor\n");
+    render_del_sensor();
 }
 
 void SettingsFunctions::change_brightness() {
-    //TODO: Implement changing brightness page
     printf("Changing brightness\n");
     render_brightness();
 }
 
 void SettingsFunctions::format_sd() {
-    //TODO: Implement formatting SD card page
+    //TODO: TEST
     printf("Formatting SD card\n");
+    render_format_sd();
 }
 
 void SettingsFunctions::del_data() {
-    //TODO: Implement deleting data page
     printf("Deleting data\n");
+    render_del_data();
 }
 
 void render_settings(int selected_item) {
@@ -91,12 +91,10 @@ void render_settings(int selected_item) {
     render_nav_arrows(110);
 
     graphics.line(Point{100, 16}, Point{100, 120});
-    graphics.line(Point{101, 16}, Point{101, 120}); //TODO: Implement these as a function
+    graphics.line(Point{101, 16}, Point{101, 120}); //TODO: Implement these as a function (minor, optional)
     graphics.line(Point{102, 16}, Point{102, 120});
 
     render_settings_buttons();
-
-    //printf("Debug: %d\n", selected_item);
 
     render_items_list(selected_item, SettingsItems::list_of_items());
 
