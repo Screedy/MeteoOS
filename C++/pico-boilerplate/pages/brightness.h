@@ -26,4 +26,13 @@ bool render_brightness();
  */
 void render_nice_slider(int brightness);
 
+/*
+ * Function that sets the brightness of the display to the value in the configuration file.
+ * If the configuration file does not contain the brightness value, the default value is set (50%) and
+ * saved to the configuration file.
+ *
+ * @return void
+ */
+void initialize_brightness();
+
 #endif //PICO_BOILERPLATE_BRIGHTNESS_H
