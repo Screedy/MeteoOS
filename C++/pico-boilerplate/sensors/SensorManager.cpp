@@ -10,7 +10,7 @@
 #include "../config/config.h"
 
 SensorManager::SensorManager()
-: activeSensor(0) { //TODO: Implement the sensorCount when file for adding sensor is implemented
+: activeSensor(0) {
     //Load sensors from file
     loadSensors();
 
