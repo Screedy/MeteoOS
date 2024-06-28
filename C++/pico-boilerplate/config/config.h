@@ -55,4 +55,6 @@ struct GraphInterval {
 
 extern std::vector<int> availablePins;
 
+extern std::vector<std::string> sensorTypes;
+
 #endif //PICO_BOILERPLATE_CONFIG_H
