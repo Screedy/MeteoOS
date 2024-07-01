@@ -23,6 +23,7 @@ public:
     bool mount_sd_card();
     bool unmount_sd_card();
     bool is_mounted();
+    bool format();
 private:
     sd_card_t *pSD;
     bool mounted;

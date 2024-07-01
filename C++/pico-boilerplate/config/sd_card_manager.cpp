@@ -9,6 +9,7 @@
 #include "rtc.h"
 
 #include "sd_card_manager.h"
+#include "../sensors/SensorManager.h"
 
 sd_card_manager::sd_card_manager()
 :pSD(sd_get_by_num(0)), fil(){
@@ -60,4 +61,41 @@ bool sd_card_manager::unmount_sd_card() {
 
 bool sd_card_manager::is_mounted() {
     return this->mounted;
+}
+
+bool sd_card_manager::format() {
+    if(!this->mounted){
+        printf("SD card is not mounted\n");
+        return false;
+    }
+
+    printf("Formatting SD card\n");
+
+    FATFS fs; // File system object
+    FRESULT fr; // FatFs function common result code
+    DWORD work[FF_MAX_SS]; // Work area (larger is better for processing time)
+
+    MKFS_PARM opt = {
+            FM_FAT32, 0, 0, 0, 0 // FAT32, 0 for auto
+    };
+
+    f_mount(NULL, "", 0); // Unmount the drive
+
+    fr = f_mkfs("0:", &opt, work, sizeof work); // Create FAT volume
+    if (fr != FR_OK) {
+        printf("Failed to format SD card\n");
+        return false;
+    }
+    printf("SD card formatted\n");
+
+    // Attempt to mount the SD card again
+    if (!mount_sd_card()) {
+        printf("Failed to mount SD card after formatting\n");
+        return false;
+    }
+
+    // set SensorManager to default
+    SensorManager::getInstance().setDefault();
+
+    return true;
 }
