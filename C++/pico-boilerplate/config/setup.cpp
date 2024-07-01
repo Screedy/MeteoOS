@@ -6,6 +6,7 @@
 #include "config.h"
 #include "setup.h"
 #include "../graphics/qrcode_graphics.h"
+#include "../pages/add_sensor.h"
 
 void wizard_start(){
     //set_defaults(); //TODO: Look into this later (optional)
@@ -87,12 +88,16 @@ void sd_card_setup(){
     graphics.set_pen(Colors::WHITE);
 
     graphics.text("Setup wizard", Point{2, 0}, 236, 2);
-    graphics.text("Please connect the SD card to the following pins:", Point{2, 20}, 180, 2);
+    graphics.text("Please connect the SD card to the following pins:", Point{2, 20}, 220, 2);
     graphics.text("SCK -> GP10, MOSI -> GP11, MISO -> GP8, CS -> GP9, VCC -> +5V, GND -> GND",
                   Point{2, 70}, 220, 2);
     graphics.text("OK", Point{DISPLAY_WIDTH - 25, DISPLAY_HEIGHT - 17}, 236, 2);
     graphics.text("HELP", Point{DISPLAY_WIDTH - 45, 2}, 236, 2);
     driver.update(&graphics);
+
+    #ifdef TEST_BUILD
+    printf("Waiting for SD card setup confirm\n");
+    #endif
 
     wait_for_y(sd_card_setup);
 
@@ -143,9 +148,9 @@ void help_interrupt(){
 void initial(){
 
     wizard_start();
-    auto pin = pin_setup();
-    std::string pinStr = std::to_string(pin);
-    const char* pinCStr = pinStr.c_str(); // Conversion needed for the f_puts function
+    //auto pin = pin_setup(); //Will be changed for the add_sensor page
+    //std::string pinStr = std::to_string(pin);
+    //const char* pinCStr = pinStr.c_str(); // Conversion needed for the f_puts function
     sd_card_setup();
 
     // Initialize the SD card
@@ -170,14 +175,16 @@ void initial(){
     }
 
     // Write data to the file
-    f_puts("PIN: ", &fil);
-    f_puts(pinCStr, &fil);
-    f_puts("\n", &fil);
+    //f_puts("PIN: ", &fil);
+    //f_puts(pinCStr, &fil);
+    //f_puts("\n", &fil);
 
     f_puts("STORAGE: ", &fil);
     f_puts("8 9 10 11\n", &fil);
 
     f_close(&fil);
+
+    bool sensor_added = render_add_sensor();
 }
 
 void wait_for_y(std::function<void()> func){ // TODO: Check if this is correct.
