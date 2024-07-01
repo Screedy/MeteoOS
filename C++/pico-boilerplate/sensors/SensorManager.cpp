@@ -18,7 +18,7 @@ SensorManager::SensorManager()
     avPins = getAvailablePins();
 
     // Add a DHT11 sensor for testing
-    sensors.push_back(std::make_unique<DHT11>(DHT11(0, "TEST", 30))); // TODO: This is temporary to test the DHT11 sensor
+    //sensors.push_back(std::make_unique<DHT11>(DHT11(0, "TEST", 30))); // This is temporary to test the DHT11 sensor
 
     reloadSensorCount();
 
@@ -38,7 +38,6 @@ std::unique_ptr<Sensor>& SensorManager::getSensor(int index) {
 }
 
 void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
-    //TODO: Implement adding sensor to file -- DONE, needs testing
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
     FIL fil = sd_card_manager->get_fil();
     FRESULT fr;
@@ -47,7 +46,7 @@ void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
 
     //append to 0:/config/sensors.txt
     //format: sensorPin;sensorType;sensorName;sensorInterval
-    fr = f_open(&fil, path, FA_WRITE | FA_OPEN_APPEND);
+    fr = f_open(&fil, path, FA_WRITE | FA_OPEN_APPEND | FA_CREATE_ALWAYS);
     if(fr != FR_OK){
         printf("Failed to open file %s\n", path);
     }
@@ -67,7 +66,7 @@ void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
 }
 
 void SensorManager::removeSensor(int index) {
-    // TODO: Implement removing sensor from file -- DONE, needs testing
+    // TODO: needs testing
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
     FIL fil = sd_card_manager->get_fil();
     FRESULT fr;
@@ -145,6 +144,7 @@ void SensorManager::loadSensors() {
     fr = f_open(&fil, path, FA_READ);
     if(fr != FR_OK){
         printf("Failed to open file %s\n", path);
+        return;
     }
 
     char buffer[100]; // Enough for the longest line in the file
@@ -155,10 +155,10 @@ void SensorManager::loadSensors() {
         int pin = std::stoi(parts[0]);
         std::string sensorType = parts[1];
         std::string name = parts[2];
-        int interval = std::stoi(parts[3]);
+        //int interval = std::stoi(parts[3]);
 
         if (sensorType == "DHT11") {
-            sensors.push_back(std::make_unique<DHT11>(DHT11(pin, name, interval)));
+            sensors.push_back(std::make_unique<DHT11>(DHT11(pin, name, 0))); //TODO: interval (0)
         } else if (sensorType == "DS18B20") {
             //sensors.push_back(std::make_unique<DS18B20>(DS18B20(pin, name, interval)));
         }
@@ -185,4 +185,10 @@ int SensorManager::getSensorCount() {
 
 void SensorManager::reloadSensorCount() {
     sensorCount = sensors.size();
+}
+
+void SensorManager::setDefault(){
+    sensors.clear();
+    //sensors.push_back(std::make_unique<DHT11>(DHT11(0, "TEST", 30))); // This is temporary to test the DHT11 sensor
+    reloadSensorCount();
 }

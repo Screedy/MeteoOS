@@ -110,6 +110,13 @@ public:
      */
     void reloadSensorCount();
 
+    /*
+     * Function that deletes all sensors.
+     *
+     * @return None.
+     */
+    void setDefault();
+
 private:
     /*
      * Constructor of the SensorManager.
