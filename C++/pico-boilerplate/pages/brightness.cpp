@@ -36,6 +36,7 @@ void save_brightness(int brightness){
     fr = f_open(&fil, "0:/config/settings.txt", FA_READ);
     if(fr != FR_OK){
         printf("Failed to open file\n");
+        f_close(&fil);
         return;
     }
 
