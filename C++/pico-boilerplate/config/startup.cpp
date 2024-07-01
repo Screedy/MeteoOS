@@ -46,6 +46,10 @@ void startup() {
     Display& display = Display::getInstance();
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
+    // Set display to black and clear it.
+    graphics.set_pen(Colors::BLACK);
+    graphics.clear();
+    driver.update(&graphics);
 
     // Initialize the SD card. If it fails, the system should not continue and will wait before an SD card is inserted.
     sd_card_initialize();
@@ -54,14 +58,30 @@ void startup() {
     // If there is none, set it to 50% (127) and save it to the file.
     initialize_brightness();
 
+    #ifdef TEST_BUILD
+    printf("Brightness initialized\n");
+    printf("Trying to find settings.txt\n");
+    #endif
+
     //Check if 0:/config/settings.txt exists. If not, initialize the setup wizard.
     FRESULT fr;
     FILINFO fno;
     const char *path = "0:/config/settings.txt";
     fr = f_stat(path, &fno);
+    #ifdef TEST_BUILD
+    printf("Settings file found: %d\n", fr);
+    #endif
+
     if(fr != FR_OK){
+        #ifdef TEST_BUILD
+        printf("Settings file not found, initializing setup wizard.\n");
+        #endif
         initial();
     }
+
+    #ifdef TEST_BUILD
+    printf("Settings file found or setup wizard done.\n");
+    #endif
 
     // Initialize the sensor manager. This will load the sensors from the file and initialize them.
     SensorManager::getInstance();
