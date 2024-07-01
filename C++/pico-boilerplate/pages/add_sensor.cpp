@@ -153,6 +153,13 @@ int select_sensor_pin() {
         graphics.set_pen(Colors::WHITE);
         std::string text = "Select the pin: " + std::to_string(pin_list[selected_pin_index]);
         graphics.text(text.c_str(), Point{2, 20}, 200, 2);
+
+        graphics.set_pen(Colors::GREEN);
+        graphics.text("OK", Point{DISPLAY_WIDTH - 30, 20}, 200, 2);
+        graphics.set_pen(Colors::RED);
+        graphics.text("CANCEL", Point{DISPLAY_WIDTH - 65, DISPLAY_HEIGHT - 20}, 200, 2);
+        graphics.set_pen(Colors::WHITE);
+
         driver.update(&graphics);
         sleep_ms(150);
     }
