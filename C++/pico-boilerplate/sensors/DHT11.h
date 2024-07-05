@@ -41,7 +41,10 @@ private:
     float humidity;
     bool write;
     char* sensorType;
+    repeating_timer_t timer;
 
+
+    void write_to_file();
     bool waitForChange(bool state, unsigned int timeout_us);
     std::uint8_t readByte();
 
@@ -55,6 +58,9 @@ public:
     int getPin();
     char* getSensorType();
     int getInterval();
+    bool handle_timer();
 };
+
+static bool timer_callback_dht(repeating_timer_t *rt);
 
 #endif //PICO_BOILERPLATE_DHT11_H
