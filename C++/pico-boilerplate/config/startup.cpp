@@ -10,6 +10,8 @@
 #include "../graphics/qrcode_graphics.h"
 #include "../lib/QR-Code-generator/qrcodegen.hpp"
 #include "../pages/brightness.h"
+#include "rtc_module.h"
+#include "hardware/rtc.h"
 
 
 void sd_card_initialize(){
@@ -42,6 +44,10 @@ void sd_card_initialize(){
 }
 
 void startup() {
+#ifdef TEST_BUILD
+    //sleep_ms(5000);
+    printf("Starting up\n");
+#endif
     // Initialize the Display and it's singleton.
     Display& display = Display::getInstance();
     auto& driver = display.getDriver();
@@ -51,12 +57,18 @@ void startup() {
     graphics.clear();
     driver.update(&graphics);
 
+    // Initialize the RTC.
+    rtc_init();
+
     // Initialize the SD card. If it fails, the system should not continue and will wait before an SD card is inserted.
     sd_card_initialize();
 
     // Set the display's brightness to value in the settings.txt.
     // If there is none, set it to 50% (127) and save it to the file.
     initialize_brightness();
+
+    // Initialize the RTC.
+    initialize_rtc();
 
     #ifdef TEST_BUILD
     printf("Brightness initialized\n");
@@ -84,5 +96,5 @@ void startup() {
     #endif
 
     // Initialize the sensor manager. This will load the sensors from the file and initialize them.
-    SensorManager::getInstance();
+    SensorManager* sensor_manager = &SensorManager::getInstance();
 }
