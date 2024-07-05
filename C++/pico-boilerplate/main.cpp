@@ -17,19 +17,15 @@
 #include "config/startup.h"
 //#include "lib/QR-Code-generator/qrcodegen.hpp"
 #include "graphics/qrcode_graphics.h"
-
 #include "rtc.h"
+#include "hardware/timer.h"
 
 using namespace pimoroni;
 
-
-Display& display = Display::getInstance();
-auto& driver = display.getDriver();
-auto& graphics = display.getGraphics();
-auto& Buttons = Buttons::getInstance();
-auto& sensor_manager = SensorManager::getInstance();
-
 void render_homepage(int graph_interval){
+    Display& display = Display::getInstance();
+    auto& driver = display.getDriver();
+    auto& graphics = display.getGraphics();
 
     clear_fast();
     graphics.set_pen(Colors::WHITE);
@@ -54,6 +50,8 @@ void render_homepage(int graph_interval){
  * This code should be removed but will stay here.
  */
 void test_sd(){
+    auto& sensor_manager = SensorManager::getInstance();
+
     sleep_ms(3000);
     printf("Testing SD card\n");
 
@@ -108,11 +106,52 @@ static void printQr(const qrcodegen::QrCode &qr) {
     std::cout << std::endl;
 }
 
+//TODO: Delete after testing
+bool timer_callback(repeating_timer_t *rt){
+    //printf("Timer callback\n");
+
+    if (rt->user_data == nullptr){
+        printf("Error: user_data is null\n");
+        return false;
+    }
+
+    auto* sensor = static_cast<DHT11*>(rt->user_data);
+
+    if (sensor == nullptr){
+        printf("Error: sensor is null\n");
+        return false;
+    }
+
+    try{
+        sensor->handle_timer();
+    } catch (const std::exception& e){
+        printf(" Exception in handle_timer: %s\n", e.what());
+        return false;
+    } catch (...){
+        printf("Unknown exception in handle_timer\n");
+        return false;
+    }
+
+    printf("Timer callback end\n");
+    return true;
+}
 
 int main() {
     stdio_init_all();
-
+    //sleep_ms(5000);
     startup();
+/*
+    repeating_timer_t timer;
+    if (!add_repeating_timer_ms(10000, timer_callback, nullptr, &timer)){
+        printf("Failed to add timer\n");
+    }*/
+
+
+    Display& display = Display::getInstance();
+    auto& driver = display.getDriver();
+    auto& graphics = display.getGraphics();
+    auto& Buttons = Buttons::getInstance();
+    auto& sensor_manager = SensorManager::getInstance();
 
     // This code is part of the SD card testing done in the function test_sd(). It wont be removed for demonstration
     // purposes.
@@ -133,7 +172,19 @@ int main() {
 
     auto& sensor1 = sensor_manager.getSensor(0);
 
+    //repeating_timer_t timer;
+    //add_repeating_timer_ms(sensor1->getInterval() * 10000, timer_callback, sensor1.get(), &timer);
+
+    #ifdef TEST_BUILD
+    int loop_number = 0;
+    #endif
+
     while(true){
+        #ifdef TEST_BUILD
+        printf("The active sensor is: %s\n", sensor1->getName().c_str());
+        printf("Interval: %d\n", sensor1->getInterval());
+        printf("Loop number: %d\n", loop_number++);
+        #endif
         if (Buttons.is_button_x_pressed()){
             //TODO: change the graph interval
             if (graph_interval == GraphInterval::DAILY){
@@ -165,7 +216,7 @@ int main() {
         }
         //printf("Temperature: %f\n", sensor1->getTemperature());
         //printf("Humidity: %f\n", sensor1->getHumidity());
-        printf("Sensor1 temp: %f, hum: %f\n", sensor1->getTemperature(), sensor1->getHumidity());
+        //printf("Sensor1 temp: %f, hum: %f\n", sensor1->getTemperature(), sensor1->getHumidity());
 
         sleep_ms(300);
     }
