@@ -7,6 +7,8 @@
 
 #include <string>
 #include "SensorType.h"
+#include "pico/stdlib.h"
+#include "hardware/timer.h"
 
 /*
  * An abstract class that represents a generic sensor.
@@ -22,7 +24,19 @@
  */
 class Sensor {
 public:
+    /*
+     * Destructor of the Sensor class.
+     */
     virtual ~Sensor() {}
+
+    /*
+     * Reads the data from the sensor.
+     *
+     * @return Error code.
+     * 0 - Success.
+     * 1 - Sensor did not respond.
+     * 2 - Checksum error.
+     */
     int virtual read() = 0;
     float virtual getHumidity() = 0;
     float virtual getTemperature() = 0;
@@ -31,6 +45,10 @@ public:
     int virtual getPin() = 0;
     virtual char* getSensorType() = 0;
     virtual int getInterval() = 0;
+    virtual bool handle_timer();
+
+private:
+    repeating_timer_t timer;
 };
 
 
