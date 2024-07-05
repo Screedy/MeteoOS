@@ -38,7 +38,9 @@ add_executable(${NAME}
     	config/config.cpp
     	config/config.h
     	config/Display.cpp
-    	config/Display.h 
+    	config/Display.h
+	config/rtc_module.h
+	config/rtc_module.cpp
     	graphics/graphics.cpp
     	graphics/graphics.h
     	graphics/page_elements.cpp
@@ -63,6 +65,8 @@ add_executable(${NAME}
 	pages/del_sensor.cpp
 	pages/format_sd.h
 	pages/format_sd.cpp
+	pages/set_time.h
+	pages/set_time.cpp
 	#config/sd_card_config.h
 	config/hw_config.cpp
 	config/sd_card_manager.h
