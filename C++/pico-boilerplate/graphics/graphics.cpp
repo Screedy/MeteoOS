@@ -106,3 +106,28 @@ void clear_fast(){
     graphics.set_pen(Colors::BLACK);
     graphics.clear();
 }
+
+void draw_next(){
+    graphics.set_pen(Colors::GREEN);
+    graphics.text("NEXT", Point{DISPLAY_WIDTH - 45, 20}, 200, 2);
+}
+
+void draw_prev(){
+    graphics.set_pen(Colors::RED);
+    graphics.text("PREV", Point{DISPLAY_WIDTH - 45, DISPLAY_HEIGHT - 20}, 200, 2);
+}
+
+void draw_back(){
+    graphics.set_pen(Colors::RED);
+    graphics.text("BACK", pimoroni::Point{190, 115}, 250, 2);
+}
+
+void draw_ok(){
+    graphics.set_pen(Colors::GREEN);
+    graphics.text("OK", Point{DISPLAY_WIDTH - 30, 20}, 200, 2);
+}
+
+void draw_cancel(){
+    graphics.set_pen(Colors::RED);
+    graphics.text("CANCEL", Point{DISPLAY_WIDTH - 65, DISPLAY_HEIGHT - 20}, 200, 2);
+}

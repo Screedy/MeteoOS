@@ -94,4 +94,10 @@ void draw_humidity(int x, int y);
  */
 void clear_fast();
 
+void draw_next();
+void draw_prev();
+void draw_back();
+void draw_ok();
+void draw_cancel();
+
 #endif //PICO_BOILERPLATE_GRAPHICS_H
