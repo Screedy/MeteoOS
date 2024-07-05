@@ -19,6 +19,7 @@
 #include "del_sensor.h"
 #include "format_sd.h"
 #include "del_data.h"
+#include "set_time.h"
 
 
 namespace Settings{
@@ -43,6 +44,7 @@ private:
         Brightness,
         FormatSD,
         DelData,
+        SetTime,
         NumberOfItems
     };
     /*
@@ -81,6 +83,7 @@ public:
     static void change_brightness();
     static void format_sd();
     static void del_data();
+    static void set_time();
 };
 
 /*

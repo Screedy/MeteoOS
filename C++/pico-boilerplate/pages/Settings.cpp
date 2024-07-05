@@ -5,7 +5,6 @@
 #include "Settings.h"
 
 
-
 namespace Settings{
     Display& display = Display::getInstance();
     pimoroni::ST7789& driver = display.getDriver();
@@ -27,6 +26,8 @@ std::string SettingsItems::SettingsToString(SettingsItem item) {
             return "FormatSD";
         case DelData:
             return "DelData";
+        case SetTime:
+            return "SetTime";
         default:
             return "Unknown";
     }
@@ -52,6 +53,8 @@ std::function<void()> SettingsItems::get_function(int selected_item) {
             return SettingsFunctions::format_sd;
         case DelData:
             return SettingsFunctions::del_data;
+        case SetTime:
+            return SettingsFunctions::set_time;
         default:
             return [](){};
     }
@@ -81,6 +84,11 @@ void SettingsFunctions::format_sd() {
 void SettingsFunctions::del_data() {
     printf("Deleting data\n");
     render_del_data();
+}
+
+void SettingsFunctions::set_time() {
+    printf("Setting time\n");
+    render_set_time_menu();
 }
 
 void render_settings(int selected_item) {
