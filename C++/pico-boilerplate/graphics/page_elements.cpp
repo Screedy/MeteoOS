@@ -4,6 +4,9 @@
 
 #include "page_elements.h"
 
+#include "../config/rtc_module.h"
+#include "hardware/rtc.h"
+
 namespace PageElements{
     Display& display = Display::getInstance();
     pimoroni::ST7789& driver = display.getDriver();
@@ -22,7 +25,12 @@ void render_nav_arrows(int x, int colour){
 
 void render_sensor_details(){
     auto& active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
-    auto current_time = "TMP"; //TODO: Implement this function
+    std::string current_time = "NOTSET";
+    if (is_rtc_set()){
+        datetime_t dt = get_current_datetime();
+        current_time = get_format_time(dt);
+    }
+
     auto temperature = active_sensor->getTemperature();
     auto humidity = active_sensor->getHumidity();
 
