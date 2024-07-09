@@ -47,6 +47,14 @@ add_executable(${NAME}
     	graphics/page_elements.h
 	graphics/qrcode_graphics.h
 	graphics/qrcode_graphics.cpp
+	graphics/graph/concrete_strategy_daily.h
+	graphics/graph/concrete_strategy_daily.cpp
+	graphics/graph/concrete_strategy_weekly.h
+	graphics/graph/concrete_strategy_weekly.cpp
+	graphics/graph/context_graph_interval.h
+	graphics/graph/context_graph_interval.cpp
+	graphics/graph/strategy_graph_interval.h
+	graphics/graph/strategy_graph_interval.cpp
     	sensors/DHT11.h
     	sensors/DHT11.cpp
 	sensors/Sensor.h
