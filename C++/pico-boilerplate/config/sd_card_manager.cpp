@@ -99,3 +99,14 @@ bool sd_card_manager::format() {
 
     return true;
 }
+
+bool sd_card_manager::fileExists(const std::string& file_path) {
+    FIL file;
+    FRESULT res = f_open(&file, file_path.c_str(), FA_READ);
+    if (res != FR_OK) {
+        return false;
+    }
+
+    f_close(&file);
+    return true;
+}
