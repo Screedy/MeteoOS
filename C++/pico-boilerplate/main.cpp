@@ -19,6 +19,10 @@
 #include "graphics/qrcode_graphics.h"
 #include "rtc.h"
 #include "hardware/timer.h"
+#include "graphics/graph/strategy_graph_interval.h"
+#include "graphics/graph/concrete_strategy_daily.h"
+#include "graphics/graph/context_graph_interval.h"
+#include "config/rtc_module.h"
 
 using namespace pimoroni;
 
@@ -40,6 +44,17 @@ void render_homepage(int graph_interval){
 
     //auto active_sensor = sensor_manager.sensors[sensor_manager.active_sensor];
     //graph.render_graph(//TODO: graph_interval, active_sensor);
+
+    //if time is set, render the graph
+    if (is_rtc_set()){
+        //get the current active sensor
+        auto& sensor_manager = SensorManager::getInstance();
+        auto& active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
+
+        auto dailyStrategy = std::make_unique<ConcreteStrategyDaily>();
+        ContextGraphInterval setStrategy(std::move(dailyStrategy));
+        setStrategy.renderGraph(get_current_datetime(), active_sensor.get(), false);
+    }
 
     driver.update(&graphics);
 }
@@ -176,14 +191,14 @@ int main() {
     //add_repeating_timer_ms(sensor1->getInterval() * 10000, timer_callback, sensor1.get(), &timer);
 
     #ifdef TEST_BUILD
-    int loop_number = 0;
+        int loop_number = 0;
     #endif
 
     while(true){
         #ifdef TEST_BUILD
-        printf("The active sensor is: %s\n", sensor1->getName().c_str());
-        printf("Interval: %d\n", sensor1->getInterval());
-        printf("Loop number: %d\n", loop_number++);
+            printf("The active sensor is: %s\n", sensor1->getName().c_str());
+            printf("Interval: %d\n", sensor1->getInterval());
+            printf("Loop number: %d\n", loop_number++);
         #endif
         if (Buttons.is_button_x_pressed()){
             //TODO: change the graph interval
