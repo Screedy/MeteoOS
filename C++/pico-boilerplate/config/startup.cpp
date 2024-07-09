@@ -95,6 +95,16 @@ void startup() {
     printf("Settings file found or setup wizard done.\n");
     #endif
 
+    // Check if 0:/sensors/measurements exist. If not, create it.
+    path = "0:/sensors/measurements";
+    fr = f_stat(path, &fno);
+    if(fr != FR_OK){
+        fr = f_mkdir(path);
+        if(fr != FR_OK){
+            printf("Failed to create directory %s\n", path);
+        }
+    }
+
     // Initialize the sensor manager. This will load the sensors from the file and initialize them.
     SensorManager* sensor_manager = &SensorManager::getInstance();
 }
