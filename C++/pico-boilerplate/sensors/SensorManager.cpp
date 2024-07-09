@@ -155,10 +155,21 @@ void SensorManager::loadSensors() {
         int pin = std::stoi(parts[0]);
         std::string sensorType = parts[1];
         std::string name = parts[2];
-        //int interval = std::stoi(parts[3]);
+
+        //try setting interval, if it fails set it to 0
+        int interval; // TODO: This is temporary while changing the save file format
+        try {
+            interval = std::stoi(parts[3]);
+        } catch (std::invalid_argument& e) {
+            interval = 0;
+        }
+
+        #ifdef TEST_BUILD
+            printf("Loaded sensor: %d, %s, %s, %d\n", pin, sensorType.c_str(), name.c_str(), interval);
+        #endif
 
         if (sensorType == "DHT11") {
-            sensors.push_back(std::make_unique<DHT11>(DHT11(pin, name, 0))); //TODO: interval (0)
+            sensors.push_back(std::make_unique<DHT11>(DHT11(pin, name, interval))); //TODO: interval (0) - done needs testing
         } else if (sensorType == "DS18B20") {
             //sensors.push_back(std::make_unique<DS18B20>(DS18B20(pin, name, interval)));
         }
