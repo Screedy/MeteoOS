@@ -174,15 +174,17 @@ void initial(){
         printf("Failed to create file %s\n", path);
     }
 
-    // Write data to the file
-    //f_puts("PIN: ", &fil);
-    //f_puts(pinCStr, &fil);
-    //f_puts("\n", &fil);
-
     f_puts("STORAGE: ", &fil);
     f_puts("8 9 10 11\n", &fil);
 
     f_close(&fil);
+
+    // Create a directory for measurements 0:/sensors/measurements
+    path = "0:/sensors/measurements";
+    fr = f_mkdir(path);
+    if(fr != FR_OK){
+        printf("Failed to create directory %s\n", path);
+    }
 
     bool sensor_added = render_add_sensor();
 }
