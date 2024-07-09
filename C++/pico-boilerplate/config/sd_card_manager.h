@@ -5,6 +5,8 @@
 #ifndef PICO_BOILERPLATE_SD_CARD_H
 #define PICO_BOILERPLATE_SD_CARD_H
 
+#include <string>
+
 #include "f_util.h"
 #include "ff.h"
 
@@ -19,7 +21,7 @@ public:
     static sd_card_manager *get_instance();
     FRESULT get_fr();
     FIL& get_fil();
-
+    bool fileExists(const std::string& path);
     bool mount_sd_card();
     bool unmount_sd_card();
     bool is_mounted();
