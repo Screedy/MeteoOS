@@ -150,6 +150,8 @@ void render_set_time_menu() {
         }
         else if (buttons.is_button_x_pressed()){
             if(setting == 5){
+                int dotw = calculate_dotw(dt.day, dt.month, dt.year);
+                dt.dotw = dotw;
                 set_time(&dt); // Set the time if the last setting is reached.
                 return;
             } else {
