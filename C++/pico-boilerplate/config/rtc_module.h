@@ -82,4 +82,8 @@ bool is_rtc_set();
  */
 std::string get_format_time(datetime_t datetime);
 
+datetime_t start_of_week(datetime_t datetime);
+
+int calculate_dotw(int day, int month, int year);
+
 #endif //PICO_BOILERPLATE_RTC_MODULE_H
