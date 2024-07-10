@@ -34,6 +34,7 @@ file(GLOB GRAPHICS_SOURCES "graphics/*.cpp" "graphics/*.h")
 file(GLOB GRAPH_SOURCES "graphics/graph/*.cpp" "graphics/graph/*.h")
 file(GLOB SENSORS_SOURCES "sensors/*.cpp" "sensors/*.h")
 file(GLOB PAGES_SOURCES "pages/*.cpp" "pages/*.h")
+file(GLOB UTILS_SOURCES "utils/*.cpp" "utils/*.h")
 
 # Tell CMake where to find the executable source file
 add_executable(${NAME}
@@ -43,6 +44,7 @@ add_executable(${NAME}
 	${GRAPH_SOURCES}
 	${SENSORS_SOURCES}
 	${PAGES_SOURCES}
+	${UTILS_SOURCES}
 	lib/QR-Code-generator/qrcodegen.hpp
 	lib/QR-Code-generator/qrcodegen.cpp
 )
