@@ -11,15 +11,12 @@ set(PICO_SDK_PATH "../pico-sdk")
 include(pico_sdk_import.cmake)
 include(pimoroni_pico_import.cmake)
 
-# Gooey boilerplate
 project(${NAME} C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 # Set compile options for both C and C++ files
 add_compile_options(-fexceptions)
-
-# Enable exceptions on the Pico itself
 set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 
 # Initialize the SDK
