@@ -157,7 +157,7 @@ void SensorManager::loadSensors() {
         std::string name = parts[2];
 
         //try setting interval, if it fails set it to 0
-        int interval; // TODO: This is temporary while changing the save file format
+        int interval; // NOTE: This is temporary while changing the save file format
         try {
             interval = std::stoi(parts[3]);
         } catch (std::invalid_argument& e) {
@@ -169,7 +169,7 @@ void SensorManager::loadSensors() {
         #endif
 
         if (sensorType == "DHT11") {
-            sensors.push_back(std::make_unique<DHT11>(DHT11(pin, name, interval))); //TODO: interval (0) - done needs testing
+            sensors.push_back(std::make_unique<DHT11>(DHT11(pin, name, interval)));
         } else if (sensorType == "DS18B20") {
             //sensors.push_back(std::make_unique<DS18B20>(DS18B20(pin, name, interval)));
         }
