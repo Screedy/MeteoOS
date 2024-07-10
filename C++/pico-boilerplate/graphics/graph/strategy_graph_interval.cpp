@@ -32,5 +32,5 @@ int StrategyGraphInterval::temperature_to_pixel(float temp, float min_temp, floa
         printf("The pixel y value is: %d\n", (int) (pixel_max + ((temp - min_temp) * (pixel_min - pixel_max)) / (max_temp - min_temp)));
     #endif
 
-    return (int) (pixel_max + ((temp - min_temp) * (pixel_min - pixel_max)) / (max_temp - min_temp));
+    return (int) (pixel_min + ((temp - min_temp) * (pixel_max - pixel_min)) / (max_temp - min_temp));
 }
