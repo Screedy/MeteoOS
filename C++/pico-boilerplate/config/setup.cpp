@@ -189,7 +189,7 @@ void initial(){
     bool sensor_added = render_add_sensor();
 }
 
-void wait_for_y(std::function<void()> func){ // TODO: Check if this is correct.
+void wait_for_y(std::function<void()> func){
     while(true){
         if(Buttons::getInstance().is_button_y_pressed()){
             return;

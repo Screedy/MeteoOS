@@ -31,7 +31,6 @@ void ConcreteStrategyDaily::renderGraph(datetime_t date, Sensor* sensor, bool fo
          // 31.2;30.0;31.8;26.3;27.3;23.7;30.5 - test value
     } else {
         //TODO: Return the average temperature and humidity for the given date from file in that week period
-
         //TODO: Save them in a file for later use if not force_redraw
     }
 

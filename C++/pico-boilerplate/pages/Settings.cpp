@@ -76,7 +76,6 @@ void SettingsFunctions::change_brightness() {
 }
 
 void SettingsFunctions::format_sd() {
-    //TODO: TEST
     printf("Formatting SD card\n");
     render_format_sd();
 }
@@ -99,7 +98,7 @@ void render_settings(int selected_item) {
     render_nav_arrows(110);
 
     graphics.line(Point{100, 16}, Point{100, 120});
-    graphics.line(Point{101, 16}, Point{101, 120}); //TODO: Implement these as a function (minor, optional)
+    graphics.line(Point{101, 16}, Point{101, 120}); //NOTE: Implement these as a function (minor, optional)
     graphics.line(Point{102, 16}, Point{102, 120});
 
     render_settings_buttons();

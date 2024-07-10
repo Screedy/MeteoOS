@@ -14,7 +14,7 @@
 /*
  * Function that reads the brightness screen for the display.
  *
- * Has a slider that changes the brightness of the display and saves it to the config file. //TODO: SAVE TO CONFIG FILE
+ * Has a slider that changes the brightness of the display and saves it to the config file.
  * @return true if the user wants to save the brightness, false otherwise.
  */
 bool render_brightness();

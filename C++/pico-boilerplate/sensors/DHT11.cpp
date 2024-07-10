@@ -25,7 +25,7 @@ DHT11::DHT11(unsigned int pin, std::string name, int interval)
         printf("Creating timer for sensor %s.\n", this->name.c_str());
         #endif
         this->write = true;
-        //TODO: Timer is not working.
+        //FIXME: Timer is not working.
         if (!add_repeating_timer_ms(-this->interval * 1000 * 10, timer_callback_dht, nullptr, &this->timer)) {
             #ifdef TEST_BUILD
             for(;;){
