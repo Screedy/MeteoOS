@@ -31,58 +31,21 @@ if(TEST_BUILD)
     add_compile_definitions(TEST_BUILD)
 endif()
 
+# Definition of source and header files using globbing
+file(GLOB CONFIG_SOURCES "config/*.cpp" "config/*.h")
+file(GLOB GRAPHICS_SOURCES "graphics/*.cpp" "graphics/*.h")
+file(GLOB GRAPH_SOURCES "graphics/graph/*.cpp" "graphics/graph/*.h")
+file(GLOB SENSORS_SOURCES "sensors/*.cpp" "sensors/*.h")
+file(GLOB PAGES_SOURCES "pages/*.cpp" "pages/*.h")
 
 # Tell CMake where to find the executable source file
 add_executable(${NAME}
     	main.cpp
-    	config/config.cpp
-    	config/config.h
-    	config/Display.cpp
-    	config/Display.h
-	config/rtc_module.h
-	config/rtc_module.cpp
-    	graphics/graphics.cpp
-    	graphics/graphics.h
-    	graphics/page_elements.cpp
-    	graphics/page_elements.h
-	graphics/qrcode_graphics.h
-	graphics/qrcode_graphics.cpp
-	graphics/graph/concrete_strategy_daily.h
-	graphics/graph/concrete_strategy_daily.cpp
-	graphics/graph/concrete_strategy_weekly.h
-	graphics/graph/concrete_strategy_weekly.cpp
-	graphics/graph/context_graph_interval.h
-	graphics/graph/context_graph_interval.cpp
-	graphics/graph/strategy_graph_interval.h
-	graphics/graph/strategy_graph_interval.cpp
-    	sensors/DHT11.h
-    	sensors/DHT11.cpp
-	sensors/Sensor.h
-	sensors/Sensor.cpp
-	sensors/SensorManager.cpp
-	sensors/SensorManager.h
-	pages/Settings.h
-	pages/Settings.cpp
-	pages/add_sensor.h
-	pages/add_sensor.cpp
-	pages/brightness.h
-	pages/brightness.cpp
-	pages/del_data.h
-	pages/del_data.cpp
-	pages/del_sensor.h
-	pages/del_sensor.cpp
-	pages/format_sd.h
-	pages/format_sd.cpp
-	pages/set_time.h
-	pages/set_time.cpp
-	#config/sd_card_config.h
-	config/hw_config.cpp
-	config/sd_card_manager.h
-	config/sd_card_manager.cpp
-	config/startup.h
-	config/startup.cpp
-	config/setup.h
-	config/setup.cpp
+	${CONFIG_SOURCES}
+	${GRAPHICS_SOURCES}
+	${GRAPH_SOURCES}
+	${SENSORS_SOURCES}
+	${PAGES_SOURCES}
 	lib/QR-Code-generator/qrcodegen.hpp
 	lib/QR-Code-generator/qrcodegen.cpp
 )
