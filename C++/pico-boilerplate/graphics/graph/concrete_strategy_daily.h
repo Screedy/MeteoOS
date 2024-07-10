@@ -13,7 +13,7 @@ public:
     void renderGraph(datetime_t date, Sensor* sensor, bool force_redraw) override;
 private:
     void renderDailyGraph(const std::vector<float>& temp, const std::vector<float>& hum);
-
+    void getDailyValuesFromFile(std::vector<float>& temp, std::vector<float>& hum, Sensor* sensor);
 };
 
 #endif //PICO_BOILERPLATE_CONCRETE_STRATEGY_DAILY_H
