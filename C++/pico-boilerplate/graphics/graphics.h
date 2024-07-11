@@ -98,6 +98,7 @@ void draw_next();
 void draw_prev();
 void draw_back();
 void draw_ok();
+void draw_confirm();
 void draw_cancel();
 
 #endif //PICO_BOILERPLATE_GRAPHICS_H

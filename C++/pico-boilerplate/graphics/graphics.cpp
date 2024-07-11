@@ -127,6 +127,11 @@ void draw_ok(){
     graphics.text("OK", Point{DISPLAY_WIDTH - 30, 20}, 200, 2);
 }
 
+void draw_confirm(){
+    graphics.set_pen(Colors::GREEN);
+    graphics.text("CONFIRM", Point{DISPLAY_WIDTH - 75, 20}, 190, 2);
+}
+
 void draw_cancel(){
     graphics.set_pen(Colors::RED);
     graphics.text("CANCEL", Point{DISPLAY_WIDTH - 65, DISPLAY_HEIGHT - 20}, 200, 2);
