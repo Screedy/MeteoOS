@@ -194,11 +194,11 @@ def day_data(date, file):
 
 
 def days_data(day_of_week, sensor):
-    """Returns the average data for the given day in a week.
+    """Returns the average data for the given days in a week.
 
     :param day_of_week: The day to get the data from in a format of a tuple (year, month, day, weekday).
     :param sensor: The sensor to get the data from.
-    :return: A tuple containing the average measurements for the given day.
+    :return: A tuple containing the average measurements for the given days in a week.
     """
 
     start = start_of_week(day_of_week)
