@@ -110,3 +110,22 @@ bool sd_card_manager::fileExists(const std::string& file_path) {
     f_close(&file);
     return true;
 }
+
+bool sd_card_manager::read_n_lines(FIL& file, int number_of_lines, std::vector<std::string>& lines) {
+    if (number_of_lines <= 0) {
+        return false;
+    }
+
+    // NOTE: If intervals work in the future this should
+    // pause all measurements while reading like the MicroPython version.
+
+    char buffer[60]; // Enough for the longest line in the file (40 should be enough, but let's be safe)
+    int lines_read = 0;
+
+    while (lines_read < number_of_lines && f_gets(buffer, sizeof(buffer), &file)) {
+        lines.push_back(std::string(buffer));
+        lines_read++;
+    }
+
+    return true;
+}
