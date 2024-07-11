@@ -15,12 +15,12 @@
 #include "pages/Settings.h"
 #include "config/sd_card_manager.h"
 #include "config/startup.h"
-//#include "lib/QR-Code-generator/qrcodegen.hpp"
 #include "graphics/qrcode_graphics.h"
 #include "rtc.h"
 #include "hardware/timer.h"
 #include "graphics/graph/strategy_graph_interval.h"
 #include "graphics/graph/concrete_strategy_daily.h"
+#include "graphics/graph/concrete_strategy_weekly.h"
 #include "graphics/graph/context_graph_interval.h"
 #include "config/rtc_module.h"
 
@@ -42,18 +42,27 @@ void render_homepage(int graph_interval){
     graphics.line(Point{101, 16}, Point{101, 120});
     graphics.line(Point{102, 16}, Point{102, 120});
 
-    //auto active_sensor = sensor_manager.sensors[sensor_manager.active_sensor];
-    //graph.render_graph(//TODO: graph_interval, active_sensor);
+    // If time is set, render the graph
+    bool time_set = is_rtc_set();
+    if (time_set){
+        // Get the current active sensor
+        SensorManager& sensor_manager = SensorManager::getInstance();
+        std::unique_ptr<Sensor>& active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
 
-    //if time is set, render the graph
-    if (is_rtc_set()){
-        //get the current active sensor
-        auto& sensor_manager = SensorManager::getInstance();
-        auto& active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
+        // Set the strategy for the graph interval
+        std::unique_ptr<StrategyGraphInterval> strategy;
+        if (graph_interval == GraphInterval::DAILY){
+            strategy = std::make_unique<ConcreteStrategyDaily>();
+        } else if (graph_interval == GraphInterval::WEEKLY){
+            strategy = std::make_unique<ConcreteStrategyWeekly>();
+        } else if (graph_interval == GraphInterval::MONTHLY){
+            // strategy = std::make_unique<ConcreteStrategyMonthly>();
+        }
 
-        auto dailyStrategy = std::make_unique<ConcreteStrategyDaily>();
-        ContextGraphInterval setStrategy(std::move(dailyStrategy));
-        setStrategy.renderGraph(get_current_datetime(), active_sensor.get(), false);
+        if (graph_interval != GraphInterval::MONTHLY){
+            ContextGraphInterval setStrategy(std::move(strategy));
+            setStrategy.renderGraph(get_current_datetime(), active_sensor.get(), false);
+        }
     }
 
     driver.update(&graphics);
