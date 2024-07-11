@@ -14,6 +14,7 @@ public:
 private:
     void renderDailyGraph(const std::vector<float>& temp, const std::vector<float>& hum);
     void getDailyValuesFromFile(std::vector<float>& temp, std::vector<float>& hum, Sensor* sensor);
+    void generateDailyValues(std::vector<float>& temp, std::vector<float>& hum, Sensor* sensor, datetime_t date);
 };
 
 #endif //PICO_BOILERPLATE_CONCRETE_STRATEGY_DAILY_H

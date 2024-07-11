@@ -26,12 +26,13 @@ void ConcreteStrategyDaily::renderGraph(datetime_t date, Sensor* sensor, bool fo
     std::vector<float> temp = {0, 0, 0, 0, 0, 0, 0};
     std::vector<float> hum = {0, 0, 0, 0, 0, 0, 0};
 
+    // 31.2;30.0;31.8;26.3;27.3;23.7;30.5 - test values
     if (!force_redraw) {
-         getDailyValuesFromFile(temp, hum, sensor); // TODO: needs testing
-         // 31.2;30.0;31.8;26.3;27.3;23.7;30.5 - test value
+        // Get the values from the file
+         getDailyValuesFromFile(temp, hum, sensor);
     } else {
-        //TODO: Return the average temperature and humidity for the given date from file in that week period
-        //TODO: Save them in a file for later use if not force_redraw
+        // Generate the values for the given week
+        generateDailyValues(temp, hum, sensor, date);
     }
 
     renderDailyGraph(temp, hum);
@@ -113,4 +114,64 @@ void ConcreteStrategyDaily::getDailyValuesFromFile(std::vector<float>& temp, std
         hum[i] = -404.0f; // No humidity values are being stored here right now.
         // There was no room on the display. This can be changed in the future.
     }
+}
+
+void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
+                                                std::vector<float>& hum, Sensor* sensor, datetime_t date) {
+    // Use the generateOneDayValues function from the StrategyGraphInterval class to get the values for the given days
+
+    // NOTE: This is hardcoded to week that has values pregenerated in a file. So that both MicroPython and C++ version
+    // have the same test generated and thus we can compare the time.
+    date.year = 2024;
+    date.month = 2;
+    date.day = 15;
+    date.dotw = 3;
+
+    datetime_t start = start_of_week(date);
+
+    #ifdef TEST_BUILD
+    printf("Start of the week: %d-%d-%d\n", start.year, start.month, start.day);
+    sleep_ms(2000);
+    #endif
+
+    sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
+    std::string clean_name = sensor->getName();
+    clean_name.erase(std::remove(clean_name.begin(), clean_name.end(), '\0'), clean_name.end());
+    std::string file_path = "0:/sensors/" + clean_name + ".txt";
+
+    FIL file;
+    FRESULT res = f_open(&file, file_path.c_str(), FA_READ);
+    if (res != FR_OK) {
+        printf("Failed to open file %s\n", file_path.c_str());
+        return;
+    }
+
+    // Generate the values for the whole week
+    for (int i = 0; i < 7; i++) {
+        std::array<float, 2> values = generateOneDayValues(start, file);
+        temp[i] = values[0];
+        hum[i] = values[1];
+        start.day++;
+    }
+
+    f_close(&file);
+
+    // Save the values in a file for later use at 0:/sensors/measurements/"sensor_name"_daily.txt
+    std::string values_str = "";
+    for (int i = 0; i < 7; i++) {
+        values_str += std::to_string(temp[i]);
+        if (i != 6) {
+            values_str += ";";
+        }
+    }
+
+    file_path = "0:/sensors/measurements/" + clean_name + "_daily.txt";
+    res = f_open(&file, file_path.c_str(), FA_WRITE | FA_CREATE_ALWAYS);
+    if (res != FR_OK) {
+        printf("Failed to open file %s\n", file_path.c_str());
+        return;
+    }
+
+    f_puts(values_str.c_str(), &file);
+    f_close(&file);
 }
