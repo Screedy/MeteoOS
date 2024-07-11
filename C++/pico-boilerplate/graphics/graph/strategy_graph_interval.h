@@ -6,6 +6,7 @@
 #define PICO_BOILERPLATE_STRATEGY_GRAPH_INTERVAL_H
 
 #include <string>
+#include <array>
 #include <vector>
 #include "../../config/Display.h"
 #include "../../config/config.h"
@@ -13,6 +14,7 @@
 #include "pico/stdlib.h"
 #include "pico/util/datetime.h"
 #include "../../sensors/Sensor.h"
+#include "../../config/sd_card_manager.h"
 
 /*
  * The strategy pattern is a behavioral design pattern that enables selecting an algorithm at runtime.
@@ -24,6 +26,8 @@ public:
     float getMin(const std::vector<float>& values);
     float getMax(const std::vector<float>& values);
     int temperature_to_pixel(float temp, float min_temp, float max_temp);
-};
+    std::array<float, 2> generateOneDayValues(datetime_t day, FIL& file);
+
+    };
 
 #endif //PICO_BOILERPLATE_STRATEGY_GRAPH_INTERVAL_H
