@@ -10,4 +10,6 @@
 
 std::vector<std::string> split(const std::string &s, char delimiter);
 
+std::string removeEscapeSequences(const std::string &s);
+
 #endif //PICO_BOILERPLATE_STRING_MODIFIERS_H

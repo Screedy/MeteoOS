@@ -16,3 +16,14 @@ std::vector<std::string> split(const std::string &s, char delimiter) {
     }
     return tokens;
 }
+
+// Function to remove escape sequences from a string
+std::string removeEscapeSequences(const std::string &s) {
+    std::string result;
+    for (char c : s) {
+        if (c != '\n' && c != '\r') {
+            result += c;
+        }
+    }
+    return result;
+}
