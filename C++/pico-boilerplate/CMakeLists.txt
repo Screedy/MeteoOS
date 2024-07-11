@@ -47,6 +47,7 @@ add_executable(${NAME}
 	${UTILS_SOURCES}
 	lib/QR-Code-generator/qrcodegen.hpp
 	lib/QR-Code-generator/qrcodegen.cpp
+	pages/reset_graph.h
 )
 
 # Tell CMake where to find other source code
