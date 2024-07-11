@@ -22,10 +22,6 @@ bool is_rtc_set(){
     datetime_t datetime;
     rtc_get_datetime(&datetime);
 
-    #ifdef TEST_BUILD
-    //printf("RTC year: %d\n", datetime.year);
-    #endif
-
     if (datetime.year < 1999){
         return false;
     }
