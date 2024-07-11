@@ -20,6 +20,7 @@
 #include "format_sd.h"
 #include "del_data.h"
 #include "set_time.h"
+#include "reset_graph.h"
 
 
 namespace Settings{
@@ -45,6 +46,7 @@ private:
         FormatSD,
         DelData,
         SetTime,
+        ResetGraph,
         NumberOfItems
     };
     /*
@@ -84,6 +86,7 @@ public:
     static void format_sd();
     static void del_data();
     static void set_time();
+    static void reset_graph();
 };
 
 /*

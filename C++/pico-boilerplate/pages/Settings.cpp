@@ -28,6 +28,8 @@ std::string SettingsItems::SettingsToString(SettingsItem item) {
             return "DelData";
         case SetTime:
             return "SetTime";
+        case ResetGraph:
+            return "ResetGraph";
         default:
             return "Unknown";
     }
@@ -55,6 +57,8 @@ std::function<void()> SettingsItems::get_function(int selected_item) {
             return SettingsFunctions::del_data;
         case SetTime:
             return SettingsFunctions::set_time;
+        case ResetGraph:
+            return SettingsFunctions::reset_graph;
         default:
             return [](){};
     }
@@ -88,6 +92,11 @@ void SettingsFunctions::del_data() {
 void SettingsFunctions::set_time() {
     printf("Setting time\n");
     render_set_time_menu();
+}
+
+void SettingsFunctions::reset_graph() {
+    printf("Resetting graph\n");
+    render_reset_graph();
 }
 
 void render_settings(int selected_item) {
