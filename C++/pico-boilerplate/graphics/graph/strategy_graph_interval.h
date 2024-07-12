@@ -22,9 +22,41 @@
  */
 class StrategyGraphInterval {
 public:
+    /*
+     * Renders the graph for the given date and sensor.
+     * This method should be implemented by the child classes.
+     *
+     * @param date: Date for which the graph should be rendered.
+     * @param sensor: Sensor for which the graph should be rendered.
+     * @param force_redraw: If true, the graph will be redrawn even if it was already rendered for the given date.
+     */
     virtual void renderGraph(datetime_t date, Sensor* sensor, bool force_redraw) = 0;
+
+    /*
+     * Returns the minimum value from the given vector of floats.
+     *
+     * @param values: Vector of floats from which the minimum value should be returned.
+     */
     float getMin(const std::vector<float>& values);
+
+    /*
+     * Returns the maximum value from the given vector of floats.
+     *
+     * @param values: Vector of floats from which the maximum value should be returned.
+     */
     float getMax(const std::vector<float>& values);
+
+    /*
+     * Converts the given temperature value to a range of pixels.
+     * It uses a range from 20 to 100 pixels on the screen. If the temperature is almost the same as the minimum
+     * temperature, it will be around the 20th pixel mark.
+     *
+     * @param float temp: Temperature value that should be converted to pixels.
+     * @param float min_temp: Minimum temperature value from the given vector of temperatures.
+     * @param float max_temp: Maximum temperature value from the given vector of temperatures.
+     *
+     * @return int: Pixel value for the given temperature.
+     */
     int temperature_to_pixel(float temp, float min_temp, float max_temp);
     std::array<float, 2> generateOneDayValues(datetime_t day, FIL& file);
 

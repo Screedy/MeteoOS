@@ -65,37 +65,51 @@ std::function<void()> SettingsItems::get_function(int selected_item) {
 }
 
 void SettingsFunctions::add_sensor() {
+    #ifdef TEST_BUILD
     printf("Adding sensor\n");
+    #endif
     render_add_sensor();
 }
 
 void SettingsFunctions::remove_sensor() {
+    #ifdef TEST_BUILD
     printf("Removing sensor\n");
+    #endif
     render_del_sensor();
 }
 
 void SettingsFunctions::change_brightness() {
+    #ifdef TEST_BUILD
     printf("Changing brightness\n");
+    #endif
     render_brightness();
 }
 
 void SettingsFunctions::format_sd() {
+    #ifdef TEST_BUILD
     printf("Formatting SD card\n");
+    #endif
     render_format_sd();
 }
 
 void SettingsFunctions::del_data() {
+    #ifdef TEST_BUILD
     printf("Deleting data\n");
+    #endif
     render_del_data();
 }
 
 void SettingsFunctions::set_time() {
+    #ifdef TEST_BUILD
     printf("Setting time\n");
+    #endif
     render_set_time_menu();
 }
 
 void SettingsFunctions::reset_graph() {
+    #ifdef TEST_BUILD
     printf("Resetting graph\n");
+    #endif
     render_reset_graph();
 }
 

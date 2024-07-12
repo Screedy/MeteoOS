@@ -9,7 +9,7 @@
 #include "diskio.h"
 
 /*
- * A static configuration of SPI peripherals
+ * A static configuration of SPI peripherals.
  */
 static spi_t spis[] = {
         {
@@ -22,7 +22,8 @@ static spi_t spis[] = {
 };
 
 /*
- * A static configuration of SD cards in the system
+ * A static configuration of SD cards in the system.
+ * The configuration is static, because the system has only one SD card.
  */
 static sd_card_t sd_cards[] = {
         {
@@ -35,16 +36,16 @@ static sd_card_t sd_cards[] = {
 };
 
 /*
- * Get number of SD cards in configuration
+ * Get number of SD cards in configuration.
  */
 size_t sd_get_num() {
     return count_of(sd_cards);
 }
 
 /*
- * Get SD card configuration by number
- * @param num Number of SD card
- * @return Pointer to SD card configuration or nullptr if not found
+ * Get SD card configuration by number.
+ * @param num Number of SD card.
+ * @return Pointer to SD card configuration or nullptr if not found.
  */
 sd_card_t *sd_get_by_num(size_t num) {
     assert(num <= sd_get_num());
@@ -56,16 +57,16 @@ sd_card_t *sd_get_by_num(size_t num) {
 }
 
 /*
- * Get number of SPI peripherals in configuration
+ * Get number of SPI peripherals in configuration.
  */
 size_t spi_get_num() {
     return count_of(spis);
 }
 
 /*
- * Get SPI peripheral configuration by number
- * @param num Number of SPI peripheral
- * @return Pointer to SPI peripheral configuration or nullptr if not found
+ * Get SPI peripheral configuration by number.
+ * @param num Number of SPI peripheral.
+ * @return Pointer to SPI peripheral configuration or nullptr if not found.
  */
 spi_t *spi_get_by_num(size_t num) {
     assert(num <= spi_get_num());

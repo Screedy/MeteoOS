@@ -82,8 +82,26 @@ bool is_rtc_set();
  */
 std::string get_format_time(datetime_t datetime);
 
+/*
+ * For a given date, calculate the start of the week.
+ *
+ * @param datetime The date for which to calculate the start of the week.
+ * @return datetime_t The start of the week for the given date.
+ *
+ * @example For the date 2024-07-12 (Friday), the start of the week is 2024-07-08 (Monday).
+ */
 datetime_t start_of_week(datetime_t datetime);
 
+/*
+ * Function that calculates the day of the week for a given date.
+ * Uses the Zeller's Congruence algorithm.
+ *
+ * @param day The day of the date.
+ * @param month The month of the date.
+ * @param year The year of the date.
+ *
+ * @return The day of the week (0 is Monday, 6 is Sunday).
+ */
 int calculate_dotw(int day, int month, int year);
 
 #endif //PICO_BOILERPLATE_RTC_MODULE_H

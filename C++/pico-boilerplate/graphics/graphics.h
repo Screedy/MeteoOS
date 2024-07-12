@@ -94,11 +94,40 @@ void draw_humidity(int x, int y);
  */
 void clear_fast();
 
+/*
+ * Draws the NEXT button on the display.
+ * It is positioned in the bottom right corner of the display.
+ */
 void draw_next();
+
+/*
+ * Draws the PREV button on the display.
+ * It is positioned in the bottom right corner of the display.
+ */
 void draw_prev();
+
+/*
+ * Draws the BACK button on the display.
+ * It is positioned in the bottom right corner of the display.
+ */
 void draw_back();
+
+/*
+ * Draws the OK button on the display.
+ * It is positioned in the top right corner of the display.
+ */
 void draw_ok();
+
+/*
+ * Draws the CANCEL button on the display.
+ * It is positioned in the top right corner of the display.
+ */
 void draw_confirm();
+
+/*
+ * Draws the CANCEL button on the display.
+ * It is positioned in the bottom right corner of the display.
+ */
 void draw_cancel();
 
 #endif //PICO_BOILERPLATE_GRAPHICS_H

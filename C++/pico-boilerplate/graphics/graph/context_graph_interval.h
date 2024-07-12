@@ -20,10 +20,39 @@
  */
 class ContextGraphInterval {
 public:
+    /*
+     * Constructor that sets the strategy to render the graph.
+     *
+     * @param strategy: Strategy to render the graph.
+     * @see StrategyGraphInterval
+     * @see ConcreteStrategyDaily
+     * @see ConcreteStrategyWeekly
+     */
     explicit ContextGraphInterval(std::unique_ptr<StrategyGraphInterval> strategy);
+
+    /*
+     * Sets the strategy to render the graph.
+     *
+     * @param strategy: Strategy to render the graph.
+     * @see StrategyGraphInterval
+     * @see ConcreteStrategyDaily
+     * @see ConcreteStrategyWeekly
+     */
     void setStrategy(std::unique_ptr<StrategyGraphInterval> strategy);
+
+    /*
+     * Renders the graph for the given date and sensor.
+     *
+     * @param date: Date for which the graph should be rendered.
+     * @param sensor: Sensor for which the graph should be rendered.
+     * @param force_redraw: If true, the graph will be redrawn even if it was already rendered for the given date.
+     */
     void renderGraph(datetime_t date, Sensor* sensor, bool force_redraw);
 private:
+
+    /*
+     * Strategy to render the graph with. It is a unique pointer to the StrategyGraphInterval child class.
+     */
     std::unique_ptr<StrategyGraphInterval> _strategy;
 };
 
