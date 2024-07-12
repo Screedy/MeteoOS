@@ -33,6 +33,14 @@ public:
     virtual void renderGraph(datetime_t date, Sensor* sensor, bool force_redraw) = 0;
 
     /*
+     * Returns the name of the interval.
+     * This method should be implemented by the child classes.
+     *
+     * @return std::string: Name of the interval.
+     */
+    virtual std::string getIntervalName() = 0;
+
+    /*
      * Returns the minimum value from the given vector of floats.
      *
      * @param values: Vector of floats from which the minimum value should be returned.

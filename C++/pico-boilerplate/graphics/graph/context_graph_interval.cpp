@@ -18,8 +18,10 @@ void ContextGraphInterval::renderGraph(datetime_t date, Sensor* sensor, bool for
     // The path is 0:/sensors/measurements/"sensor_name"daily.txt (or weekly.txt)
     if (!force_redraw) {
         std::string clean_name = sensor->getName();
+        std::string type = "";
         clean_name.erase(std::remove(clean_name.begin(), clean_name.end(), '\0'), clean_name.end());
-        std::string file_path = "0:/sensors/measurements/" + clean_name + "_daily.txt";
+
+        std::string file_path = "0:/sensors/measurements/" + clean_name + _strategy->getIntervalName() + ".txt";
         sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
 
 
