@@ -23,6 +23,13 @@ public:
      * @param force_redraw: If true, the graph will be redrawn even if it was already rendered for the given date.
      */
     void renderGraph(datetime_t date, Sensor* sensor, bool force_redraw) override;
+
+    /*
+     * Returns the name of the interval.
+     *
+     * @return std::string: Name of the interval.
+     */
+    std::string getIntervalName();
 private:
     /*
      * Renders weekly graph for given temperature and humidity values.
@@ -42,6 +49,16 @@ private:
      * @param sensor: Sensor for which the values should be retrieved.
      */
     void getWeeklyValuesFromFile(std::vector<float>& temp, std::vector<float>& hum, Sensor* sensor);
+
+    /*
+     * Generates weekly temperature and humidity values for the given date.
+     *
+     * @param temp: Vector where the temperature values will be stored.
+     * @param hum: Vector where the humidity values will be stored.
+     * @param sensor: Sensor for which the values should be generated.
+     * @param date: Date for which the values should be generated.
+     */
+    void generateWeeklyValues(std::vector<float>& temp, std::vector<float>& hum, Sensor* sensor, datetime_t date);
 };
 
 #endif //PICO_BOILERPLATE_CONCRETE_STRATEGY_WEEKLY_H
