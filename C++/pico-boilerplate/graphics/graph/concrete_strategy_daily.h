@@ -24,6 +24,13 @@ public:
      * @param force_redraw: If true, the graph will be redrawn even if it was already rendered for the given date.
      */
     void renderGraph(datetime_t date, Sensor* sensor, bool force_redraw) override;
+
+    /*
+     * Returns the name of the interval.
+     *
+     * @return std::string: Name of the interval.
+     */
+    std::string getIntervalName();
 private:
     /*
      * Renders daily graph for given temperature and humidity values.

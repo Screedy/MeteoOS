@@ -175,3 +175,7 @@ void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
     f_puts(values_str.c_str(), &file);
     f_close(&file);
 }
+
+std::string ConcreteStrategyDaily::getIntervalName(){
+    return "_daily";
+}
