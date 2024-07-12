@@ -104,4 +104,14 @@ datetime_t start_of_week(datetime_t datetime);
  */
 int calculate_dotw(int day, int month, int year);
 
+/*
+ * Function that returns the number of days in a given month.
+ *
+ * @param month The month for which to calculate the number of days.
+ * @param year The year for which to calculate the number of days.
+ *
+ * @return The number of days in the given month.
+ */
+int getNumDaysInMonth(int month, int year);
+
 #endif //PICO_BOILERPLATE_RTC_MODULE_H

@@ -91,3 +91,18 @@ int calculate_dotw(int day, int month, int year){
     // Convert Zeller's output to our format (0 is Monday, 6 is Sunday)
     return (dotw + 6) % 7;
 }
+
+int getNumDaysInMonth(int month, int year){
+    if (month == 1 || month == 3 || month == 5 || month == 7 ||
+        month == 8 || month == 10 || month == 12) {
+        return 31;
+    } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+        return 30;
+    } else {
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+            return 29; // Leap year
+        } else {
+            return 28;
+        }
+    }
+}
