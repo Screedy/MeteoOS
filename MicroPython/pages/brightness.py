@@ -1,6 +1,4 @@
-import time
-from config.config import *
-from sensors.sensor_manager import SensorManager, AvailableSensors
+from config.config import Display, Colors, button_x, button_a, button_b, button_y
 import page_elements
 from config.settings_manager import SettingsManager, load_brightness
 
