@@ -4,6 +4,7 @@ import time
 from config.config import Display, Colors, button_a, button_b, button_x, button_y
 import page_elements
 from config.sdcard_manager import SDCardManager
+from graphics.graphics import draw_cancel, draw_ok
 
 
 def render_del_data():
@@ -41,4 +42,8 @@ def render_del_data():
         display().set_pen(Colors.WHITE)
         page_elements.render_nav_arrows(110)
         page_elements.render_items_list(selected_item, files)
+
+        draw_ok()
+        draw_cancel()
+
         display().update()
