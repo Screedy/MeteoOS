@@ -5,9 +5,9 @@ import time
 from page_elements import clear_fast
 
 helped = False
-pins = ["GP4", "GP5", "GP9", "GP10", "GP11", "GP20", "GP21", "GP22"]
+pins = ["GP0", "GP1", "GP9", "GP10", "GP11", "GP20", "GP21", "GP22"]
 selected_pin = 0
-storage_pins = ["GP0", "GP1", "GP2", "GP3"]
+storage_pins = ["GP10", "GP11", "GP8", "GP9"]
 
 
 def wizard_start():
@@ -75,7 +75,7 @@ def storage_pin_setup():
         display().text("Setup wizard", 2, 0, 236, 2)
         display().text("Please connect the SD card to the following pins:", 2, 20, 180, 2)
         display().text("SCK -> GP10, MOSI -> GP11, "
-                     "MISO -> GP8, CS -> GP9, VCC -> +5V, GND -> GND", 2, 70, 220, 2)
+                       "MISO -> GP8, CS -> GP9, VCC -> +5V, GND -> GND", 2, 70, 220, 2)
         display().text("OK", display.x_max - 25, display.y_max - 17, 236, 2)
         display().text("HELP", display.x_max - 45, 2, 236, 2)
         display().update()
@@ -145,7 +145,7 @@ def clear_pin():
 
 
 def set_defaults():
-    """Sets the default values for the settings.txt file."""    # TODO: Add more settings
+    """Sets the default values for the settings.txt file."""
 
     with open("settings.txt", "w") as f:
         f.write("brightness:0.5\n")
