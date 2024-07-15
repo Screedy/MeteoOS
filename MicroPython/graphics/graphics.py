@@ -154,6 +154,72 @@ def draw_humidity(x: int, y: int):
     disp().line(x + 5, y + 1, x + 5, y + 6)
 
 
+def draw_next():
+    """Draws a next icon on the display.
+
+    :return: None
+    """
+
+    disp = Display()
+    disp().set_pen(Colors.GREEN)
+    disp().text("NEXT", disp.x_max-45, 20, 200, 2)
+
+
+def draw_prev():
+    """Draws a previous icon on the display.
+
+    :return: None
+    """
+
+    disp = Display()
+    disp().set_pen(Colors.RED)
+    disp().text("PREV", disp.x_max-45, disp.y_max-20, 200, 2)
+
+
+def draw_back():
+    """Draws a back icon on the display.
+
+    :return: None
+    """
+
+    disp = Display()
+    disp().set_pen(Colors.RED)
+    disp().text("BACK", 190, 115, 200, 2)
+
+
+def draw_ok():
+    """Draws a OK icon on the display.
+
+    :return: None
+    """
+
+    disp = Display()
+    disp().set_pen(Colors.GREEN)
+    disp().text("OK", disp.x_max-30, 20, 200, 2)
+
+
+def draw_confirm():
+    """Draws a confirm icon on the display.
+
+    :return: None
+    """
+
+    disp = Display()
+    disp().set_pen(Colors.GREEN)
+    disp().text("CONFIRM", disp.x_max-75, 20, 200, 2)
+
+
+def draw_cancel():
+    """Draws a cancel icon on the display.
+
+    :return: None
+    """
+
+    disp = Display()
+    disp().set_pen(Colors.RED)
+    disp().text("CANCEL", disp.x_max-65, disp.y_max-20, 200, 2)
+
+
 if __name__ == "__main__":
     display = Display()
     """
