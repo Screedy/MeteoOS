@@ -1,22 +1,19 @@
-# 125 pixels
+import os
 import utime
-from config.config import *
-import page_elements
+
 from config.sdcard_manager import SDCardManager
 import sensors.sensor_manager as sm
-from config.config import singleton
-from sensors.sensor_manager import SensorManager
-import os
+from config.config import singleton, Colors, GraphInterval, Display
 
 
 class StrategyGraphInterval:
     """The strategy interface for rendering the graph."""
 
-    def render_graph(self, date, sensor, force) -> None:
+    def render_graph(self, date, target_sensor, force) -> None:
         """Renders the graph using the strategy pattern.
 
         :param date: The day to reference the graph to.
-        :param sensor: The sensor to get the data from.
+        :param target_sensor: The sensor to get the data from.
         :param force: If set to True, the graph will be rendered from the file again and not from memory.
         """
 
@@ -26,27 +23,27 @@ class StrategyGraphInterval:
 class ConcreteStrategyDaily(StrategyGraphInterval):
     """The concrete strategy for rendering the daily graph."""
 
-    def render_graph(self, date, sensor, force) -> None:
+    def render_graph(self, date, target_sensor, force) -> None:
         """Renders the daily graph using the strategy pattern.
 
         :param date: The day to referer the week to. If set to Friday 16th of the month, the graph will
         display a week from 12th to 18th.
-        :param sensor: The sensor to get the data from.
+        :param target_sensor: The sensor to get the data from.
         :param force: If set to True, the graph will be rendered from the file again and not from memory.
         :return: None
         """
 
-        display = Display()
+        disp = Display()
 
-        display().text("MO TU WE TH FR SA SU", 130, 105, 250, 1)
+        disp().text("MO TU WE TH FR SA SU", 130, 105, 250, 1)
 
         if force:
-            temp, hum = days_data(date, sensor)
+            temp, hum = days_data(date, target_sensor)
 
-            with open("/sensors/measurements/" + sensor.name + "daily.txt", "w") as fw:
+            with open("/sensors/measurements/" + target_sensor.name + "daily.txt", "w") as fw:
                 fw.write(f"{temp};{hum}")
         else:
-            temp, hum = get_measurements(sensor)
+            temp, hum = get_measurements(target_sensor)
 
         render_daily_graph((list(temp)), list(hum))
 
@@ -54,27 +51,27 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
 class ConcreteStrategyWeekly(StrategyGraphInterval):
     """The concrete strategy for rendering the weekly graph."""
 
-    def render_graph(self, date, sensor, force) -> None:
+    def render_graph(self, date, target_sensor, force) -> None:
         """Renders the weekly graph using the strategy pattern.
 
         :param date: The day to referer the month to. If set to 16th of January, the graph will be
         displayed from 1st to 31st of January.
-        :param sensor: The sensor to get the data from.
+        :param target_sensor: The sensor to get the data from.
         :param force: If set to True, the graph will be rendered from the file again and not from memory.
         :return: None
         """
 
-        display = Display()
+        disp = Display()
 
-        display().text("WEEK1 WEEK2 WEEK3 WEEK4", 130, 105, 250, 1)
+        disp().text("WEEK1 WEEK2 WEEK3 WEEK4", 130, 105, 250, 1)
 
         if force:
-            temp, hum = week_data(date, sensor)
+            temp, hum = week_data(date, target_sensor)
 
-            with open("/sensors/measurements/" + sensor.name + "weekly.txt", "w") as fw:
+            with open("/sensors/measurements/" + target_sensor.name + "weekly.txt", "w") as fw:
                 fw.write(f"{temp};{hum}")
         else:
-            temp, hum = get_measurements(sensor)
+            temp, hum = get_measurements(target_sensor)
 
         render_weekly_graph((list(temp)), list(hum))
 
@@ -105,12 +102,12 @@ class ContextGraphInterval:
 
         self._strategy = strategy
 
-    def render_graph(self, date, sensor, force) -> None:
+    def render_graph(self, date, target_sensor, force) -> None:
         """Renders the graph using the strategy pattern."""
 
-        display = Display()
+        disp = Display()
 
-        display().set_pen(Colors.WHITE)
+        disp().set_pen(Colors.WHITE)
 
         is_loaded = True
 
@@ -118,25 +115,25 @@ class ContextGraphInterval:
 
         if strategy_str == "D":
             try:
-                os.stat("/sensors/measurements/" + sensor.name + "daily.txt")
+                os.stat("/sensors/measurements/" + target_sensor.name + "daily.txt")
             except OSError:
                 is_loaded = False
 
         if strategy_str == "W":
             try:
-                os.stat("/sensors/measurements/" + sensor.name + "weekly.txt")
+                os.stat("/sensors/measurements/" + target_sensor.name + "weekly.txt")
             except OSError:
                 is_loaded = False
 
         if not is_loaded:
             force = True
 
-        display().line(125, 103, 234, 103, 1)
-        display().line(125, 103, 125, 20, 1)
+        disp().line(125, 103, 234, 103, 1)
+        disp().line(125, 103, 125, 20, 1)
 
-        self._strategy.render_graph(date, sensor, force)
+        self._strategy.render_graph(date, target_sensor, force)
 
-        display().update()
+        disp().update()
 
 
 def day_data(date, file):
@@ -152,8 +149,6 @@ def day_data(date, file):
     hum_sum = 0
     count = 0
 
-    # year, month, day = str(date[0]), str(date[1]), str(date[2])
-
     while True:
         lines = read_n_lines(file, 300)
         rollback_chars = 0
@@ -162,16 +157,11 @@ def day_data(date, file):
             break
 
         for line in lines:
-            # print("-------------------")
-            # print(line)
             date_file, temp_file, hum_file = line.split(";")
             date_file = date_file.replace("(", "").replace(" ", "").replace(")", "").split(",")
 
             date_file = tuple(map(int, date_file))
-
-            print(date_file, temp_file, hum_file)
-            # print(year, month, day)
-            # print("-------------------")
+            # print(date_file, temp_file, hum_file)
 
             if compate_dates(date, date_file) == 0:
                 temp_sum += float(temp_file)
@@ -193,11 +183,11 @@ def day_data(date, file):
     return temp_sum / count, hum_sum / count
 
 
-def days_data(day_of_week, sensor):
+def days_data(day_of_week, target_sensor):
     """Returns the average data for the given days in a week.
 
     :param day_of_week: The day to get the data from in a format of a tuple (year, month, day, weekday).
-    :param sensor: The sensor to get the data from.
+    :param target_sensor: The sensor to get the data from.
     :return: A tuple containing the average measurements for the given days in a week.
     """
 
@@ -205,32 +195,32 @@ def days_data(day_of_week, sensor):
     temp = [0, 0, 0, 0, 0, 0, 0]
     hum = [0, 0, 0, 0, 0, 0, 0]
 
-    if not file_exists(sensor):
+    if not file_exists(target_sensor):
         return temp, hum
 
-    with open("sd/measurements/" + sensor.name + ".txt", "r") as fr:
+    with open("sd/measurements/" + target_sensor.name + ".txt", "r") as fr:
         for i in range(7):
             temp[i], hum[i] = day_data((day_of_week[0], day_of_week[1], start + i), fr)
 
     return temp, hum
 
 
-def week_data(day, sensor):
+def week_data(day, target_sensor):
     """Returns the temperature and humidity data for the given month.
 
     :param day: The day to reference the week to. If set to Friday 16th of the month, the graph will
     start at the start of the month and end at the end of the month.
-    :param sensor: The sensor to get the data from.
+    :param target_sensor: The sensor to get the data from.
     :return: Two lists containing the temperature and humidity data for the given month.
     """
 
     temp = [0, 0, 0, 0]
     hum = [0, 0, 0, 0]
 
-    if not file_exists(sensor):
+    if not file_exists(target_sensor):
         return temp, hum
 
-    with open("sd/measurements/" + sensor.name + ".txt", "r") as fr:
+    with open("sd/measurements/" + target_sensor.name + ".txt", "r") as fr:
         for i in range(4):
             temp[i], hum[i] = weeks_data((day[0], day[1], 1 + i * 7), fr)
 
@@ -290,10 +280,10 @@ def read_n_lines(file, n: int):
     return lines
 
 
-def file_exists(sensor):
+def file_exists(target_sensor):
     """Checks if the file for the given sensor exists on the SD card.
 
-    :param sensor: The sensor to check the file for.
+    :param target_sensor: The sensor to check the file for.
     :return: True if the file exists, False otherwise.
     """
 
@@ -304,8 +294,8 @@ def file_exists(sensor):
     except OSError:
         raise OSError("SD card is not mounted")
 
-    if f"{sensor.name}.txt" not in files:
-        raise OSError(f"File {sensor.name}.txt not found on the SD card")
+    if f"{target_sensor.name}.txt" not in files:
+        raise OSError(f"File {target_sensor.name}.txt not found on the SD card")
 
     return True
 
@@ -317,10 +307,10 @@ def pause_all_measurements():
     :return: None
     """
 
-    sensor_manager = sm.SensorManager()
+    sensor_manager_singleton = sm.SensorManager()
 
-    for sensor in sensor_manager.sensors:
-        sensor.pause_measure()
+    for target_sensor in sensor_manager_singleton.sensors:
+        target_sensor.pause_measure()
 
 
 def resume_all_measurements():
@@ -330,10 +320,10 @@ def resume_all_measurements():
     :return: None
     """
 
-    sensor_manager = sm.SensorManager()
+    sensor_manager_singleton = sm.SensorManager()
 
-    for sensor in sensor_manager.sensors:
-        sensor.resume_measure()
+    for target_sensor in sensor_manager_singleton.sensors:
+        target_sensor.resume_measure()
 
 
 def start_of_week(day):
@@ -390,77 +380,56 @@ def seek_back_one_line(file):
         file.seek(-2, 1)
 
     if file.tell() != 0:
-        file.seek(1, 1)     # Skip the newline character
+        file.seek(1, 1)  # Skip the newline character
 
 
 def render_daily_graph(temperatures, humidity):
-    display = Display()
-    display().set_pen(Colors.WHITE)
-
-    max_temp = max_temp_hum(temperatures)
-    min_temp = min_temp_hum(temperatures)
-
-    max_hum = max_temp_hum(humidity)
-    min_hum = min_temp_hum(humidity)
-
-    max_graph = max(max_temp, max_hum)
-    min_graph = min(min_temp, min_hum)
-
-    temp_middle = max_temp - (max_temp - min_temp) / 2
-    hum_middle = max_hum - (max_hum - min_hum) / 2
-
-    display().text(str(round(max_temp, 1)), 108, 20, 250, 1)
-    display().text(str(round(temp_middle, 1)), 108, 60, 250, 1)
-    display().text(str(round(min_temp, 1)), 108, 98, 250, 1)
+    disp = Display()
+    max_temp, min_temp, max_hum, min_hum = get_max_min(temperatures, humidity)
+    render_temp_values(max_temp, min_temp, max_hum, min_hum)
 
     for i in range(6):
         if temperatures[i] != -404 and temperatures[i + 1] != -404:
-            display().line(130 + i * 16, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)),
-                           130 + (i + 1) * 16, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)), 2)
+            disp().line(130 + i * 16, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)),
+                        130 + (i + 1) * 16, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)), 2)
             continue
 
         if temperatures[i] != -404:
-            display().pixel(130 + i * 16, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)))
+            disp().pixel(130 + i * 16, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)))
 
         if temperatures[i + 1] != -404:
-            display().pixel(130 + (i + 1) * 16, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)))
-
-    # display().update()
+            disp().pixel(130 + (i + 1) * 16, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)))
 
 
 def render_weekly_graph(temperatures, humidity):
-    display = Display()
-    display().set_pen(Colors.WHITE)
-
-    max_temp = max_temp_hum(temperatures)
-    min_temp = min_temp_hum(temperatures)
-
-    max_hum = max_temp_hum(humidity)
-    min_hum = min_temp_hum(humidity)
-
-    max_graph = max(max_temp, max_hum)
-    min_graph = min(min_temp, min_hum)
-
-    temp_middle = max_temp - (max_temp - min_temp) / 2
-    hum_middle = max_hum - (max_hum - min_hum) / 2
-
-    display().text(str(round(max_temp, 1)), 108, 20, 250, 1)
-    display().text(str(round(temp_middle, 1)), 108, 60, 250, 1)
-    display().text(str(round(min_temp, 1)), 108, 98, 250, 1)
+    disp = Display()
+    max_temp, min_temp, max_hum, min_hum = get_max_min(temperatures, humidity)
+    render_temp_values(max_temp, min_temp, max_hum, min_hum)
 
     for i in range(3):
         if temperatures[i] != -404 and temperatures[i + 1] != -404:
-            display().line(130 + i * 32, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)),
-                           130 + (i + 1) * 32, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)), 2)
+            disp().line(130 + i * 32, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)),
+                        130 + (i + 1) * 32, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)), 2)
             continue
 
         if temperatures[i] != -404:
-            display().pixel(130 + i * 32, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)))
+            disp().pixel(130 + i * 32, int(temperature_to_pixel(temperatures[i], max_temp, min_temp)))
 
         if temperatures[i + 1] != -404:
-            display().pixel(130 + (i + 1) * 32, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)))
+            disp().pixel(130 + (i + 1) * 32, int(temperature_to_pixel(temperatures[i + 1], max_temp, min_temp)))
 
-    # display().update()
+
+def render_temp_values(max_temp, min_temp, max_hum, min_hum):
+    """Renders the maximum, middle and minimum temperature values on the display."""
+
+    disp = Display()
+    disp().set_pen(Colors.WHITE)
+
+    temp_middle = max_temp - (max_temp - min_temp) / 2
+
+    disp().text(str(round(max_temp, 1)), 108, 20, 250, 1)
+    disp().text(str(round(temp_middle, 1)), 108, 60, 250, 1)
+    disp().text(str(round(min_temp, 1)), 108, 98, 250, 1)
 
 
 def temperature_to_pixel(temperature, max_temp, min_temp, pixel_min=20, pixel_max=100):
@@ -502,18 +471,16 @@ def max_temp_hum(values):
     return max_value
 
 
-def get_measurements(sensor):
+def get_measurements(target_sensor):
     """Returns the measurements for the given sensor from a file.
 
-    :param sensor: The sensor to get the measurements for.
+    :param target_sensor: The sensor to get the measurements for.
     :return: Two lists containing the temperature and humidity measurements.
     """
 
-
-    with open("/sensors/measurements/" + sensor.name + "daily.txt", "r") as fr:
+    with open("/sensors/measurements/" + target_sensor.name + "daily.txt", "r") as fr:
         line = fr.readline()
         temp, hum = line.split(";")
-
 
     temp = temp.replace("[", "").replace("]", "").split(", ")
     hum = hum.replace("[", "").replace("]", "").split(", ")
@@ -523,6 +490,24 @@ def get_measurements(sensor):
         hum[i] = float(hum[i])
 
     return temp, hum
+
+
+def get_max_min(temperatures, humidity):
+    """Returns the maximum and minimum values from the given lists of temperatures and humidity.
+
+    :param temperatures: The list of temperatures.
+    :param humidity: The list of humidity values.
+    :return: A tuple containing the maximum and minimum temperature and humidity values.
+            In the format (max_temp, min_temp, max_hum, min_hum).
+    """
+
+    max_temp = max_temp_hum(temperatures)
+    min_temp = min_temp_hum(temperatures)
+
+    max_hum = max_temp_hum(humidity)
+    min_hum = min_temp_hum(humidity)
+
+    return max_temp, min_temp, max_hum, min_hum
 
 
 if __name__ == "__main__":
