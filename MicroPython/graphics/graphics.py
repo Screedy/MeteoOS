@@ -31,13 +31,13 @@ def draw_arrow(x: int, y: int, size: int, direction: int):
     :return: None
     """
 
-    display = Display()
+    disp = Display()
 
-    display().set_pen(Colors.WHITE)
+    disp().set_pen(Colors.WHITE)
     triangle = [(x, y), (x + size, y), (x + size / 2, y + size)]
     for i in range(len(triangle)):
         triangle[i] = rotate_point(triangle[i], (x + size / 2, y + size / 2), direction)
-    display().triangle(triangle[0][0], triangle[0][1], triangle[1][0], triangle[1][1], triangle[2][0], triangle[2][1])
+    disp().triangle(triangle[0][0], triangle[0][1], triangle[1][0], triangle[1][1], triangle[2][0], triangle[2][1])
 
 
 def draw_empty_circle(x: int, y: int, radius: int):
@@ -49,12 +49,12 @@ def draw_empty_circle(x: int, y: int, radius: int):
     :return: None
     """
 
-    display = Display()
+    disp = Display()
 
-    display().set_pen(Colors.WHITE)
-    display().circle(x, y, radius)
-    display().set_pen(Colors.BLACK)
-    display().circle(x, y, radius - 1)
+    disp().set_pen(Colors.WHITE)
+    disp().circle(x, y, radius)
+    disp().set_pen(Colors.BLACK)
+    disp().circle(x, y, radius - 1)
 
 
 def draw_sd_card(x: int, y: int, connected: bool = True):
@@ -66,23 +66,23 @@ def draw_sd_card(x: int, y: int, connected: bool = True):
     :return: None
     """
 
-    display = Display()
+    disp = Display()
 
-    display().set_pen(Colors.WHITE)
+    disp().set_pen(Colors.WHITE)
 
-    display().line(x + 2, y, x + 8, y)
-    display().line(x + 8, y, x + 8, y + 10)
-    display().line(x + 8, y + 10, x, y + 10)
-    display().line(x, y + 10, x, y + 7)
-    display().line(x, y + 7, x + 2, y + 6)
-    display().line(x + 2, y + 6, x + 2, y + 4)
-    display().line(x + 2, y + 4, x, y + 4)
-    display().line(x, y + 4, x, y + 2)
-    display().line(x, y + 2, x + 2, y)
+    disp().line(x + 2, y, x + 8, y)
+    disp().line(x + 8, y, x + 8, y + 10)
+    disp().line(x + 8, y + 10, x, y + 10)
+    disp().line(x, y + 10, x, y + 7)
+    disp().line(x, y + 7, x + 2, y + 6)
+    disp().line(x + 2, y + 6, x + 2, y + 4)
+    disp().line(x + 2, y + 4, x, y + 4)
+    disp().line(x, y + 4, x, y + 2)
+    disp().line(x, y + 2, x + 2, y)
 
     if not connected:
-        display().set_pen(Colors.RED)
-        display().line(x - 3, y + 12, x + 11, y - 2)
+        disp().set_pen(Colors.RED)
+        disp().line(x - 3, y + 12, x + 11, y - 2)
 
 
 def draw_clock(x: int, y: int):
@@ -93,13 +93,13 @@ def draw_clock(x: int, y: int):
     :return: None
     """
 
-    display = Display()
+    disp = Display()
 
     draw_empty_circle(x, y, 10)
     draw_empty_circle(x, y, 9)
-    display().set_pen(Colors.WHITE)
-    display().line(x, y, x, y - 7)
-    display().line(x, y, x + 4, y)
+    disp().set_pen(Colors.WHITE)
+    disp().line(x, y, x, y - 7)
+    disp().line(x, y, x + 4, y)
 
 
 def draw_thermometer(x: int, y: int):
@@ -110,28 +110,22 @@ def draw_thermometer(x: int, y: int):
     :return: None
     """
 
-    display = Display()
+    disp = Display()
 
     draw_empty_circle(x, y + 5, 5)
-
-    display().line(x - 2, y, x + 3, y)
-    display().set_pen(Colors.WHITE)
-    display().line(x, y - 6, x, y + 5)
-
-    display().line(x - 2, y + 1, x - 2, y - 7)
-    display().line(x + 2, y + 1, x + 2, y - 7)
-
-    display().pixel(x - 1, y - 8)
-    display().pixel(x + 1, y - 8)
-
-    display().pixel(x, y - 9)
-
-    display().circle(x, y + 5, 2)
-
-    display().line(x + 5, y - 8, x + 8, y - 8)
-    display().line(x + 5, y - 6, x + 7, y - 6)
-    display().line(x + 5, y - 4, x + 8, y - 4)
-    display().line(x + 5, y - 2, x + 7, y - 2)
+    disp().line(x - 2, y, x + 3, y)
+    disp().set_pen(Colors.WHITE)
+    disp().line(x, y - 6, x, y + 5)
+    disp().line(x - 2, y + 1, x - 2, y - 7)
+    disp().line(x + 2, y + 1, x + 2, y - 7)
+    disp().pixel(x - 1, y - 8)
+    disp().pixel(x + 1, y - 8)
+    disp().pixel(x, y - 9)
+    disp().circle(x, y + 5, 2)
+    disp().line(x + 5, y - 8, x + 8, y - 8)
+    disp().line(x + 5, y - 6, x + 7, y - 6)
+    disp().line(x + 5, y - 4, x + 8, y - 4)
+    disp().line(x + 5, y - 2, x + 7, y - 2)
 
 
 def draw_humidity(x: int, y: int):
@@ -142,28 +136,22 @@ def draw_humidity(x: int, y: int):
     :return: None
     """
 
-    """
-    draw_empty_circle(x+5, y+5, 5, display)
-    display.set_pen(Colors.WHITE)
-    display.text("H", x+3, y+2, 240, 1)
-    """
+    disp = Display()
 
-    display = Display()
+    disp().set_pen(Colors.WHITE)
+    disp().line(x, y - 9, x, y + 9)
 
-    display().set_pen(Colors.WHITE)
-    display().line(x, y - 9, x, y + 9)
+    disp().line(x - 1, y - 7, x - 1, y + 9)
+    disp().line(x - 2, y - 4, x - 2, y + 9)
+    disp().line(x - 3, y - 2, x - 3, y + 8)
+    disp().line(x - 4, y, x - 4, y + 7)
+    disp().line(x - 5, y + 1, x - 5, y + 6)
 
-    display().line(x - 1, y - 7, x - 1, y + 9)
-    display().line(x - 2, y - 4, x - 2, y + 9)
-    display().line(x - 3, y - 2, x - 3, y + 8)
-    display().line(x - 4, y, x - 4, y + 7)
-    display().line(x - 5, y + 1, x - 5, y + 6)
-
-    display().line(x + 1, y - 7, x + 1, y + 9)
-    display().line(x + 2, y - 4, x + 2, y + 9)
-    display().line(x + 3, y - 2, x + 3, y + 8)
-    display().line(x + 4, y, x + 4, y + 7)
-    display().line(x + 5, y + 1, x + 5, y + 6)
+    disp().line(x + 1, y - 7, x + 1, y + 9)
+    disp().line(x + 2, y - 4, x + 2, y + 9)
+    disp().line(x + 3, y - 2, x + 3, y + 8)
+    disp().line(x + 4, y, x + 4, y + 7)
+    disp().line(x + 5, y + 1, x + 5, y + 6)
 
 
 if __name__ == "__main__":
