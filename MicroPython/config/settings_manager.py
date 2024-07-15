@@ -6,8 +6,6 @@ class SettingsManager:
     """Singleton class for managing the settings variables. This class is used for loading and saving settings to
     a file as well as managing the settings in the program during runtime."""
 
-    # TODO: Add more settings when needed.
-
     _brightness = None
 
     def __init__(self):
