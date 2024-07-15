@@ -1,6 +1,7 @@
 from config.config import Display, Colors, button_x, button_a, button_b, button_y
 import page_elements
 from config.settings_manager import SettingsManager, load_brightness
+from graphics.graphics import draw_cancel, draw_confirm
 
 
 def render_brightness():
@@ -58,6 +59,9 @@ def render_nice_slider(brightness):
 
     display().set_pen(Colors.GREY)
     display().rectangle(38, 58, 160, 14)
+
+    draw_confirm()
+    draw_cancel()
 
     display().set_pen(Colors.WHITE)
     display().text("0.1", 10, 58, 236, 2)
