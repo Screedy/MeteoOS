@@ -1,17 +1,13 @@
 import time
 import _thread
 
-from config.config import *
-# import graphics.graphics_text
-import graphics.graphics
+
+from config.config import Colors, button_x, button_y, button_a, button_b, Display
 import page_elements
-import temp_sensor
-# from homepage import homepage_loop
 import pages.settings as settings
 from config.startup import startup
 from sensors.sensor_manager import SensorManager
 from graphics.graph import ContextGraphInterval, GraphInterval, ConcreteStrategyDaily, ConcreteStrategyWeekly
-from machine import RTC
 
 
 def render_homepage(graph_interval):
