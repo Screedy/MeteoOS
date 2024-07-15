@@ -30,10 +30,6 @@ class DHT11:
         self._temperature = 0
         self._humidity = 0
         self._interval = interval
-
-        # _thread.start_new_thread(self.measure, ())
-
-        # Alternative option using an interrupt
         self._timer = Timer(mode=Timer.PERIODIC, period=1000 * interval, callback=self.measure)
         self._write = True
 
@@ -90,7 +86,6 @@ class DHT11:
         :param pin: The pin the sensor is connected to
         """
 
-        # TODO: check if pin is valid
         self._sensor = dht.DHT11(Pin(pin))
 
     @property
