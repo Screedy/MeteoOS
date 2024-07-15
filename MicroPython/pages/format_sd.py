@@ -1,7 +1,6 @@
 import time
-from config.config import *
+from config.config import Display, Colors, button_x, button_y
 import page_elements
-import sdcard
 from config.sdcard_manager import SDCardManager
 
 
