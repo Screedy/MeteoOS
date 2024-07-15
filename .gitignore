@@ -81,3 +81,4 @@ C++/pico-boilerplate/.idea/modules.xml
 /C++/build_archive
 /MicroPython/unused_files
 TOILET.txt
+MicroPython/sdcard.py
