@@ -1,4 +1,7 @@
-from config.config import *
+import time
+
+
+from config.config import Display, Colors, button_a, button_b, button_x, button_y
 import page_elements
 from config.sdcard_manager import SDCardManager
 
@@ -20,10 +23,12 @@ def render_del_data():
     files = sd.list_files(path)
 
     while True:
+        time.sleep(0.1)
+
         if button_a.read():
-            selected_item = (selected_item + 1) % len(files)
-        if button_b.read():
             selected_item = (selected_item - 1) % len(files)
+        if button_b.read():
+            selected_item = (selected_item + 1) % len(files)
         if button_x.read():
             print(f"Deleting {files[selected_item]}")
             sd.delete_file(f"{path}/{files[selected_item]}")
