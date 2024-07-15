@@ -52,7 +52,7 @@ def test_storage(spi_controller=0, sck=Pin(2), mosi=Pin(3), miso=Pin(0), cs=Pin(
         fr.close()
         os.remove("/sd/test.txt")
         if verbose:
-            print("File was sucesfully found and read on the SD card")
+            print("File was successfully found and read on the SD card")
         return True
 
     fr.close()
