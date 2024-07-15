@@ -28,8 +28,8 @@ class SDCardManager:
         """
 
         try:
-            sd = sdcard.SDCard(self._spi, self._cs)
-            vfs = uos.VfsFat(sd)
+            target_sd = sdcard.SDCard(self._spi, self._cs)
+            vfs = uos.VfsFat(target_sd)
             uos.mount(vfs, "/sd")
         except OSError:
             print("SD card was unable to open")
