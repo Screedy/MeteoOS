@@ -1,5 +1,5 @@
 import time
-from config.config import *
+from config.config import Display, Colors, button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager, AvailableSensors
 import page_elements
 
@@ -29,7 +29,11 @@ def select_sensor():
     sensor_list_length = len(sensor_list)
     selected_sensor = 0
 
+    sensor_names = [sensor.name for sensor in sensor_list]
+
     while True:
+        time.sleep(0.1)
+
         if button_a.read():
             selected_sensor = (selected_sensor + 1) % sensor_list_length
 
@@ -44,10 +48,10 @@ def select_sensor():
 
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
-        selected = sensor_list[selected_sensor]
-        display().text(f"Select the sensor you want to delete: GP{selected.pin} - {selected.name}", 2, 0, 200, 2)
+        page_elements.render_nav_arrows(110)
+        display().text(f"Select the sensor you want to delete. Data will remain saved.", 2, 0, 160, 2)
+        page_elements.render_items_list(selected_sensor, sensor_names)
         display().update()
-        time.sleep(0.1)
 
 
 if __name__ == "__main__":
