@@ -10,9 +10,8 @@ def clear_fast():
     """Clears the display without refreshing the display to remove flickering."""
 
     display = Display()
-
-    display().set_pen(Colors.BLACK)  # Set pen color to black
-    display().clear()  # Clear display
+    display().set_pen(Colors.BLACK)
+    display().clear()
 
 
 def render_nav_arrows(x: int, color: int = Colors.WHITE):
@@ -28,9 +27,6 @@ def render_nav_arrows(x: int, color: int = Colors.WHITE):
     display = Display()
 
     display().set_pen(color)
-    # draw_arrow(x, 20, 10, 180, display)
-    # draw_arrow(x, 100, 10, 0, display)
-
     draw_arrow(x, 7, 16, 180)
     draw_arrow(x-1, 113, 17, 0)
 
