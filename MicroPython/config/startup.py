@@ -1,4 +1,3 @@
-import config.config as config
 import setup
 from config.settings_manager import SettingsManager
 from config.sdcard_manager import SDCardManager
@@ -7,11 +6,12 @@ from graphics.graph import ContextGraphInterval
 
 
 def startup():
-    """First function to run on boot. Initializes the system."""
+    """First function to run on boot. Initializes the system and checks if the settings file exists.
+    If not,  initialize setup."""
 
     try:
-        f = open("settings.txt", "r")
-        # continue with the file.
+        f = open("settings.txt", "r")   # Check if the settings file exists
+        f.close()
     except OSError:  # open failed (file not found)
         setup.initial()
 
@@ -21,5 +21,3 @@ def startup():
     settings = SettingsManager()    # Initialize the settings manager
     sensor_manager = SensorManager()    # Initialize the sensor manager
     graph = ContextGraphInterval()    # Initialize the graph interval
-
-    # graph().render_graph((2024, 2, 15, 2), sensor_manager.sensors[sensor_manager.active_sensor], True)
