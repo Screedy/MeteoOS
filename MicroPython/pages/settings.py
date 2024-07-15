@@ -1,5 +1,5 @@
 import time
-from config.config import *
+from config.config import Display, Colors, button_x, button_y, button_a, button_b
 import page_elements
 from pages.add_sensor import render_add_sensor as add_sensor
 from pages.del_sensor import render_del_sensor as remove_sensor
@@ -112,8 +112,6 @@ def render_settings(selected_item: int = 0):
 
     display().update()
 
-    # print("Settings rendered")
-
 
 def settings_loop():
     """The settings loop that runs when settings page is active."""
@@ -131,11 +129,9 @@ def settings_loop():
 
         if button_a.read():
             selected_item = (selected_item - 1) % len(settings_list)
-            # print(f"{selected_item}")
 
         if button_b.read():
             selected_item = (selected_item + 1) % len(settings_list)
-            # print(f"{selected_item}")
 
         render_settings(selected_item)
         time.sleep(0.1)
