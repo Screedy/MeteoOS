@@ -1,7 +1,9 @@
 import time
+
 from config.config import Display, Colors, button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager, AvailableSensors
 import page_elements
+from graphics.graphics import draw_confirm, draw_cancel
 
 
 def render_del_sensor():
@@ -49,8 +51,12 @@ def select_sensor():
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
         page_elements.render_nav_arrows(110)
-        display().text(f"Select the sensor you want to delete. Data will remain saved.", 2, 0, 160, 2)
+        display().text(f"Select the sensor you want to delete. Data will remain saved.", 2, 0, 90, 2)
         page_elements.render_items_list(selected_sensor, sensor_names)
+
+        draw_confirm()
+        draw_cancel()
+
         display().update()
 
 
