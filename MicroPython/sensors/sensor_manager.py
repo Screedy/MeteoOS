@@ -17,7 +17,6 @@ class SensorManager:
         :return: None
         """
         self._sensors = None
-
         self._sensors = self.load_sensors()
         self._active_sensor = 0
         self._available_pins = self.load_available_pins()
