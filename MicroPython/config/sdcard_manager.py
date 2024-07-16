@@ -1,7 +1,10 @@
 from machine import Pin, SPI
 import uos
+
 from config.config import singleton
 import sdcard
+from config.env import env_vars
+from utils.decorators import execution_time
 
 
 @singleton
@@ -32,7 +35,7 @@ class SDCardManager:
             vfs = uos.VfsFat(target_sd)
             uos.mount(vfs, "/sd")
         except OSError:
-            print("SD card was unable to open")
+            print("SD card was unable to open during mount procedure.")
             return False
 
         return True
@@ -186,8 +189,18 @@ class SDCardManager:
             uos.chdir("/")
         return True
 
+    if env_vars["TEST_MEASUREMENT"]:
+        @staticmethod
+        @execution_time
+        def list_files(path="/"):
+            return SDCardManager().list_files_body(path)
+    else:
+        @staticmethod
+        def list_files(path="/"):
+            return SDCardManager().list_files_body(path)
+
     @staticmethod
-    def list_files(path="/"):
+    def list_files_body(path="/"):
         """Lists all files on the SD card.
 
         :param path: The path to list files from. Default is the root directory.
@@ -227,3 +240,7 @@ if __name__ == "__main__":
 
     sd.mount()
     # sd.format_sd()
+
+    for _ in range(10):
+        # print(sd.list_files())
+        sd.list_files()
