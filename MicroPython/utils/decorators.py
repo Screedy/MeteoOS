@@ -1,4 +1,4 @@
-import time
+import utime
 import gc
 
 
@@ -6,11 +6,12 @@ def execution_time(func):
     """Decorator to measure the execution time of a function."""
 
     def wrapper(*args, **kwargs):
-        start = time.time()
+        start = utime.ticks_us()
         result = func(*args, **kwargs)
-        end = time.time()
+        end = utime.ticks_us()
+        exec_time = utime.ticks_diff(end, start) / 1_000_000    # Convert to seconds
 
-        print(f"Execution time of {func.__name__} is {end-start:.8f}s")
+        print(f"Execution time of {func.__name__} is {exec_time:.5f} seconds.")
         return result
 
     return wrapper
