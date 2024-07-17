@@ -84,7 +84,7 @@ def storage_pin_setup():
 
     wait_for_y(storage_pin_setup)
 
-    from device_tests import test_storage
+    from utils.device_tests import test_storage
     if not test_storage():
         clear_fast()
         display().text("SD card not detected, please check the connections and try again.", 2, 100, 236, 2)

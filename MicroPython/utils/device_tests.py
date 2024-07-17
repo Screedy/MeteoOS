@@ -1,9 +1,20 @@
 """This file includes all the tests for the devices connected to the Pico."""
 from machine import Pin, SPI
 import os
+from utils.decorators import execution_time
+from config.env import env_vars
 
 
-def test_storage(spi_controller=0, sck=Pin(2), mosi=Pin(3), miso=Pin(0), cs=Pin(1), verbose=False):
+if env_vars['TEST_MEASUREMENT']:
+    @execution_time
+    def test_storage(spi_controller=1, sck=Pin(10), mosi=Pin(11), miso=Pin(8), cs=Pin(9), verbose=False):
+        return test_storage_body(spi_controller, sck, mosi, miso, cs, verbose)
+else:
+    def test_storage(spi_controller=1, sck=Pin(10), mosi=Pin(11), miso=Pin(8), cs=Pin(9), verbose=False):
+        return test_storage_body(spi_controller, sck, mosi, miso, cs, verbose)
+
+
+def test_storage_body(spi_controller=1, sck=Pin(10), mosi=Pin(11), miso=Pin(8), cs=Pin(9), verbose=False):
     """
     Tests the SD card storage.
     
