@@ -1,4 +1,4 @@
-import setup
+from config import setup
 from config.settings_manager import SettingsManager
 from config.sdcard_manager import SDCardManager
 from sensors.sensor_manager import SensorManager
