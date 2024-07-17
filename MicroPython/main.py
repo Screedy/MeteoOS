@@ -33,7 +33,7 @@ def render_homepage(graph_interval):
     display().line(101, 16, 101, 120, 3)
 
     active_sensor = sensor_manager.sensors[sensor_manager.active_sensor]
-    graph.render_graph((2024, 2, 15, 2), active_sensor, False)
+    graph.render_graph((2024, 2, 15, 3), active_sensor, False)
 
     display().update()
 
