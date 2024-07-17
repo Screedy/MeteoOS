@@ -1,5 +1,7 @@
 import time
+import utime
 import _thread
+import gc
 
 
 from config.config import Colors, button_x, button_y, button_a, button_b, Display
@@ -8,6 +10,7 @@ import pages.settings as settings
 from config.startup import startup
 from sensors.sensor_manager import SensorManager
 from graphics.graph import ContextGraphInterval, GraphInterval, ConcreteStrategyDaily, ConcreteStrategyWeekly
+from config.env import env_vars
 
 
 def render_homepage(graph_interval):
@@ -33,6 +36,9 @@ def render_homepage(graph_interval):
     graph.render_graph((2024, 2, 15, 2), active_sensor, False)
 
     display().update()
+
+    if env_vars['TEST_HOMEPAGE_MEMORY']:
+        return gc.mem_free()
 
 
 def main_task():
@@ -65,7 +71,37 @@ def main_task():
         if button_b.read():
             sensor_manager.previous_sensor()
 
-        render_homepage(graph_interval)
+        if env_vars['TEST_HOMEPAGE']:
+            start = utime.ticks_us()
+            render_homepage(graph_interval)
+            end = utime.ticks_us()
+            diff = utime.ticks_diff(end, start) / 1_000_000
+
+            display = Display()
+            page_elements.clear_fast()
+            display().set_pen(Colors.RED)
+            display().text(f"Render time: {diff:.5f} s", 2, 2, 236, 2)
+            display().update()
+            time.sleep(2)
+        elif env_vars['TEST_HOMEPAGE_MEMORY']:
+            before_gc_collect = gc.mem_free()
+            gc.collect()
+            start_mem = gc.mem_free()
+            end_mem = render_homepage(graph_interval)
+            diff_mem = start_mem - end_mem
+
+            display = Display()
+            page_elements.clear_fast()
+            display().set_pen(Colors.RED)
+            display().text(f"Memory before: {start_mem} B", 2, 2, 236, 2)
+            display().text(f"Memory after: {end_mem} B", 2, 20, 236, 2)
+            display().text(f"Memory diff: {diff_mem} B", 2, 40, 236, 2)
+            display().text(f"Bef collect: {before_gc_collect} B", 2, 60, 236, 2)
+            display().update()
+            time.sleep(2)
+        else:
+            render_homepage(graph_interval)
+
         time.sleep(0.5)
 
 
