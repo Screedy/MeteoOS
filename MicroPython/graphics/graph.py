@@ -4,6 +4,7 @@ import utime
 from config.sdcard_manager import SDCardManager
 import sensors.sensor_manager as sm
 from config.config import singleton, Colors, GraphInterval, Display
+from config.env import env_vars
 
 
 class StrategyGraphInterval:
@@ -34,10 +35,14 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
         """
 
         disp = Display()
+        start_time, end_time = 0, 0
 
         disp().text("MO TU WE TH FR SA SU", 130, 105, 250, 1)
 
         if force:
+            if env_vars['TEST_GRAPH']:
+                start_time = utime.ticks_us()
+
             temp, hum = days_data(date, target_sensor)
 
             with open("/sensors/measurements/" + target_sensor.name + "daily.txt", "w") as fw:
@@ -46,6 +51,11 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
             temp, hum = get_measurements(target_sensor)
 
         render_daily_graph((list(temp)), list(hum))
+
+        if force and env_vars['TEST_GRAPH']:
+            end_time = utime.ticks_us()
+            print("Time to render the graph during full generation:",
+                  utime.ticks_diff(end_time, start_time) / 1_000_000)
 
 
 class ConcreteStrategyWeekly(StrategyGraphInterval):
@@ -150,7 +160,7 @@ def day_data(date, file):
     count = 0
 
     while True:
-        lines = read_n_lines(file, 300)
+        lines = read_n_lines(file, 50)
         rollback_chars = 0
 
         if not lines:
