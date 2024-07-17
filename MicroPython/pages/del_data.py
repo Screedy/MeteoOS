@@ -2,7 +2,7 @@ import time
 
 
 from config.config import Display, Colors, button_a, button_b, button_x, button_y
-import page_elements
+from graphics import page_elements
 from config.sdcard_manager import SDCardManager
 from graphics.graphics import draw_cancel, draw_ok
 

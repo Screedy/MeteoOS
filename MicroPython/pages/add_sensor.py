@@ -1,7 +1,7 @@
 import time
 from config.config import Colors, Display, button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager, AvailableSensors
-import page_elements
+from graphics import page_elements
 from sensors.dht11 import DHT11
 from graphics.graphics import draw_next, draw_confirm, draw_cancel
 

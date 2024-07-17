@@ -2,7 +2,7 @@ from config.config import Colors, Display
 from config.config import button_a, button_b, button_x, button_y
 import graphics.graphics_text as graphics_text
 import time
-from page_elements import clear_fast
+from graphics.page_elements import clear_fast
 
 helped = False
 pins = ["GP0", "GP1", "GP9", "GP10", "GP11", "GP20", "GP21", "GP22"]

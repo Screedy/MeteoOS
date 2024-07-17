@@ -5,11 +5,11 @@ import gc
 
 
 from config.config import Colors, button_x, button_y, button_a, button_b, Display
-import page_elements
+from graphics import page_elements
 import pages.settings as settings
 from config.startup import startup
 from sensors.sensor_manager import SensorManager
-from graphics.graph import ContextGraphInterval, GraphInterval, ConcreteStrategyDaily, ConcreteStrategyWeekly
+from graphics.graph import ContextGraphInterval, GraphInterval
 from config.env import env_vars
 
 

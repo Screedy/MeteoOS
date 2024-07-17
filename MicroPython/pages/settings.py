@@ -1,6 +1,6 @@
 import time
 from config.config import Display, Colors, button_x, button_y, button_a, button_b
-import page_elements
+from graphics import page_elements
 from pages.add_sensor import render_add_sensor as add_sensor
 from pages.del_sensor import render_del_sensor as remove_sensor
 from pages.brightness import render_brightness as change_brightness
