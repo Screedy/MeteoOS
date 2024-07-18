@@ -1,6 +1,6 @@
 """This file includes all the tests for the devices connected to the Pico."""
 from machine import Pin, SPI
-import os
+from uos import VfsFat, mount, remove, listdir, umount
 from utils.decorators import execution_time
 from config.env import env_vars
 
@@ -43,12 +43,18 @@ def test_storage_body(spi_controller=1, sck=Pin(10), mosi=Pin(11), miso=Pin(8), 
 
     if verbose:
         print("Mounting SD card as /sd")
-    cfs = os.VfsFat(sd)
-    os.mount(cfs, "/sd")
+    cfs = VfsFat(sd)
+
+    try:
+        umount("/sd")
+    except OSError:
+        pass
+    
+    mount(cfs, "/sd")
 
     # Console print SD card directory with files
     if verbose:
-        print("/sd directory: " + str(os.listdir("/sd")))
+        print("/sd directory: " + str(listdir("/sd")))
 
     if verbose:
         print("Trying to write to SD card")
@@ -61,7 +67,7 @@ def test_storage_body(spi_controller=1, sck=Pin(10), mosi=Pin(11), miso=Pin(8), 
     fr = open("/sd/test.txt", "r")
     if fr.read() == "Test writing to SD card":
         fr.close()
-        os.remove("/sd/test.txt")
+        remove("/sd/test.txt")
         if verbose:
             print("File was successfully found and read on the SD card")
         return True
@@ -69,7 +75,7 @@ def test_storage_body(spi_controller=1, sck=Pin(10), mosi=Pin(11), miso=Pin(8), 
     fr.close()
     if verbose:
         print("File was not found on the SD card")
-    os.remove("/sd/test.txt")
+    remove("/sd/test.txt")
     return False
 
 
