@@ -1,5 +1,5 @@
 from machine import Pin, SPI
-import uos
+from uos import VfsFat, mount, umount, listdir, chdir, remove
 
 from config.config import singleton
 import sdcard
@@ -32,8 +32,8 @@ class SDCardManager:
 
         try:
             target_sd = sdcard.SDCard(self._spi, self._cs)
-            vfs = uos.VfsFat(target_sd)
-            uos.mount(vfs, "/sd")
+            vfs = VfsFat(target_sd)
+            mount(vfs, "/sd")
         except OSError:
             print("SD card was unable to open during mount procedure.")
             return False
@@ -48,7 +48,7 @@ class SDCardManager:
         """
 
         try:
-            uos.umount("/sd")
+            umount("/sd")
         except OSError:
             print("SD card was unable to unmount")
             return False
@@ -166,7 +166,7 @@ class SDCardManager:
         :return: True if the SD card is mounted, False otherwise
         """
 
-        return "sd" in uos.listdir("/")
+        return "sd" in listdir("/")
 
     def format_sd(self):
         """Formats the SD card."""
@@ -176,17 +176,17 @@ class SDCardManager:
 
         # Delete all files on the SD card
         try:
-            for file in uos.listdir("/sd"):
+            for file in listdir("/sd"):
                 if file.startswith(".") or file == "System Volume Information":
                     continue
 
                 print(f"Removing {file}")
-                uos.chdir("/sd")
-                uos.remove(file)
+                chdir("/sd")
+                remove(file)
         except OSError:
             raise OSError("Error while deleting files on the SD card")
         finally:
-            uos.chdir("/")
+            chdir("/")
         return True
 
     if env_vars["TEST_MEASUREMENT"]:
@@ -206,7 +206,7 @@ class SDCardManager:
         :param path: The path to list files from. Default is the root directory.
         :return: A list of all files on the SD card
         """
-        return uos.listdir(path)
+        return listdir(path)
 
     @staticmethod
     def delete_file(path):
@@ -217,7 +217,7 @@ class SDCardManager:
         """
 
         try:
-            uos.remove(path)
+            remove(path)
         except OSError:
             print(f"Error while deleting {path}")
             return False
