@@ -1,8 +1,9 @@
-# from gc import collect
+from gc import collect, mem_free
 
 from config.config import Colors, Display
 from utils.file_operations import read_n_lines, file_exists
 from utils.date_operations import compate_dates, start_of_week
+from config.env import env_vars
 
 
 def day_data(date, file):
@@ -18,7 +19,7 @@ def day_data(date, file):
     hum_sum = 0
     count = 0
 
-    # collect()
+    collect()
 
     while True:
         lines = read_n_lines(file, 50)
@@ -45,17 +46,15 @@ def day_data(date, file):
             file.seek(-rollback_chars, 1)
             break
 
-        # if env_vars['TEST_GRAPH_MEMORY'] and date[3] == 2 and count == 500:
-            # pass
-            # ram_after_500_lines_third_day = gc.mem_free()
-            # print("RAM after 500 lines on the third day:", ram_after_500_lines_third_day)
+        if env_vars['TEST_GRAPH_MEMORY'] and date[3] == 2 and count == 500:
+            ram_after_500_lines_third_day = mem_free()
+            print(f"RAM free after 500 lines on the third day:{ram_after_500_lines_third_day} B")
 
     print(temp_sum, hum_sum, count)
 
-    # if env_vars['TEST_GRAPH_MEMORY'] and date[3] == 0:
-        # pass
-        # ram_after_first_day = gc.mem_free()
-        # print("RAM after first day:", ram_after_first_day)
+    if env_vars['TEST_GRAPH_MEMORY'] and date[3] == 0:
+        ram_after_first_day = mem_free()
+        print(f"RAM free after first day:{ram_after_first_day}")
 
     if count == 0:
         return -404, -404
@@ -79,7 +78,7 @@ def days_data(day_of_week, target_sensor):
 
     with open("sd/measurements/" + target_sensor.name + ".txt", "r") as fr:
         for i in range(7):
-            temp[i], hum[i] = day_data((day_of_week[0], day_of_week[1], start + i), fr)
+            temp[i], hum[i] = day_data((day_of_week[0], day_of_week[1], start + i, 0+i), fr)
 
     return temp, hum
 
