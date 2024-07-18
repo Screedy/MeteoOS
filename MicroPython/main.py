@@ -4,19 +4,19 @@ import _thread
 import gc
 
 
-from config.config import Colors, button_x, button_y, button_a, button_b, Display
+from config.config import Colors, button_x, button_y, button_a, button_b, Display, GraphInterval
 from graphics import page_elements
 import pages.settings as settings
 from config.startup import startup
 from sensors.sensor_manager import SensorManager
-from graphics.graph import ContextGraphInterval, GraphInterval
+from graphics.graph import ContextGraphInterval
 from config.env import env_vars
 
 
 def render_homepage(graph_interval):
-    """Renders the homepage with information about the selected sensor and selected graph interval.
+    """Renders the homepage with information about the selected sensor and selected graph_strategy interval.
 
-    :param graph_interval: The selected graph interval. Either 1 (Hourly), 2 (Daily), 3 (Weekly) or 4 (Monthly).
+    :param graph_interval: The selected graph_strategy interval. Either 1 (Hourly), 2 (Daily), 3 (Weekly) or 4 (Monthly).
     :return: None
     """
 
@@ -49,7 +49,7 @@ def main_task():
 
     while True:     # Homepage loop
         if button_x.read():
-            # TODO: change the graph interval
+            # TODO: change the graph_strategy interval
 
             if graph_interval is GraphInterval.Daily:
                 graph_interval = GraphInterval.Weekly
