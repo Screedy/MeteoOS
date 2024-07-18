@@ -84,11 +84,11 @@ class Page:
 
 
 class GraphInterval:
-    """An enum class for the different graph intervals.
+    """An enum class for the different graph_strategy intervals.
 
-    :param Daily: The daily graph interval.
-    :param Weekly: The weekly graph interval.
-    :param Monthly: The monthly graph interval.
+    :param Daily: The daily graph_strategy interval.
+    :param Weekly: The weekly graph_strategy interval.
+    :param Monthly: The monthly graph_strategy interval.
     """
 
     Daily = 0
