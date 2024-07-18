@@ -1,5 +1,4 @@
-import time
-
+from utime import sleep
 
 from config.config import Display, Colors, button_a, button_b, button_x, button_y
 from graphics import page_elements
@@ -24,7 +23,7 @@ def render_del_data():
     files = sd.list_files(path)
 
     while True:
-        time.sleep(0.1)
+        sleep(0.1)
 
         if button_a.read():
             selected_item = (selected_item - 1) % len(files)
