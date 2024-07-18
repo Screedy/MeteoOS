@@ -1,4 +1,4 @@
-import time
+from utime import sleep
 from config.config import Display, Colors, button_x, button_y, button_a, button_b
 from graphics import page_elements
 from pages.add_sensor import render_add_sensor as add_sensor
@@ -134,4 +134,4 @@ def settings_loop():
             selected_item = (selected_item + 1) % len(settings_list)
 
         render_settings(selected_item)
-        time.sleep(0.1)
+        sleep(0.1)
