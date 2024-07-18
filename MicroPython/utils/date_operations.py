@@ -23,3 +23,15 @@ def compate_dates(date1, date2):
         return -1
 
     return 0
+
+
+def start_of_week(day):
+    """Returns the start of the week for the given day.
+
+    :param day: The day to reference the week to. Needs to be in a format of a tuple (year, month, day, weekday)
+    :return: The start of the week for the given day.
+    """
+
+    day_in_week = day[3]
+
+    return day[2] - day_in_week
