@@ -1,4 +1,4 @@
-import time
+from utime import sleep
 from config.config import Display, Colors, button_x, button_y
 from graphics import page_elements
 from config.sdcard_manager import SDCardManager
@@ -20,7 +20,7 @@ def render_format_sd():
     while not button_y.read():
         if button_x.read():
             return False
-        time.sleep(0.1)
+        sleep(0.1)
 
     return format_sd()
 
