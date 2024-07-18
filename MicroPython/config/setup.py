@@ -1,7 +1,7 @@
 from config.config import Colors, Display
 from config.config import button_a, button_b, button_x, button_y
 import graphics.graphics_text as graphics_text
-import time
+from utime import sleep
 from graphics.page_elements import clear_fast
 
 helped = False
@@ -61,7 +61,7 @@ def pin_setup():
         clear_pin()
         display().text(f"PIN: {pins[selected_pin]}", 2, display.y_max - 40, 200, 2)
         display().update()
-        time.sleep(.15)
+        sleep(.15)
 
 
 def storage_pin_setup():
@@ -89,7 +89,7 @@ def storage_pin_setup():
         clear_fast()
         display().text("SD card not detected, please check the connections and try again.", 2, 100, 236, 2)
         display().update()
-        time.sleep(5)
+        sleep(5)
         storage_pin_setup()
 
 
@@ -105,7 +105,7 @@ def help_interrupt():
     display().update()
 
     while not button_y.read():
-        time.sleep(.15)
+        sleep(.15)
 
 
 def initial():
