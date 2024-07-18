@@ -1,10 +1,7 @@
-import gc
-import os
-import utime
+# from gc import collect, mem_free
+from utime import ticks_us, ticks_diff
 
-from config.sdcard_manager import SDCardManager
-import sensors.sensor_manager as sm
-from config.config import singleton, Colors, GraphInterval, Display
+from config.config import Display
 from config.env import env_vars
 from graphics.graph_strategy.strategy_graph_interval import StrategyGraphInterval
 from graphics.graph_strategy.graph_utils import days_data, get_measurements, render_temp_values
@@ -31,9 +28,10 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
 
         if force:
             if env_vars['TEST_GRAPH']:
-                start_time = utime.ticks_us()
+                start_time = ticks_us()
             elif env_vars['TEST_GRAPH_MEMORY']:
-                gc.collect()
+                pass
+                # collect()
                 # ram_before = gc.mem_free()
                 # print("RAM before loading the data:", ram_before)
 
@@ -47,9 +45,9 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
         render_daily_graph((list(temp)), list(hum))
 
         if force and env_vars['TEST_GRAPH']:
-            end_time = utime.ticks_us()
+            end_time = ticks_us()
             print("Time to render the graph_strategy during full generation:",
-                  utime.ticks_diff(end_time, start_time) / 1_000_000)
+                  ticks_diff(end_time, start_time) / 1_000_000)
 
 
 def render_daily_graph(temperatures, humidity):
