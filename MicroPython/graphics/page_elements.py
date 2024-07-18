@@ -1,4 +1,4 @@
-import time
+from utime import time, localtime
 
 from config.config import Colors, GraphInterval, Display
 from graphics.graphics import draw_arrow, draw_clock, draw_thermometer, draw_humidity
@@ -62,7 +62,7 @@ def render_sensor_details():
 
     display().text(current_sensor.name, 34, 7, 250, 2)
     draw_clock(14, 41)
-    current_time = time.localtime()
+    current_time = localtime()
     display().text(parse_time(current_time), 34, 34, 250, 2)
     draw_thermometer(14, 68)
 
