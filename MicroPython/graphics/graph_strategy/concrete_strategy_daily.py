@@ -1,4 +1,4 @@
-# from gc import collect, mem_free
+from gc import collect, mem_free
 from utime import ticks_us, ticks_diff
 
 from config.config import Display
@@ -23,6 +23,7 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
 
         disp = Display()
         start_time, end_time = 0, 0
+        ram_before = 0
 
         disp().text("MO TU WE TH FR SA SU", 130, 105, 250, 1)
 
@@ -30,10 +31,7 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
             if env_vars['TEST_GRAPH']:
                 start_time = ticks_us()
             elif env_vars['TEST_GRAPH_MEMORY']:
-                pass
-                # collect()
-                # ram_before = gc.mem_free()
-                # print("RAM before loading the data:", ram_before)
+                ram_before = mem_free()
 
             temp, hum = days_data(date, target_sensor)
 
@@ -48,6 +46,9 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
             end_time = ticks_us()
             print("Time to render the graph_strategy during full generation:",
                   ticks_diff(end_time, start_time) / 1_000_000)
+        elif force and env_vars['TEST_GRAPH_MEMORY']:
+            print(f"RAM free before loading data: {ram_before} B")
+            print(f"RAM free after loading all data: {mem_free()} B")
 
 
 def render_daily_graph(temperatures, humidity):
