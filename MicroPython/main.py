@@ -1,7 +1,6 @@
-import time
-import utime
-import _thread
-import gc
+from utime import sleep, ticks_diff, ticks_us
+from _thread import start_new_thread
+from gc import collect, mem_free
 
 
 from config.config import Colors, button_x, button_y, button_a, button_b, Display, GraphInterval
@@ -38,11 +37,13 @@ def render_homepage(graph_interval):
     display().update()
 
     if env_vars['TEST_HOMEPAGE_MEMORY']:
-        return gc.mem_free()
+        return mem_free()
 
 
 def main_task():
     """The main task that runs in the background."""
+
+    print("Main task started")
 
     graph_interval = GraphInterval.Daily
     sensor_manager = SensorManager()
@@ -72,21 +73,21 @@ def main_task():
             sensor_manager.previous_sensor()
 
         if env_vars['TEST_HOMEPAGE']:
-            start = utime.ticks_us()
+            start = ticks_us()
             render_homepage(graph_interval)
-            end = utime.ticks_us()
-            diff = utime.ticks_diff(end, start) / 1_000_000
+            end = ticks_us()
+            diff = ticks_diff(end, start) / 1_000_000
 
             display = Display()
             page_elements.clear_fast()
             display().set_pen(Colors.RED)
             display().text(f"Render time: {diff:.5f} s", 2, 2, 236, 2)
             display().update()
-            time.sleep(2)
+            sleep(2)
         elif env_vars['TEST_HOMEPAGE_MEMORY']:
-            before_gc_collect = gc.mem_free()
-            gc.collect()
-            start_mem = gc.mem_free()
+            before_gc_collect = mem_free()
+            collect()
+            start_mem = mem_free()
             end_mem = render_homepage(graph_interval)
             diff_mem = start_mem - end_mem
 
@@ -98,11 +99,11 @@ def main_task():
             display().text(f"Memory diff: {diff_mem} B", 2, 40, 236, 2)
             display().text(f"Bef collect: {before_gc_collect} B", 2, 60, 236, 2)
             display().update()
-            time.sleep(2)
+            sleep(2)
         else:
             render_homepage(graph_interval)
 
-        time.sleep(0.5)
+        sleep(0.5)
 
 
 if __name__ == "__main__":
@@ -120,4 +121,4 @@ if __name__ == "__main__":
     last_graph_interval = int(fr_homepage.readline())
     fr_homepage.close()
 
-    _thread.start_new_thread(main_task, ())
+    start_new_thread(main_task, ())
