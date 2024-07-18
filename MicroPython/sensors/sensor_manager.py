@@ -190,6 +190,26 @@ class SensorManager:
         for sensor in self._sensors:
             sensor.resume_measure()
 
+    def pause_all_measurements(self):
+        """Pauses all measurements to be saved to the SD card. This is a necessary step before loading huge data from the
+        SD card because it may take a while to load the data, and it would cause the SD card to crash.
+
+        :return: None
+        """
+
+        for target_sensor in self._sensors:
+            target_sensor.pause_measure()
+
+    def resume_all_measurements(self):
+        """Resumes all measurements to be saved to the SD card. This is a necessary step after loading huge data from the
+        SD card because it may take a while to load the data, and it would cause the SD card to crash.
+
+        :return: None
+        """
+
+        for target_sensor in self._sensors:
+            target_sensor.resume_measure()
+
 
 class AvailableSensors:
     """An enum class for listing the available sensors.
