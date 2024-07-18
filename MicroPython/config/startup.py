@@ -20,4 +20,4 @@ def startup():
 
     settings = SettingsManager()    # Initialize the settings manager
     sensor_manager = SensorManager()    # Initialize the sensor manager
-    graph = ContextGraphInterval()    # Initialize the graph interval
+    graph = ContextGraphInterval()    # Initialize the graph_strategy interval
