@@ -1,4 +1,4 @@
-import time
+from utime import sleep
 from config.config import Colors, Display, button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager, AvailableSensors
 from graphics import page_elements
@@ -51,7 +51,7 @@ def select_sensor_type():
     selected_sensor = 0
 
     while True:
-        time.sleep(.15)
+        sleep(.15)
         if button_a.read():
             selected_sensor = (selected_sensor + 1) % sensor_list_length
 
@@ -85,7 +85,7 @@ def select_sensor_pin():
     selected_pin = 0
 
     while True:
-        time.sleep(.15)
+        sleep(.15)
         if button_a.read():
             selected_pin = (selected_pin + 1) % pin_list_length
 
@@ -118,7 +118,7 @@ def select_sensor_name():
     current_ascii = 65
 
     while True:
-        time.sleep(.15)
+        sleep(.15)
         if button_a.read():
             current_ascii = (current_ascii + 1) % 91
             if current_ascii == 0:
@@ -163,7 +163,7 @@ def select_interval():
     display().set_pen(Colors.WHITE)
 
     while True:
-        time.sleep(.15)
+        sleep(.15)
         if button_a.read():
             interval_time += 1
 
