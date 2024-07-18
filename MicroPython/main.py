@@ -4,12 +4,12 @@ from gc import collect, mem_free
 
 
 from config.config import Colors, button_x, button_y, button_a, button_b, Display, GraphInterval
+from config.startup import startup
+from config.env import env_vars
+from graphics.graph_strategy.context_graph_interval import ContextGraphInterval
 from graphics import page_elements
 import pages.settings as settings
-from config.startup import startup
 from sensors.sensor_manager import SensorManager
-from graphics.graph import ContextGraphInterval
-from config.env import env_vars
 
 
 def render_homepage(graph_interval):
@@ -42,8 +42,6 @@ def render_homepage(graph_interval):
 
 def main_task():
     """The main task that runs in the background."""
-
-    print("Main task started")
 
     graph_interval = GraphInterval.Daily
     sensor_manager = SensorManager()
@@ -121,4 +119,5 @@ if __name__ == "__main__":
     last_graph_interval = int(fr_homepage.readline())
     fr_homepage.close()
 
+    collect()
     start_new_thread(main_task, ())
