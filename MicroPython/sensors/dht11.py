@@ -1,4 +1,3 @@
-import utime
 from machine import Pin, RTC, Timer
 import dht
 from config.sdcard_manager import SDCardManager
@@ -197,9 +196,10 @@ class DHT11:
 
 
 if __name__ == "__main__":
+    from utime import sleep
     sensor = DHT11(0, "DHT11", 5)
 
     while True:
         print(f"Time: {RTC().datetime()}")
         print(f"Temperature: {sensor.temperature}°C, Humidity: {sensor.humidity}%")
-        utime.sleep(2.5)
+        sleep(2.5)
