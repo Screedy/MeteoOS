@@ -1,4 +1,4 @@
-import time
+from utime import sleep
 
 from config.config import Display, Colors, button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager
@@ -34,7 +34,7 @@ def select_sensor():
     sensor_names = [sensor.name for sensor in sensor_list]
 
     while True:
-        time.sleep(0.1)
+        sleep(0.1)
 
         if button_a.read():
             selected_sensor = (selected_sensor + 1) % sensor_list_length
