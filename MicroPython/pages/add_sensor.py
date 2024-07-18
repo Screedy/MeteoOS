@@ -152,9 +152,9 @@ def select_sensor_name():
 
 
 def select_interval():
-    """Selects the graph interval.
+    """Selects the graph_strategy interval.
 
-    :return: The selected graph interval.
+    :return: The selected graph_strategy interval.
     """
 
     display = Display()
