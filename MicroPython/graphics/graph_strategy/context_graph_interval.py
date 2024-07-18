@@ -1,11 +1,6 @@
-import gc
-import os
-import utime
+from uos import stat
 
-from config.sdcard_manager import SDCardManager
-import sensors.sensor_manager as sm
-from config.config import singleton, Colors, GraphInterval, Display
-from config.env import env_vars
+from config.config import singleton, Colors, Display
 from graphics.graph_strategy.strategy_graph_interval import StrategyGraphInterval
 from graphics.graph_strategy.concrete_strategy_daily import ConcreteStrategyDaily
 
@@ -49,13 +44,13 @@ class ContextGraphInterval:
 
         if strategy_str == "D":
             try:
-                os.stat("/sensors/measurements/" + target_sensor.name + "daily.txt")
+                stat("/sensors/measurements/" + target_sensor.name + "daily.txt")
             except OSError:
                 is_loaded = False
 
         if strategy_str == "W":
             try:
-                os.stat("/sensors/measurements/" + target_sensor.name + "weekly.txt")
+                stat("/sensors/measurements/" + target_sensor.name + "weekly.txt")
             except OSError:
                 is_loaded = False
 
