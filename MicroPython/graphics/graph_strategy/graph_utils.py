@@ -1,11 +1,6 @@
-import gc
-import os
-import utime
+# from gc import collect
 
-from config.sdcard_manager import SDCardManager
-import sensors.sensor_manager as sm
-from config.config import singleton, Colors, GraphInterval, Display
-from config.env import env_vars
+from config.config import Colors, Display
 from utils.file_operations import read_n_lines, file_exists
 from utils.date_operations import compate_dates, start_of_week
 
@@ -23,7 +18,7 @@ def day_data(date, file):
     hum_sum = 0
     count = 0
 
-    gc.collect()
+    # collect()
 
     while True:
         lines = read_n_lines(file, 50)
