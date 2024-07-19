@@ -83,3 +83,7 @@ C++/pico-boilerplate/.idea/modules.xml
 TOILET.txt
 MicroPython/sdcard.py
 /MicroPython/.idea
+C++/build.ninja
+/C++/pico-boilerplate/.idea
+/C++/lib
+/C++/Testing
