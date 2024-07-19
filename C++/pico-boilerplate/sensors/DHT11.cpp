@@ -16,31 +16,28 @@ DHT11::DHT11(unsigned int pin, std::string name, int interval)
 
     gpio_init(this->pin);
 
+    repeating_timer_t timer;
+    this->timer = timer;
+
     //Copy first 6 characters of the name and add null terminator
     this->name = name.substr(0, 6);
     this->name += '\0';
 
     if (this->interval > 0) {
         #ifdef TEST_BUILD
-        printf("Creating timer for sensor %s.\n", this->name.c_str());
+            printf("Creating timer for sensor %s.\n", this->name.c_str());
         #endif
+
         this->write = true;
-        //FIXME: Timer is not working.
-        if (!add_repeating_timer_ms(-this->interval * 1000 * 10, timer_callback_dht, nullptr, &this->timer)) {
-            #ifdef TEST_BUILD
-            for(;;){
-                printf("Failed to add timer for sensor %s.\n", this->name.c_str());
-            }
-            #endif
-        }
+        // add_repeating_timer_ms(-this->interval * 1000 * 10, timer_callback_dht, (void*) this->name_c, &this->timer);
     } else {
         #ifdef TEST_BUILD
-        printf("No timer for sensor %s.\n", this->name.c_str());
+            printf("No timer for sensor %s.\n", this->name.c_str());
         #endif
         this->write = false;
     }
 
-    cancel_repeating_timer(&this->timer);
+    // cancel_repeating_timer(&this->timer);
 }
 
 std::uint8_t DHT11::readByte() {
@@ -124,38 +121,34 @@ char* DHT11::getSensorType() {
 int DHT11::getInterval() {
     return this->interval;
 }
-/*
-bool DHT11::timer_callback(repeating_timer_t *rt) {
-
-    #ifdef TEST_BUILD
-    printf("Timer callback for sensor %s.\n", this->name.c_str());
-    #endif
-
-    if (this->write) {
-        this->read();
-        //TODO: Implement writing to the SD card
-    }
-    // Needs to return true to keep the timer running.
-    return true;
-}*/
 
 static bool timer_callback_dht(repeating_timer_t *rt) {
+    if(!rt){
+        printf("Timer struct pointer is null. Cannot handle timer.\n");
+        return false;
+    }
+
+    char* sensor_name = (char*) rt->user_data;
+
     #ifdef TEST_BUILD
-    printf("Timer callback\n");
+        printf("Timer callback for sensor %s.\n", sensor_name);
+        return true;
     #endif
-    //DHT11* sensor = static_cast<DHT11*>(rt->user_data);
-    //return sensor->handle_timer();
-    return true;
+
+    return false;
 }
 
 bool DHT11::handle_timer() {
     #ifdef TEST_BUILD
-    printf("Timer callback for sensor %s.\n", this->name.c_str());
+        // printf("Timer callback for sensor %s.\n", this->name.c_str());
     #endif
 
+    // this->read();
+
+    printf("Temperature: %f\n", this->temperature);
+
     if (this->write) {
-        this->read();
-        //this->write_to_file();
+        this->write_to_file();
     }
 
     // Return true to keep the timer running
@@ -166,25 +159,32 @@ void DHT11::write_to_file() {
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
 
     #ifdef TEST_BUILD
-    printf("Appending the new measured values to the sensor file.\n");
+        printf("Appending the new measured values to the sensor file.\n");
     #endif
 
     // Open the file in append mode and write a new line with the measured values
-    // The format is: "yyyy.mm.dd-hh:mm:ss;temperature;humidity"
+    // The format is: "(yyyy, m, d, dotw, h, m, s, 0);temperature;humidity"
     // File is located in 0:/measurements/sensor_name.txt
     std::string path = "/measurements/" + this->name + ".txt";
 
     if (f_open(&sd_card_manager->get_fil(), path.c_str(), FA_WRITE | FA_OPEN_APPEND) != FR_OK) {
-        printf("Failed to open the file.\n");
-        return;
+        printf("Failed to open the file., create it\n");
+        if (f_open(&sd_card_manager->get_fil(), path.c_str(), FA_WRITE | FA_CREATE_ALWAYS) != FR_OK) {
+            printf("Failed to create the file.\n");
+            return;
+        }
     }
 
     char buffer[50];
     datetime_t rtc_datetime = get_current_datetime();
-    sprintf(buffer, "%04d.%02d.%02d-%02d:%02d:%02d;%f;%f\n",
+
+    int temperature = (int) this->temperature;
+    int humidity = (int) this->humidity;
+
+    sprintf(buffer, "(%04d, %02d, %02d, %02d, %02d, %02d, 0);%d;%d\n",
             rtc_datetime.year, rtc_datetime.month, rtc_datetime.day,
             rtc_datetime.hour, rtc_datetime.min, rtc_datetime.sec,
-            this->temperature, this->humidity);
+            temperature, humidity);
 
     if (f_printf(&sd_card_manager->get_fil(), buffer) < 0) {
         printf("Failed to write to the file.\n");
@@ -192,4 +192,12 @@ void DHT11::write_to_file() {
     }
 
     f_close(&sd_card_manager->get_fil());
+}
+
+void DHT11::setWrite(bool write) {
+    this->write = write;
+}
+
+bool DHT11::getWrite() {
+    return this->write;
 }
