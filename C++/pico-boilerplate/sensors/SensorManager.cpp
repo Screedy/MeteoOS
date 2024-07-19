@@ -21,7 +21,6 @@ SensorManager::SensorManager()
     //sensors.push_back(std::make_unique<DHT11>(DHT11(0, "TEST", 30))); // This is temporary to test the DHT11 sensor
 
     reloadSensorCount();
-
 }
 
 SensorManager& SensorManager::getInstance() {
@@ -202,4 +201,10 @@ void SensorManager::setDefault(){
     sensors.clear();
     //sensors.push_back(std::make_unique<DHT11>(DHT11(0, "TEST", 30))); // This is temporary to test the DHT11 sensor
     reloadSensorCount();
+}
+
+void SensorManager::pause_all_measurements() {
+    for (auto& sensor : sensors) {
+        sensor->setWrite(false);
+    }
 }

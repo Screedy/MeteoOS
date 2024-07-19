@@ -117,6 +117,8 @@ public:
      */
     void setDefault();
 
+    void pause_all_measurements();
+
 private:
     /*
      * Constructor of the SensorManager.
