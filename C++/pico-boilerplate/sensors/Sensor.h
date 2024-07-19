@@ -77,7 +77,17 @@ public:
     /*
      * Handles the timer interrupt.
      */
-    virtual bool handle_timer();
+    virtual bool handle_timer() = 0;
+
+    /*
+     * Sets the write flag.
+     */
+    virtual void setWrite(bool write) = 0;
+
+    /*
+     * Returns the write flag.
+     */
+    virtual bool getWrite() = 0;
 
 private:
     repeating_timer_t timer;
