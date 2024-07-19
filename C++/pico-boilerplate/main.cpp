@@ -1,22 +1,18 @@
 #include "pico/stdlib.h"
 
-#include <string.h>
-#include <math.h>
 #include <vector>
-#include <cstdlib>
-#include <stdio.h>
+#include <cstdio>
 
 #include "config/config.h"
 #include "config/Display.h"
 #include "graphics/graphics.h"
 #include "graphics/page_elements.h"
-#include "sensors/DHT11.h"
 #include "sensors/SensorManager.h"
 #include "pages/Settings.h"
 #include "config/sd_card_manager.h"
 #include "config/startup.h"
+#include "config/setup.h"
 #include "graphics/qrcode_graphics.h"
-#include "rtc.h"
 #include "hardware/timer.h"
 #include "graphics/graph/strategy_graph_interval.h"
 #include "graphics/graph/concrete_strategy_daily.h"
@@ -130,39 +126,71 @@ static void printQr(const qrcodegen::QrCode &qr) {
     std::cout << std::endl;
 }
 
-//TODO: Delete after testing
-bool timer_callback(repeating_timer_t *rt){
-    //printf("Timer callback\n");
-
-    if (rt->user_data == nullptr){
-        printf("Error: user_data is null\n");
+bool timer_callback(repeating_timer_t *rt) {
+    if(!rt){
+        printf("Timer struct pointer is null. Cannot handle timer.\n");
         return false;
     }
 
-    auto* sensor = static_cast<DHT11*>(rt->user_data);
+    SensorManager& sensor_manager = SensorManager::getInstance();
+    std::vector<std::unique_ptr<Sensor>>& sensors = sensor_manager.getSensors();
 
-    if (sensor == nullptr){
-        printf("Error: sensor is null\n");
-        return false;
-    }
-
-    try{
+    for (auto& sensor : sensors) {
         sensor->handle_timer();
-    } catch (const std::exception& e){
-        printf(" Exception in handle_timer: %s\n", e.what());
-        return false;
-    } catch (...){
-        printf("Unknown exception in handle_timer\n");
-        return false;
     }
 
-    printf("Timer callback end\n");
     return true;
+}
+
+void test_generate_qr(){
+    sleep_ms(2000);
+
+    for(int i = 0; i < 10; i++){
+        absolute_time_t start = get_absolute_time();
+        qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("Hello, world! 1234567890", qrcodegen::QrCode::Ecc::LOW);
+        absolute_time_t end = get_absolute_time();
+        int64_t elapsed = absolute_time_diff_us(start, end);
+        double elapsed_seconds = elapsed / 1000000.0;
+        printf("QR code generation took %f seconds\n", elapsed_seconds);
+    }
+}
+
+void test_render_qr(){
+    sleep_ms(2000);
+
+    for(int i = 0; i < 10; i++){
+        absolute_time_t start = get_absolute_time();
+
+        // -------- code tested -------------
+        Display& display = Display::getInstance();
+        auto& driver = display.getDriver();
+        auto& graphics = display.getGraphics();
+
+        graphics.set_pen(Colors::BLACK);
+        graphics.clear();
+        graphics.set_pen(Colors::WHITE);
+
+        qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("https://github.com/Screedy/MeteoOS/tree/main/C%2B%2B",
+                                                             qrcodegen::QrCode::Ecc::LOW);
+
+        draw_qr_code(qr, 10, 10, 4);
+        graphics.text("Scan for help", Point{135, 10}, DISPLAY_WIDTH - 135, 2);
+        graphics.text("BACK", Point{DISPLAY_WIDTH - 45, DISPLAY_HEIGHT - 17}, 236, 2);
+
+        driver.update(&graphics);
+        // -------- code tested -------------
+
+        absolute_time_t end = get_absolute_time();
+        int64_t elapsed = absolute_time_diff_us(start, end);
+        double elapsed_seconds = elapsed / 1000000.0;
+        printf("QR code rendering took %f seconds\n", elapsed_seconds);
+
+
+    }
 }
 
 int main() {
     stdio_init_all();
-    //sleep_ms(5000);
     startup();
 /*
     repeating_timer_t timer;
@@ -170,12 +198,13 @@ int main() {
         printf("Failed to add timer\n");
     }*/
 
-
     Display& display = Display::getInstance();
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
     auto& Buttons = Buttons::getInstance();
     auto& sensor_manager = SensorManager::getInstance();
+    uint8_t active_sensor = sensor_manager.getActiveSensor();
+
 
     // This code is part of the SD card testing done in the function test_sd(). It wont be removed for demonstration
     // purposes.
@@ -194,10 +223,7 @@ int main() {
     graphics.set_pen(Colors::WHITE);
     graphics.clear();
 
-    auto& sensor1 = sensor_manager.getSensor(0);
-
-    //repeating_timer_t timer;
-    //add_repeating_timer_ms(sensor1->getInterval() * 10000, timer_callback, sensor1.get(), &timer);
+    std::unique_ptr<Sensor>& sensor1 = sensor_manager.getSensor(active_sensor);
 
     #ifdef TEST_BUILD
         int loop_number = 0;
@@ -206,8 +232,8 @@ int main() {
     while(true){
         #ifdef TEST_BUILD
             printf("The active sensor is: %s\n", sensor1->getName().c_str());
-            printf("Interval: %d\n", sensor1->getInterval());
-            printf("Loop number: %d\n", loop_number++);
+            // printf("Interval: %d\n", sensor1->getInterval());
+            // printf("Loop number: %d\n", loop_number++);
         #endif
         if (Buttons.is_button_x_pressed()){
             //TODO: change the graph interval
@@ -224,10 +250,10 @@ int main() {
             printf("Menu closed\n");
         } else if (Buttons.is_button_a_pressed()){
             printf("Button A pressed\n");
-            //TODO: Next sensor
+            sensor_manager.activeUp();
         } else if (Buttons.is_button_b_pressed()){
             printf("Button B pressed\n");
-            //TODO: Previous sensor
+            sensor_manager.activeDown();
         }
 
         render_homepage(graph_interval);
@@ -238,11 +264,22 @@ int main() {
             printf("Error code: %d\n", err);
             continue;
         }
+
         //printf("Temperature: %f\n", sensor1->getTemperature());
         //printf("Humidity: %f\n", sensor1->getHumidity());
         //printf("Sensor1 temp: %f, hum: %f\n", sensor1->getTemperature(), sensor1->getHumidity());
 
         sleep_ms(300);
+
+        #ifdef DRAW_QR_CODE_TEST
+            test_generate_qr();
+        #endif
+
+        #ifdef RENDER_QR_CODE_TEST
+            test_render_qr();
+        #endif
+
+
     }
 
     return 0;
