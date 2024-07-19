@@ -96,7 +96,7 @@ void sd_card_setup(){
     driver.update(&graphics);
 
     #ifdef TEST_BUILD
-    printf("Waiting for SD card setup confirm\n");
+        printf("Waiting for SD card setup confirm\n");
     #endif
 
     wait_for_y(sd_card_setup);
