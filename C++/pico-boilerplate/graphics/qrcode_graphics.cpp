@@ -4,7 +4,6 @@
 
 #include "qrcode_graphics.h"
 #include "../config/Display.h"
-#include "../config/config.h"
 
 void draw_qr_code(qrcodegen::QrCode &qr, int x_offset, int y_offset, int scale) {
     Display& display = Display::getInstance();
