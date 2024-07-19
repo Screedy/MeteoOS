@@ -128,6 +128,10 @@ public:
      * @return true if the timer interrupt was handled, false otherwise.
      */
     bool handle_timer();
+
+    void setWrite(bool write);
+
+    bool getWrite();
 };
 
 /*
