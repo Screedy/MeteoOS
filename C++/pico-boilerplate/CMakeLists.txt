@@ -23,9 +23,19 @@ set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 pico_sdk_init()
 
 # Option for test build
-option(TEST_BUILD "Build for testing" ON)
+option(TEST_BUILD "Build for testing" OFF) # Default to OFF
 if(TEST_BUILD)
     add_compile_definitions(TEST_BUILD)
+endif()
+
+option(DRAW_QR_CODE_TEST "Enable QR Code Drawing Test" OFF) # Default to OFF
+if(DRAW_QR_CODE_TEST)
+    add_compile_definitions(DRAW_QR_CODE_TEST)
+endif()
+
+option(RENDER_QR_CODE_TEST "Enable QR Code Rendering Test" ON) # Default to OFF
+if(RENDER_QR_CODE_TEST)
+    add_compile_definitions(RENDER_QR_CODE_TEST)
 endif()
 
 # Definition of source and header files using globbing
