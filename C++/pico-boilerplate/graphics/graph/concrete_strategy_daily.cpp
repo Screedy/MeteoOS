@@ -12,6 +12,7 @@
 #include "../../config/sd_card_manager.h"
 #include "../../config/rtc_module.h"
 #include "../../utils/string_modifiers.h"
+#include "../../utils/measurements_tests.h"
 
 void ConcreteStrategyDaily::renderGraph(datetime_t date, Sensor* sensor, bool force_redraw) {
     Display& display = Display::getInstance();
@@ -152,6 +153,14 @@ void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
         temp[i] = values[0];
         hum[i] = values[1];
         start.day++;
+
+        #ifdef TEST_GRAPH_MEMORY
+            if (i == 0){
+                uint32_t free_memory_after = getFreeHeap();
+                printf("Free memory after first day: %d\n", free_memory_after);
+            }
+        #endif
+
     }
 
     f_close(&file);
