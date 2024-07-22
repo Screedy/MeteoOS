@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.6)
 
 # Project name
 set(NAME MeteoOS)
@@ -22,7 +22,7 @@ set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 # Initialize the SDK
 pico_sdk_init()
 
-# Option for test build
+# Options for test builds
 option(TEST_BUILD "Build for testing" OFF) # Default to OFF
 if(TEST_BUILD)
     add_compile_definitions(TEST_BUILD)
@@ -33,9 +33,39 @@ if(DRAW_QR_CODE_TEST)
     add_compile_definitions(DRAW_QR_CODE_TEST)
 endif()
 
-option(RENDER_QR_CODE_TEST "Enable QR Code Rendering Test" ON) # Default to OFF
+option(RENDER_QR_CODE_TEST "Enable QR Code Rendering Test" OFF) # Default to OFF
 if(RENDER_QR_CODE_TEST)
     add_compile_definitions(RENDER_QR_CODE_TEST)
+endif()
+
+option(STORAGE_TEST "Tests Both Success and Failed SD Card Access" OFF) # Default to OFF
+if(STORAGE_TEST)
+    add_compile_definitions(STORAGE_TEST)
+endif()
+
+option(LIST_DIR_TEST "Times the listing of everything in root dir" OFF) # Default to OFF
+if(LIST_DIR_TEST)
+    add_compile_definitions(LIST_DIR_TEST)
+endif()
+
+option(TEST_HOMEPAGE_RENDER "Time in second how long it takes to render the homepage" OFF) # Default to OFF
+if(TEST_HOMEPAGE_RENDER)
+    add_compile_definitions(TEST_HOMEPAGE_RENDER)
+endif()
+
+option(TEST_MEMORY_HOMEPAGE "Tests the memory free on the device" OFF) # Default to OFF
+if(TEST_MEMORY_HOMEPAGE)
+    add_compile_definitions(TEST_MEMORY_HOMEPAGE)
+endif()
+
+option(TEST_GRAPH_SPEED "Tests the speed of generating a graph" OFF) # Default to OFF
+if(TEST_GRAPH_SPEED)
+    add_compile_definitions(TEST_GRAPH_SPEED)
+endif()
+
+option(TEST_GRAPH_MEMORY "Tests the memory of generating a graph" OFF) # Default to OFF
+if(TEST_GRAPH_MEMORY)
+    add_compile_definitions(TEST_GRAPH_MEMORY)
 endif()
 
 # Definition of source and header files using globbing
