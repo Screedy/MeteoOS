@@ -37,9 +37,10 @@ FIL& sd_card_manager::get_fil() {
 }
 
 bool sd_card_manager::mount_sd_card() {
-    printf("Mounting SD card on %s\n", this->pSD->pcName);
-    printf("Pins are: MISO: %d, MOSI: %d, SCK: %d, SS: %d\n", this->pSD->spi->miso_gpio, this->pSD->spi->mosi_gpio, this->pSD->spi->sck_gpio, this->pSD->ss_gpio);
-
+    #ifdef TEST_BUILD
+        printf("Mounting SD card on %s\n", this->pSD->pcName);
+        printf("Pins are: MISO: %d, MOSI: %d, SCK: %d, SS: %d\n", this->pSD->spi->miso_gpio, this->pSD->spi->mosi_gpio, this->pSD->spi->sck_gpio, this->pSD->ss_gpio);
+    #endif
 
     this->fr = f_mount(&this->pSD->fatfs, this->pSD->pcName, 1);
 
