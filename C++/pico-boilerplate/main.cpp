@@ -1,24 +1,27 @@
 #include "pico/stdlib.h"
+#include "hardware/timer.h"
+
 
 #include <vector>
 #include <cstdio>
+#include <malloc.h>
 
 #include "config/config.h"
 #include "config/Display.h"
-#include "graphics/graphics.h"
-#include "graphics/page_elements.h"
-#include "sensors/SensorManager.h"
-#include "pages/Settings.h"
 #include "config/sd_card_manager.h"
 #include "config/startup.h"
 #include "config/setup.h"
+#include "config/rtc_module.h"
+#include "graphics/graphics.h"
+#include "graphics/page_elements.h"
 #include "graphics/qrcode_graphics.h"
-#include "hardware/timer.h"
 #include "graphics/graph/strategy_graph_interval.h"
 #include "graphics/graph/concrete_strategy_daily.h"
 #include "graphics/graph/concrete_strategy_weekly.h"
 #include "graphics/graph/context_graph_interval.h"
-#include "config/rtc_module.h"
+#include "pages/Settings.h"
+#include "sensors/SensorManager.h"
+#include "utils/measurements_tests.h"
 
 using namespace pimoroni;
 
@@ -65,7 +68,7 @@ void render_homepage(int graph_interval){
 }
 
 /*
- * This is how I tested the SD card functionality for the very first time. Code will stay here for demonstation
+ * This is how I tested the SD card functionality for the very first time. Code will stay here for demonstration
  * in my bachelor thesis to directly compare with the MicroPython implementation.
  * This code should be removed but will stay here.
  */
@@ -114,18 +117,6 @@ void test_sd(){
     printf("SD card unmounted\n");
 }
 
-
-static void printQr(const qrcodegen::QrCode &qr) {
-    int border = 4;
-    for (int y = -border; y < qr.getSize() + border; y++) {
-        for (int x = -border; x < qr.getSize() + border; x++) {
-            std::cout << (qr.getModule(x, y) ? "##" : "  ");
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-}
-
 bool timer_callback(repeating_timer_t *rt) {
     if(!rt){
         printf("Timer struct pointer is null. Cannot handle timer.\n");
@@ -140,53 +131,6 @@ bool timer_callback(repeating_timer_t *rt) {
     }
 
     return true;
-}
-
-void test_generate_qr(){
-    sleep_ms(2000);
-
-    for(int i = 0; i < 10; i++){
-        absolute_time_t start = get_absolute_time();
-        qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("Hello, world! 1234567890", qrcodegen::QrCode::Ecc::LOW);
-        absolute_time_t end = get_absolute_time();
-        int64_t elapsed = absolute_time_diff_us(start, end);
-        double elapsed_seconds = elapsed / 1000000.0;
-        printf("QR code generation took %f seconds\n", elapsed_seconds);
-    }
-}
-
-void test_render_qr(){
-    sleep_ms(2000);
-
-    for(int i = 0; i < 10; i++){
-        absolute_time_t start = get_absolute_time();
-
-        // -------- code tested -------------
-        Display& display = Display::getInstance();
-        auto& driver = display.getDriver();
-        auto& graphics = display.getGraphics();
-
-        graphics.set_pen(Colors::BLACK);
-        graphics.clear();
-        graphics.set_pen(Colors::WHITE);
-
-        qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("https://github.com/Screedy/MeteoOS/tree/main/C%2B%2B",
-                                                             qrcodegen::QrCode::Ecc::LOW);
-
-        draw_qr_code(qr, 10, 10, 4);
-        graphics.text("Scan for help", Point{135, 10}, DISPLAY_WIDTH - 135, 2);
-        graphics.text("BACK", Point{DISPLAY_WIDTH - 45, DISPLAY_HEIGHT - 17}, 236, 2);
-
-        driver.update(&graphics);
-        // -------- code tested -------------
-
-        absolute_time_t end = get_absolute_time();
-        int64_t elapsed = absolute_time_diff_us(start, end);
-        double elapsed_seconds = elapsed / 1000000.0;
-        printf("QR code rendering took %f seconds\n", elapsed_seconds);
-
-
-    }
 }
 
 int main() {
@@ -256,7 +200,28 @@ int main() {
             sensor_manager.activeDown();
         }
 
+        #ifdef TEST_HOMEPAGE_RENDER
+            absolute_time_t start = get_absolute_time();
+        #endif
+
+        #ifdef TEST_MEMORY_HOMEPAGE
+            uint32_t free_memory_start = getFreeHeap();
+            printf("Free memory before homepage render: %d\n", free_memory_start);
+        #endif
+
         render_homepage(graph_interval);
+
+        #ifdef TEST_MEMORY_HOMEPAGE
+            uint32_t free_memory_end = getFreeHeap();
+            printf("Free memory after homepage render: %d\n", free_memory_end);
+        #endif
+
+        #ifdef TEST_HOMEPAGE_RENDER
+            absolute_time_t end = get_absolute_time();
+            int64_t elapsed = absolute_time_diff_us(start, end);
+            double elapsed_seconds = elapsed / 1000000.0;
+            printf("Homepage rendering took %f seconds\n", elapsed_seconds);
+        #endif
 
         auto err = sensor1->read();
         if (err != 0){
@@ -272,13 +237,20 @@ int main() {
         sleep_ms(300);
 
         #ifdef DRAW_QR_CODE_TEST
-            test_generate_qr();
+            test_generate_qr(10);
         #endif
 
         #ifdef RENDER_QR_CODE_TEST
             test_render_qr();
         #endif
 
+        #ifdef STORAGE_TEST
+            test_storage(10);
+        #endif
+
+        #ifdef LIST_DIR_TEST
+            test_list_dir(10);
+        #endif
 
     }
 
