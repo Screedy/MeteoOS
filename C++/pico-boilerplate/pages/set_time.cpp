@@ -6,6 +6,7 @@
 
 #include "../config/config.h"
 #include "../graphics/graphics.h"
+#include "../graphics/page_elements.h"
 
 void x_button_text(uint8_t setting){
     if (setting == 5){
@@ -164,7 +165,8 @@ void render_set_time_menu() {
         graphics.clear();
         graphics.set_pen(Colors::WHITE);
 
-        graphics.text("Set date", Point{2, 0}, 236, 2);
+        render_nav_arrows(6);
+        graphics.text("Set date", Point{35, 10}, 236, 2);
 
         //Set graphics for everything except the one that is being set:
         char buffer[256];
