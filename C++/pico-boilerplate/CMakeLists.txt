@@ -68,6 +68,11 @@ if(TEST_GRAPH_MEMORY)
     add_compile_definitions(TEST_GRAPH_MEMORY)
 endif()
 
+option(TEST_GRAPH_INTEGRITY "Tests that the graph is using all lines" OFF) # Default to OFF
+if(TEST_GRAPH_INTEGRITY)
+    add_compile_definitions(TEST_GRAPH_INTEGRITY)
+endif()
+
 # Definition of source and header files using globbing
 file(GLOB CONFIG_SOURCES "config/*.cpp" "config/*.h")
 file(GLOB GRAPHICS_SOURCES "graphics/*.cpp" "graphics/*.h")
