@@ -65,7 +65,6 @@ void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
 }
 
 void SensorManager::removeSensor(int index) {
-    // TODO: needs testing
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
     FIL fil = sd_card_manager->get_fil();
     FRESULT fr;

@@ -48,8 +48,6 @@ void render_sensor_details(){
 }
 
 void render_homepage_buttons(int interval){
-    //TODO: Implement with graph interval
-
     int active_color = Colors::WHITE;
     int inactive_color = Colors::BLACK;
 

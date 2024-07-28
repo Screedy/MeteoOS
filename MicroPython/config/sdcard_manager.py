@@ -91,7 +91,7 @@ class SDCardManager:
         """
 
         self._sck = sck
-        self._spi.init(sck=sck)  # TODO: check for only correct pins
+        self._spi.init(sck=sck)
 
     @property
     def mosi(self):
@@ -110,7 +110,7 @@ class SDCardManager:
         """
 
         self._mosi = mosi
-        self._spi.init(mosi=mosi)  # TODO: check for only correct pins
+        self._spi.init(mosi=mosi)
 
     @property
     def miso(self):
@@ -129,7 +129,7 @@ class SDCardManager:
         """
 
         self._miso = miso
-        self._spi.init(miso=miso)  # TODO: check for only correct pins
+        self._spi.init(miso=miso)
 
     @property
     def cs(self):
@@ -148,7 +148,7 @@ class SDCardManager:
         """
 
         self._cs = cs
-        self._spi.init(cs=cs)  # TODO: check for only correct pins
+        self._spi.init(cs=cs)
 
     @property
     def spi(self):

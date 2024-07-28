@@ -49,8 +49,6 @@ def main_task():
 
     while True:     # Homepage loop
         if button_x.read():
-            # TODO: change the graph_strategy interval
-
             if graph_interval is GraphInterval.Daily:
                 graph_interval = GraphInterval.Weekly
             elif graph_interval is GraphInterval.Weekly:

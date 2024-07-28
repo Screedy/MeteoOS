@@ -180,7 +180,6 @@ int main() {
             // printf("Loop number: %d\n", loop_number++);
         #endif
         if (Buttons.is_button_x_pressed()){
-            //TODO: change the graph interval
             if (graph_interval == GraphInterval::DAILY){
                 graph_interval = GraphInterval::WEEKLY;
             } else if (graph_interval == GraphInterval::WEEKLY){

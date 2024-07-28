@@ -33,7 +33,7 @@ def day_data(date, file):
             date_file = date_file.replace("(", "").replace(" ", "").replace(")", "").split(",")
 
             date_file = tuple(map(int, date_file))
-
+            
             if compate_dates(date, date_file) == 0:
                 temp_sum += float(temp_file)
                 hum_sum += float(hum_file)

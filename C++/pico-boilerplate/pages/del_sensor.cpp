@@ -6,7 +6,6 @@
 #include "../graphics/page_elements.h"
 
 bool render_del_sensor(){
-    // TODO: Test this file
     Display &display = Display::getInstance();
     pimoroni::ST7789 &driver = display.getDriver();
     pimoroni::PicoGraphics_PenRGB332 &graphics = display.getGraphics();
