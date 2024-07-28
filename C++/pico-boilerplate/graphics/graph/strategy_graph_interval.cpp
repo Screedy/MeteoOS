@@ -136,5 +136,9 @@ std::array<float, 2> StrategyGraphInterval::generateOneDayValues(datetime_t day,
     printf("The average humidity for the day is: %f\n", values[1]);
     #endif
 
+    #ifdef TEST_GRAPH_INTEGRITY
+        printf("The count of lines for this day is: %d\n", count);
+    #endif
+
     return values;
 }
