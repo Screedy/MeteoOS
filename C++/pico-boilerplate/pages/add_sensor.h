@@ -10,6 +10,7 @@
 #include "../graphics/graphics.h"
 #include "../sensors/Sensor.h"
 #include "../sensors/SensorManager.h"
+#include "../graphics/page_elements.h"
 
 namespace AddSensor{
     extern Display& display;
@@ -25,7 +26,7 @@ namespace AddSensor{
  *
  * @return True if the sensor was added, false if the user canceled the operation.
  */
-bool render_add_sensor();
+bool render_add_sensor(bool is_setup = false);
 
 /*
  * Selects the sensor type you want to add.
@@ -34,27 +35,27 @@ bool render_add_sensor();
  *
  * @return The type of the sensor.
  */
-SensorType select_sensor_type();
+SensorType select_sensor_type(bool is_setup = false);
 
 /*
  * Selects the pin where the sensor is connected.
  *
  * @return Pin selected by user.
  */
-int select_sensor_pin();
+int select_sensor_pin(bool is_setup = false);
 
 /*
  * Selects the name of the sensor.
  *
  * @return Name of the sensor.
  */
-std::string select_sensor_name();
+std::string select_sensor_name(bool is_setup = false);
 
 /*
  * Selects the interval of the sensor.
  *
  * @return The number of seconds between sensor readings.
  */
-int select_interval();
+int select_interval(bool is_setup = false);
 
 #endif //PICO_BOILERPLATE_ADD_SENSOR_H
