@@ -1,4 +1,3 @@
-
 # MeteoOS C++ Source Code Documentation
 - This documentation outlines the procedures for working with the [MeteoOS](https://github.com/Screedy/MeteoOS.git) source code contained within the pico-boilerplate directory.
 
