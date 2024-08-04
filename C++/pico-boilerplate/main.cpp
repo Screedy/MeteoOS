@@ -19,53 +19,12 @@
 #include "graphics/graph/concrete_strategy_daily.h"
 #include "graphics/graph/concrete_strategy_weekly.h"
 #include "graphics/graph/context_graph_interval.h"
+#include "pages/homepage.h"
 #include "pages/Settings.h"
 #include "sensors/SensorManager.h"
 #include "utils/measurements_tests.h"
 
 using namespace pimoroni;
-
-void render_homepage(int graph_interval){
-    Display& display = Display::getInstance();
-    auto& driver = display.getDriver();
-    auto& graphics = display.getGraphics();
-
-    clear_fast();
-    graphics.set_pen(Colors::WHITE);
-
-    render_homepage_buttons(graph_interval);
-    render_nav_arrows(6);
-    render_sensor_details();
-
-    graphics.line(Point{100, 16}, Point{100, 120});
-    graphics.line(Point{101, 16}, Point{101, 120});
-    graphics.line(Point{102, 16}, Point{102, 120});
-
-    // If time is set, render the graph
-    bool time_set = is_rtc_set();
-    if (time_set){
-        // Get the current active sensor
-        SensorManager& sensor_manager = SensorManager::getInstance();
-        std::unique_ptr<Sensor>& active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
-
-        // Set the strategy for the graph interval
-        std::unique_ptr<StrategyGraphInterval> strategy;
-        if (graph_interval == GraphInterval::DAILY){
-            strategy = std::make_unique<ConcreteStrategyDaily>();
-        } else if (graph_interval == GraphInterval::WEEKLY){
-            strategy = std::make_unique<ConcreteStrategyWeekly>();
-        } else if (graph_interval == GraphInterval::MONTHLY){
-            // strategy = std::make_unique<ConcreteStrategyMonthly>();
-        }
-
-        if (graph_interval != GraphInterval::MONTHLY){
-            ContextGraphInterval setStrategy(std::move(strategy));
-            setStrategy.renderGraph(get_current_datetime(), active_sensor.get(), false);
-        }
-    }
-
-    driver.update(&graphics);
-}
 
 /*
  * This is how I tested the SD card functionality for the very first time. Code will stay here for demonstration
@@ -117,37 +76,15 @@ void test_sd(){
     printf("SD card unmounted\n");
 }
 
-bool timer_callback(repeating_timer_t *rt) {
-    if(!rt){
-        printf("Timer struct pointer is null. Cannot handle timer.\n");
-        return false;
-    }
-
-    SensorManager& sensor_manager = SensorManager::getInstance();
-    std::vector<std::unique_ptr<Sensor>>& sensors = sensor_manager.getSensors();
-
-    for (auto& sensor : sensors) {
-        sensor->handle_timer();
-    }
-
-    return true;
-}
-
 int main() {
     stdio_init_all();
     startup();
-/*
-    repeating_timer_t timer;
-    if (!add_repeating_timer_ms(10000, timer_callback, nullptr, &timer)){
-        printf("Failed to add timer\n");
-    }*/
 
     Display& display = Display::getInstance();
     auto& driver = display.getDriver();
     auto& graphics = display.getGraphics();
     auto& Buttons = Buttons::getInstance();
     auto& sensor_manager = SensorManager::getInstance();
-    uint8_t active_sensor = sensor_manager.getActiveSensor();
 
 
     // This code is part of the SD card testing done in the function test_sd(). It wont be removed for demonstration
@@ -167,7 +104,9 @@ int main() {
     graphics.set_pen(Colors::WHITE);
     graphics.clear();
 
-    std::unique_ptr<Sensor>& sensor1 = sensor_manager.getSensor(active_sensor);
+    Sensor* active_sensor_instance = sensor_manager.getSensor(sensor_manager.getActiveSensor());
+    datetime_t last_graph_rendered;
+    rtc_get_datetime(&last_graph_rendered);
 
     #ifdef TEST_BUILD
         int loop_number = 0;
@@ -179,6 +118,7 @@ int main() {
             // printf("Interval: %d\n", sensor1->getInterval());
             // printf("Loop number: %d\n", loop_number++);
         #endif
+
         if (Buttons.is_button_x_pressed()){
             if (graph_interval == GraphInterval::DAILY){
                 graph_interval = GraphInterval::WEEKLY;
@@ -194,9 +134,11 @@ int main() {
         } else if (Buttons.is_button_a_pressed()){
             printf("Button A pressed\n");
             sensor_manager.activeUp();
+            active_sensor_instance = sensor_manager.getSensor(sensor_manager.getActiveSensor());
         } else if (Buttons.is_button_b_pressed()){
             printf("Button B pressed\n");
             sensor_manager.activeDown();
+            active_sensor_instance = sensor_manager.getSensor(sensor_manager.getActiveSensor());
         }
 
         #ifdef TEST_HOMEPAGE_RENDER
@@ -208,7 +150,7 @@ int main() {
             printf("Free memory before homepage render: %d\n", free_memory_start);
         #endif
 
-        render_homepage(graph_interval);
+        render_homepage(graph_interval, &last_graph_rendered);
 
         #ifdef TEST_MEMORY_HOMEPAGE
             uint32_t free_memory_end = getFreeHeap();
@@ -222,18 +164,14 @@ int main() {
             printf("Homepage rendering took %f seconds\n", elapsed_seconds);
         #endif
 
-        auto err = sensor1->read();
+        auto err = active_sensor_instance->read();
         if (err != 0){
             printf("Error reading sensor\n");
             printf("Error code: %d\n", err);
             continue;
         }
 
-        //printf("Temperature: %f\n", sensor1->getTemperature());
-        //printf("Humidity: %f\n", sensor1->getHumidity());
-        //printf("Sensor1 temp: %f, hum: %f\n", sensor1->getTemperature(), sensor1->getHumidity());
 
-        sleep_ms(300);
 
         #ifdef DRAW_QR_CODE_TEST
             test_generate_qr(10);
@@ -250,8 +188,6 @@ int main() {
         #ifdef LIST_DIR_TEST
             test_list_dir(10);
         #endif
-
     }
-
     return 0;
 }
