@@ -83,8 +83,6 @@ SensorType select_sensor_type(bool is_setup) {
     int sensor_list_length = possibleSensors.size();
     int selected_sensor_index = 0;
 
-    sleep_ms(500);
-
     while (true){
         if (buttons.is_button_a_pressed()){
             selected_sensor_index = (selected_sensor_index + 1) % sensor_list_length;
@@ -139,7 +137,6 @@ SensorType select_sensor_type(bool is_setup) {
         graphics.set_pen(Colors::WHITE);
 
         driver.update(&graphics);
-        sleep_ms(200);
     }
 }
 
@@ -147,8 +144,6 @@ int select_sensor_pin(bool is_setup) {
     std::vector<int> pin_list = sensor_manager.getAvailablePins();
     int pin_list_length = pin_list.size();
     int selected_pin_index = 0;
-
-    sleep_ms(200);
 
     while (true){
         if (buttons.is_button_a_pressed()) {
@@ -205,7 +200,6 @@ int select_sensor_pin(bool is_setup) {
         graphics.set_pen(Colors::WHITE);
 
         driver.update(&graphics);
-        sleep_ms(150);
     }
 }
 
@@ -219,7 +213,6 @@ std::string select_sensor_name(bool is_setup) {
 
 
     while (true){
-        sleep_ms(200);
         if (buttons.is_button_a_pressed()){
             current_index = (current_index + 1) % characters_length;
         } else if (buttons.is_button_b_pressed()){
@@ -289,7 +282,6 @@ int select_interval(bool is_setup) {
     graphics.set_pen(Colors::WHITE);
 
     while (true){
-        sleep_ms(200);
         if (buttons.is_button_a_pressed()) {
             interval_time = (interval_time + 1) % 61;
         } else if (buttons.is_button_b_pressed()) {
