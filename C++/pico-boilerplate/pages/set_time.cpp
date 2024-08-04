@@ -96,7 +96,6 @@ void render_set_time_menu() {
     uint8_t setting = 0; // Which part of the datetime_t is currently being set
 
     while(true){
-        sleep_ms(250);
         // Logic for setting the time
         if(buttons.is_button_a_pressed()){
             switch (setting) {

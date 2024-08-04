@@ -123,7 +123,6 @@ bool render_brightness(){
     brightness = brightness == -1 ? 50 : brightness;
 
     while (true){
-        sleep_ms(250);
         if (buttons.is_button_a_pressed()){
             if (brightness > 90){
                 brightness = 10;

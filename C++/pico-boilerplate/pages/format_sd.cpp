@@ -30,9 +30,7 @@ bool render_format_sd(){
     graphics.text("Press X to cancel", Point{2, DISPLAY_HEIGHT - 20}, 236, 2);
     driver.update(&graphics);
 
-    sleep_ms(250);
     while(!buttons.is_button_y_pressed()){
-        sleep_ms(250);
         if (buttons.is_button_x_pressed()){
             return false;
         }

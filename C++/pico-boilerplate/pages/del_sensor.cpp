@@ -58,7 +58,6 @@ int select_sensor(){
     #endif
 
     while (true){
-        sleep_ms(200);
         if (buttons.is_button_a_pressed()){
             #ifdef TEST_BUILD
             printf("A pressed changing the value from %d to %d\n",

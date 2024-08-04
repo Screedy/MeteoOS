@@ -136,7 +136,6 @@ void settings_loop(){
     auto settings_list = SettingsItems::list_of_items();
 
     while (true){
-        sleep_ms(300);
         if (buttons.is_button_x_pressed()){
             SettingsItems::get_function(selected_item)();
         } else if (buttons.is_button_y_pressed()){
