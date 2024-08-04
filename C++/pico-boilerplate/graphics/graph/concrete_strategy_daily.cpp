@@ -121,8 +121,8 @@ void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
                                                 std::vector<float>& hum, Sensor* sensor, datetime_t date) {
     // Use the generateOneDayValues function from the StrategyGraphInterval class to get the values for the given days
 
-    // NOTE: This is hardcoded to week that has values pregenerated in a file. So that both MicroPython and C++ version
-    // have the same test generated and thus we can compare the time.
+    // NOTE: This is hardcoded to week that has values pre-generated in a file. So that both MicroPython and C++ version
+    // have the same test generated, and thus we can compare the time.
     date.year = 2024;
     date.month = 2;
     date.day = 15;
@@ -143,7 +143,7 @@ void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
     FIL file;
     FRESULT res = f_open(&file, file_path.c_str(), FA_READ);
     if (res != FR_OK) {
-        printf("Failed to open file %s\n", file_path.c_str());
+        //printf("Failed to open file %s\n", file_path.c_str());
         return;
     }
 
