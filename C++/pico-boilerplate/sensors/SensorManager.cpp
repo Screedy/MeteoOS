@@ -32,8 +32,11 @@ std::vector<std::unique_ptr<Sensor>>& SensorManager::getSensors() {
     return sensors;
 }
 
-std::unique_ptr<Sensor>& SensorManager::getSensor(int index) {
-    return sensors[index];
+Sensor* SensorManager::getSensor(int index) {
+    if (index >= 0 && index < sensors.size()) {
+        return sensors[index].get();
+    }
+    return nullptr;
 }
 
 void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {

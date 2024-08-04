@@ -43,7 +43,7 @@ public:
      * @param index The index of the sensor.
      * @return The sensor at the index.
      */
-    std::unique_ptr<Sensor>& getSensor(int index);
+    Sensor* getSensor(int index);
 
     /*
      * Function that adds a sensor to the SensorManager.
