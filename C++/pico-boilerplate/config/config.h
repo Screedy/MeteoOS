@@ -25,17 +25,26 @@ namespace Config{
 
 class Buttons {
 public:
-    //Buttons();
+    static Buttons& getInstance();
 
     bool is_button_a_pressed();
     bool is_button_b_pressed();
     bool is_button_x_pressed();
     bool is_button_y_pressed();
 
-    static Buttons& getInstance();
+    bool is_button_a_held();
+    bool is_button_b_held();
+    bool is_button_x_held();
+    bool is_button_y_held();
 
 private:
     Buttons();
+    bool debounce_button(uint gpio, bool& last_state);
+
+    bool button_a_last_state;
+    bool button_b_last_state;
+    bool button_x_last_state;
+    bool button_y_last_state;
 };
 
 struct Colors {
