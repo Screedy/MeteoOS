@@ -79,4 +79,9 @@ void render_items_list(int selected_item, std::vector<std::string> page);
  */
 void render_items_list_full_page(int selected_item, std::vector<std::string> page);
 
+/*
+ * Renders a line that separates the different sections of the display.
+ */
+void render_thick_separator();
+
 #endif //PICO_BOILERPLATE_PAGE_ELEMENTS_H_H
