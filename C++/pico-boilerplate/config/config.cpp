@@ -27,21 +27,54 @@ Buttons::Buttons() {
     gpio_pull_up(BUTTON_B);
     gpio_pull_up(BUTTON_X);
     gpio_pull_up(BUTTON_Y);
+
+    button_a_last_state = true;
+    button_b_last_state = true;
+    button_x_last_state = true;
+    button_y_last_state = true;
+}
+
+bool Buttons::debounce_button(uint gpio, bool& last_state) {
+    bool current_state = !gpio_get(gpio);
+    bool pressed = false;
+
+    if (current_state && !last_state) {
+        pressed = true;
+    }
+
+    last_state = current_state;
+    return pressed;
 }
 
 bool Buttons::is_button_a_pressed() {
-    return !gpio_get(BUTTON_A);
+    return debounce_button(BUTTON_A, button_a_last_state);
 }
 
 bool Buttons::is_button_b_pressed() {
-    return !gpio_get(BUTTON_B);
+    return debounce_button(BUTTON_B, button_b_last_state);
 }
 
 bool Buttons::is_button_x_pressed() {
-    return !gpio_get(BUTTON_X);
+    return debounce_button(BUTTON_X, button_x_last_state);
 }
 
 bool Buttons::is_button_y_pressed() {
+    return debounce_button(BUTTON_Y, button_y_last_state);
+}
+
+bool Buttons::is_button_a_held() {
+    return !gpio_get(BUTTON_A);
+}
+
+bool Buttons::is_button_b_held() {
+    return !gpio_get(BUTTON_B);
+}
+
+bool Buttons::is_button_x_held() {
+    return !gpio_get(BUTTON_X);
+}
+
+bool Buttons::is_button_y_held() {
     return !gpio_get(BUTTON_Y);
 }
 
