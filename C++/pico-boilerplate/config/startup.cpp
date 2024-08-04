@@ -58,7 +58,7 @@ void startup() {
     driver.update(&graphics);
 
     // Initialize the RTC.
-    rtc_init();
+    initialize_rtc();
 
     // Initialize the SD card. If it fails, the system should not continue and will wait before an SD card is inserted.
     sd_card_initialize();
