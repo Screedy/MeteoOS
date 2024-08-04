@@ -13,10 +13,9 @@ void render_reset_graph() {
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
 
     int pin = sensor_manager.getActiveSensor();
-    std::unique_ptr<Sensor>& sensor = sensor_manager.getSensor(pin);
+    Sensor* sensor = sensor_manager.getSensor(pin);
 
     while(true){
-        sleep_ms(250);
         if (buttons.is_button_x_pressed()) {
             std::string sensor_name = sensor->getName();
             sensor_name.erase(std::remove(sensor_name.begin(), sensor_name.end(), '\0'), sensor_name.end());

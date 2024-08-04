@@ -15,7 +15,7 @@ bool del_data(int selected_sensor_index){
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
 
     // Get the correct sensor from sensor manager
-    std::unique_ptr<Sensor>& selected_sensor = sensor_manager.getSensor(selected_sensor_index);
+    Sensor* selected_sensor = sensor_manager.getSensor(selected_sensor_index);
 
     // Path to the sensor data file
     std::string path_str = "0:/measurements/" + selected_sensor->getName() + ".txt";
@@ -77,7 +77,6 @@ void render_del_data(){
     int file_count = files.size();
 
     while(true){
-        sleep_ms(250);
         // Check for button presses
         if (buttons.is_button_b_pressed()){
             file_index = (file_index + 1) % file_count;

@@ -24,7 +24,7 @@ void render_nav_arrows(int x, int colour){
 }
 
 void render_sensor_details(){
-    auto& active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
+    Sensor* active_sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
     std::string current_time = "NOTSET";
     if (is_rtc_set()){
         datetime_t dt = get_current_datetime();
@@ -138,4 +138,10 @@ void render_items_list_full_page(int selected_item, std::vector<std::string> pag
             graphics.text(">", pimoroni::Point{0, 34 + (i * 27)}, 250, 2);
         }
     }
+}
+
+void render_thick_separator(){
+    graphics.line(Point{100, 16}, Point{100, 120});
+    graphics.line(Point{101, 16}, Point{101, 120});
+    graphics.line(Point{102, 16}, Point{102, 120});
 }
