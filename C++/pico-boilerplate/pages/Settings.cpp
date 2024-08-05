@@ -117,6 +117,10 @@ void render_settings(int selected_item) {
     clear_fast();
     graphics.set_pen(Colors::WHITE);
 
+    auto& sensor_manager = SensorManager::getInstance();
+    auto sensor = sensor_manager.getSensor(sensor_manager.getActiveSensor());
+    sensor->read();
+
     render_sensor_details();
     render_nav_arrows(110);
 
