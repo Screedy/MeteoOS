@@ -47,6 +47,9 @@ void render_homepage(int graph_interval, datetime_t* last_graph_rendered){
 
         was_rendered = true;
         rtc_get_datetime(last_graph_rendered);
+    } else {
+        graphics.set_pen(Colors::RED);
+        graphics.text("NO GRAPH", Point{120, DISPLAY_HEIGHT/2-10}, 250, 2);
     }
 
     driver.update(&graphics);
