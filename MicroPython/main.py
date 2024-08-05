@@ -3,7 +3,8 @@ from _thread import start_new_thread
 from gc import collect, mem_free
 
 
-from config.config import Colors, button_x, button_y, button_a, button_b, Display, GraphInterval
+from config.config import Colors, Display, GraphInterval
+from config.buttons import button_x, button_y, button_a, button_b
 from config.startup import startup
 from config.env import env_vars
 from graphics.graph_strategy.context_graph_interval import ContextGraphInterval
@@ -63,10 +64,10 @@ def main_task():
             settings.settings_loop()
             print("Settings closed, back to homepage")
 
-        if button_a.read():
+        if button_a.is_held():
             sensor_manager.next_sensor()
 
-        if button_b.read():
+        if button_b.is_held():
             sensor_manager.previous_sensor()
 
         if env_vars['TEST_HOMEPAGE']:
@@ -100,7 +101,7 @@ def main_task():
         else:
             render_homepage(graph_interval)
 
-        sleep(0.5)
+        sleep(0.1)
 
 
 if __name__ == "__main__":

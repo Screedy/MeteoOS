@@ -1,5 +1,5 @@
 from config.config import Colors, Display
-from config.config import button_a, button_b, button_x, button_y
+from config.buttons import button_a, button_b, button_x, button_y
 import graphics.graphics_text as graphics_text
 from utime import sleep
 from graphics.page_elements import clear_fast

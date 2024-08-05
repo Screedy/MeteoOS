@@ -1,6 +1,7 @@
 from utime import sleep
 
-from config.config import Display, Colors, button_a, button_b, button_x, button_y
+from config.config import Display, Colors
+from config.buttons import button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager
 from graphics import page_elements
 from graphics.graphics import draw_confirm, draw_cancel

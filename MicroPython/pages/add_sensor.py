@@ -1,5 +1,6 @@
 from utime import sleep
-from config.config import Colors, Display, button_a, button_b, button_x, button_y
+from config.config import Colors, Display
+from config.buttons import button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager, AvailableSensors
 from graphics import page_elements
 from sensors.dht11 import DHT11
@@ -51,11 +52,11 @@ def select_sensor_type():
     selected_sensor = 0
 
     while True:
-        sleep(.15)
-        if button_a.read():
+        sleep(.1)
+        if button_a.is_held():
             selected_sensor = (selected_sensor + 1) % sensor_list_length
 
-        if button_b.read():
+        if button_b.is_held():
             selected_sensor = (selected_sensor - 1) % sensor_list_length
 
         if button_x.read():
@@ -85,11 +86,11 @@ def select_sensor_pin():
     selected_pin = 0
 
     while True:
-        sleep(.15)
-        if button_a.read():
+        sleep(.1)
+        if button_a.is_held():
             selected_pin = (selected_pin + 1) % pin_list_length
 
-        if button_b.read():
+        if button_b.is_held():
             selected_pin = (selected_pin - 1) % pin_list_length
 
         if button_x.read():
@@ -118,13 +119,13 @@ def select_sensor_name():
     current_ascii = 65
 
     while True:
-        sleep(.15)
-        if button_a.read():
+        sleep(.1)
+        if button_a.is_held():
             current_ascii = (current_ascii + 1) % 91
             if current_ascii == 0:
                 current_ascii = 65
 
-        if button_b.read():
+        if button_b.is_held():
             current_ascii = (current_ascii - 1) % 91
             if current_ascii == 64:
                 current_ascii = 90
@@ -163,11 +164,11 @@ def select_interval():
     display().set_pen(Colors.WHITE)
 
     while True:
-        sleep(.15)
-        if button_a.read():
+        sleep(.1)
+        if button_a.is_held():
             interval_time += 1
 
-        if button_b.read():
+        if button_b.is_held():
             interval_time -= 1 if interval_time > 0 else 0
 
         if button_x.read():

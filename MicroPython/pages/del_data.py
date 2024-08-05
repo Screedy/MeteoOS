@@ -1,6 +1,7 @@
 from utime import sleep
 
-from config.config import Display, Colors, button_a, button_b, button_x, button_y
+from config.config import Display, Colors
+from config.buttons import button_a, button_b, button_x, button_y
 from graphics import page_elements
 from config.sdcard_manager import SDCardManager
 from graphics.graphics import draw_cancel, draw_ok

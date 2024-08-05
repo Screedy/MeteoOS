@@ -1,4 +1,5 @@
-from config.config import Display, Colors, button_x, button_a, button_b, button_y
+from config.config import Display, Colors
+from config.buttons import button_a, button_b, button_x, button_y
 from graphics import page_elements
 from config.settings_manager import SettingsManager, load_brightness
 from graphics.graphics import draw_cancel, draw_confirm

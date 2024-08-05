@@ -1,5 +1,6 @@
 from utime import sleep
-from config.config import Display, Colors, button_x, button_y, button_a, button_b
+from config.config import Display, Colors
+from config.buttons import button_x, button_y, button_a, button_b
 from graphics import page_elements
 from pages.add_sensor import render_add_sensor as add_sensor
 from pages.del_sensor import render_del_sensor as remove_sensor
@@ -127,10 +128,10 @@ def settings_loop():
         if button_y.read():
             return
 
-        if button_a.read():
+        if button_a.is_held():
             selected_item = (selected_item - 1) % len(settings_list)
 
-        if button_b.read():
+        if button_b.is_held():
             selected_item = (selected_item + 1) % len(settings_list)
 
         render_settings(selected_item)
