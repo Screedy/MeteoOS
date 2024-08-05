@@ -8,6 +8,7 @@ This is my bachelor's thesis project. It is about a comparative analysis of dyna
 - SD Card with a [SD Card module](https://botland.cz/prislusenstvi-pro-pametove-karty/8230-modul-ctecky-karet-microsd-5904422311278.html)
 - [Pimoroni Pico Display](https://botland.cz/raspberry-pi-pico-hat-klavesnice-a-displeje/18879-pico-display-pack-prekryti-s-ips-lcd-114-240x135px-displejem-769894017081.html)
 - Couple of wires to connect everything
+- (Optional) [Pico Omnibus](https://botland.cz/raspberry-pi-pico-hat-rozsirovace-pinu/18872-pico-omnibus-dualni-expander-pro-raspberry-pi-pico-769894017210.html)
 
 ## C++
 - Instructions on how to install this version can be found in the [C++](https://github.com/Screedy/MeteoOS/tree/main/C%2B%2B) part of this repository.
