@@ -4,7 +4,7 @@ This is my bachelor's thesis project. It is about a comparative analysis of dyna
 
 ## Required hardware
 - [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/) or [Raspberry Pi Pico W](https://botland.cz/moduly-a-soupravy-pro-raspberry-pi-pico/21574-raspberry-pi-pico-w-rp2040-arm-cortex-m0-cyw43439-wifi-5056561803173.html)
-- Couple of [DHT11]([https://botland.cz/multifunkcni-senzory/4918-cidlo-teploty-a-vlhkosti-dht11-modul-iduino-se052-5903351241335.html](https://botland.cz/multifunkcni-senzory/4918-cidlo-teploty-a-vlhkosti-dht11-modul-iduino-se052-5903351241335.html) sensors
+- Couple of [DHT11](https://botland.cz/multifunkcni-senzory/4918-cidlo-teploty-a-vlhkosti-dht11-modul-iduino-se052-5903351241335.html) sensors
 - SD Card with a [SD Card module](https://botland.cz/prislusenstvi-pro-pametove-karty/8230-modul-ctecky-karet-microsd-5904422311278.html)
 - [Pimoroni Pico Display](https://botland.cz/raspberry-pi-pico-hat-klavesnice-a-displeje/18879-pico-display-pack-prekryti-s-ips-lcd-114-240x135px-displejem-769894017081.html)
 - Couple of wires to connect everything
