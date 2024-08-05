@@ -4,12 +4,6 @@ from picographics import DISPLAY_PICO_DISPLAY  # Class for this display model
 from picographics import PEN_P4  # Class for the color depth used
 
 
-button_a = Button(12)
-button_b = Button(13)
-button_x = Button(14)
-button_y = Button(15)
-
-
 def singleton(class_):
     """A decorator for making a class a singleton.
 
