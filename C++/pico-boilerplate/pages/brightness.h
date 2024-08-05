@@ -7,6 +7,7 @@
 
 #include "../config/config.h"
 #include "../config/Display.h"
+#include "../config/Buttons.h"
 #include "../graphics/graphics.h"
 #include "../graphics/page_elements.h"
 

@@ -10,6 +10,7 @@
 #include "pico/stdlib.h"
 #include "hardware/rtc.h"
 #include "../config/rtc_module.h"
+#include "../config/Buttons.h"
 
 /*
  * Function that renders the set time menu.

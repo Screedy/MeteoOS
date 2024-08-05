@@ -5,6 +5,8 @@
 #ifndef PICO_BOILERPLATE_DEL_DATA_H
 #define PICO_BOILERPLATE_DEL_DATA_H
 
+#include "../config/Buttons.h"
+
 /*
  * Deletes the data for a specific sensor selected by the user in this function.
  * @param selected_sensor_index Index of the sensor selected by the user.

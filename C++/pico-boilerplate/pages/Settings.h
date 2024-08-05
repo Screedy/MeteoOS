@@ -12,6 +12,7 @@
 #include "../graphics/graphics.h"
 #include "../graphics/page_elements.h"
 #include "../config/config.h"
+#include "../config/Buttons.h"
 
 //Include all the pages that are used in the settings page
 #include "add_sensor.h"

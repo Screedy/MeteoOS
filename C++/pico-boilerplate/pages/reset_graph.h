@@ -7,10 +7,12 @@
 
 #include <string>
 #include "../config/config.h"
+#include "../config/Buttons.h"
+#include "../config/sd_card_manager.h"
 #include "../graphics/graphics.h"
 #include "../sensors/Sensor.h"
 #include "../sensors/SensorManager.h"
-#include "../config/sd_card_manager.h"
+
 
 /*
  * Renders the function to reset the graph.

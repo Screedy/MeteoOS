@@ -5,6 +5,8 @@
 #ifndef PICO_BOILERPLATE_FORMAT_SD_H
 #define PICO_BOILERPLATE_FORMAT_SD_H
 
+#include "../config/Buttons.h"
+
 /*
  * Function that formats the SD card.
  * In the C++ version of the app, this function is going to  put you into the setup wizard.

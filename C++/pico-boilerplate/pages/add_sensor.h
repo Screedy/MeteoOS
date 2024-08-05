@@ -11,6 +11,7 @@
 #include "../sensors/Sensor.h"
 #include "../sensors/SensorManager.h"
 #include "../graphics/page_elements.h"
+#include "../config/Buttons.h"
 
 namespace AddSensor{
     extern Display& display;

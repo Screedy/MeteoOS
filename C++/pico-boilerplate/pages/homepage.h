@@ -13,14 +13,15 @@
 #include "../config/Display.h"
 #include "../config/sd_card_manager.h"
 #include "../config/rtc_module.h"
+#include "../config/Buttons.h"
 #include "../graphics/graphics.h"
 #include "../graphics/page_elements.h"
 #include "../graphics/graph/strategy_graph_interval.h"
 #include "../graphics/graph/concrete_strategy_daily.h"
 #include "../graphics/graph/concrete_strategy_weekly.h"
 #include "../graphics/graph/context_graph_interval.h"
-#include "Settings.h"
 #include "../sensors/SensorManager.h"
+#include "Settings.h"
 
 /*
  * Renders the homepage of the device.

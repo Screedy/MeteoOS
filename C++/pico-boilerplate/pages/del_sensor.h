@@ -7,6 +7,7 @@
 
 #include <string>
 #include "../config/config.h"
+#include "../config/Buttons.h"
 #include "../graphics/graphics.h"
 #include "../sensors/Sensor.h"
 #include "../sensors/SensorManager.h"
