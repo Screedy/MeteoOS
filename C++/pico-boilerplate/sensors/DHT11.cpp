@@ -76,7 +76,11 @@ int DHT11::read() {
     std::uint8_t checksum = readByte();
 
     // Check the checksum
-    if (checksum != (humI + humF + tempI + tempF)) return 2;
+    if (checksum != (humI + humF + tempI + tempF)){
+        this->humidity = 0;
+        this->temperature = 0;
+        return 2;
+    }
 
     // Store the data
     this->humidity = humI + (humF / 100.0F);
