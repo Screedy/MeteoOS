@@ -33,7 +33,7 @@ void render_nav_arrows(int x, int colour = Colors::WHITE);
  *
  * @param time The time to display.
  */
-//void parse_time(struct tm* time); TODO: Implement this function
+//void parse_time(struct tm* time);
 
 /*
  * Draws the sensor details on the screen.
