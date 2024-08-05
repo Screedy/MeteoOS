@@ -51,7 +51,7 @@ void render_sensor_details();
  *
  * @return None
  */
-void render_homepage_buttons(int interval = 0); //TODO: Implement with graph interval
+void render_homepage_buttons(int interval = 0);
 
 /*
  * Renders the settings page buttons on the display.
