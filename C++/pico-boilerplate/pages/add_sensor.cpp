@@ -84,9 +84,9 @@ SensorType select_sensor_type(bool is_setup) {
     int selected_sensor_index = 0;
 
     while (true){
-        if (buttons.is_button_a_pressed()){
+        if (buttons.is_button_a_held()){
             selected_sensor_index = (selected_sensor_index + 1) % sensor_list_length;
-        } else if (buttons.is_button_b_pressed()){
+        } else if (buttons.is_button_b_held()){
             if (selected_sensor_index == 0) { //C++ modulo operator doesn't work with neg numbers has to be done this way
                 selected_sensor_index = sensor_list_length;
             }
@@ -146,9 +146,9 @@ int select_sensor_pin(bool is_setup) {
     int selected_pin_index = 0;
 
     while (true){
-        if (buttons.is_button_a_pressed()) {
+        if (buttons.is_button_a_held()) {
             selected_pin_index = (selected_pin_index + 1) % pin_list_length;
-        } else if (buttons.is_button_b_pressed()) {
+        } else if (buttons.is_button_b_held()) {
             if (selected_pin_index == 0) { //C++ modulo operator doesn't work with neg numbers has to be done this way
                 selected_pin_index = pin_list_length;
             }
@@ -183,7 +183,7 @@ int select_sensor_pin(bool is_setup) {
         render_nav_arrows(2, Colors::WHITE);
 
         std::string text = "Select sensor pin: " + std::to_string(pin_list[selected_pin_index]);
-        graphics.text(text.c_str(), Point{2, 60}, 200, 2);
+        graphics.text(text.c_str(), Point{2, 60}, 250, 2);
 
         graphics.set_pen(Colors::GREEN);
 
@@ -213,9 +213,9 @@ std::string select_sensor_name(bool is_setup) {
 
 
     while (true){
-        if (buttons.is_button_a_pressed()){
+        if (buttons.is_button_a_held()){
             current_index = (current_index + 1) % characters_length;
-        } else if (buttons.is_button_b_pressed()){
+        } else if (buttons.is_button_b_held()){
             if (current_index == 0) {
                 current_index = characters_length;
             }
@@ -282,9 +282,9 @@ int select_interval(bool is_setup) {
     graphics.set_pen(Colors::WHITE);
 
     while (true){
-        if (buttons.is_button_a_pressed()) {
+        if (buttons.is_button_a_held()) {
             interval_time = (interval_time + 1) % 61;
-        } else if (buttons.is_button_b_pressed()) {
+        } else if (buttons.is_button_b_held()) {
             interval_time = (interval_time - 1) % 61;
         } else if (buttons.is_button_x_pressed()) {
             if (is_setup) {

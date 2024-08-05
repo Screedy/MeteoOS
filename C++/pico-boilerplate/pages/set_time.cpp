@@ -97,7 +97,7 @@ void render_set_time_menu() {
 
     while(true){
         // Logic for setting the time
-        if(buttons.is_button_a_pressed()){
+        if(buttons.is_button_a_held()){
             switch (setting) {
                 case 0:
                     dt.year++;
@@ -119,7 +119,7 @@ void render_set_time_menu() {
                     break;
             }
         }
-        else if(buttons.is_button_b_pressed()){
+        else if(buttons.is_button_b_held()){
             switch (setting){
                 case 0:
                     dt.year = (dt.year == 2000) ? dt.year : dt.year - 1;

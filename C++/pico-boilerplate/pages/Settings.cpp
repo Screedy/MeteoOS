@@ -144,9 +144,9 @@ void settings_loop(){
             SettingsItems::get_function(selected_item)();
         } else if (buttons.is_button_y_pressed()){
             return;
-        } else if (buttons.is_button_a_pressed()){
+        } else if (buttons.is_button_a_held()){
             selected_item = (selected_item - 1) % settings_list.size();
-        } else if (buttons.is_button_b_pressed()){
+        } else if (buttons.is_button_b_held()){
             selected_item = (selected_item + 1) % settings_list.size();
         }
 

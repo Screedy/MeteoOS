@@ -12,6 +12,7 @@
 #include "config/startup.h"
 #include "config/setup.h"
 #include "config/rtc_module.h"
+#include "config/Buttons.h"
 #include "graphics/graphics.h"
 #include "graphics/page_elements.h"
 #include "graphics/qrcode_graphics.h"
@@ -131,11 +132,11 @@ int main() {
             printf("Opening menu\n");
             settings_loop();
             printf("Menu closed\n");
-        } else if (Buttons.is_button_a_pressed()){
+        } else if (Buttons.is_button_a_held()){
             printf("Button A pressed\n");
             sensor_manager.activeUp();
             active_sensor_instance = sensor_manager.getSensor(sensor_manager.getActiveSensor());
-        } else if (Buttons.is_button_b_pressed()){
+        } else if (Buttons.is_button_b_held()){
             printf("Button B pressed\n");
             sensor_manager.activeDown();
             active_sensor_instance = sensor_manager.getSensor(sensor_manager.getActiveSensor());
