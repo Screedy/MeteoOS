@@ -47,7 +47,7 @@ cd ../..
 	- Create and navigate to the build directory:
 ```BASH
 pwd  # Ensure you are in the /{your_path}/MeteoOS/C++ directory
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ../pico-boilerplate/
 ```
 2. **Compile the Project:**
