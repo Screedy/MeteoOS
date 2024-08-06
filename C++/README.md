@@ -39,6 +39,7 @@ git clone https://github.com/pimoroni/pimoroni-pico
 mkdir pico-boilerplate/lib
 cd pico-boilerplate/lib
 git clone https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico.git
+cd ../..
 ```
 
 #### Building the Application
