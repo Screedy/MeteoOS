@@ -1,5 +1,6 @@
 from gc import collect, mem_free
 from utime import ticks_us, ticks_diff
+import uos
 
 from config.config import Display
 from config.env import env_vars
@@ -34,6 +35,12 @@ class ConcreteStrategyDaily(StrategyGraphInterval):
                 ram_before = mem_free()
 
             temp, hum = days_data(date, target_sensor)
+
+            try:
+                uos.mkdir("/sensors/measurements")
+            except OSError as e:
+                if e.args[0] != 17:     # 17 is the error code for EEXIST
+                    raise e
 
             with open("/sensors/measurements/" + target_sensor.name + "daily.txt", "w") as fw:
                 fw.write(f"{temp};{hum}")
