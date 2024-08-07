@@ -46,15 +46,37 @@ ls /dev/cu.usbmodem* #on MacOS
 import os
 import subprocess
 
+def create_directory(port, directory):
+    """Create a directory on the board if it does not exist."""
+    ampy_path = '/home/screedy/.local/bin/ampy'  # Full path to ampy
+    try:
+        subprocess.run([ampy_path, '--port', port, 'mkdir', directory], check=True)
+    except subprocess.CalledProcessError as e:
+        # Ignore error if directory already exists
+        if "EEXIST" not in str(e):
+            print(f"Error creating directory {directory}: {e}")
+
 def upload_directory(directory, port):
+    ampy_path = '/home/screedy/.local/bin/ampy'  # Full path to ampy
     for root, dirs, files in os.walk(directory):
+        for dir in dirs:
+            # Create corresponding directory structure on the board
+            remote_dir = os.path.join(root, dir).replace(directory, '').replace('\\', '/')
+            if remote_dir.startswith('/'):
+                remote_dir = remote_dir[1:]
+            print(f"Creating directory {remote_dir}")
+            create_directory(port, remote_dir)
+
         for file in files:
             local_path = os.path.join(root, file)
             remote_path = local_path.replace(directory, '').replace('\\', '/')
             if remote_path.startswith('/'):
                 remote_path = remote_path[1:]
             print(f"Uploading {local_path} to {remote_path}")
-            subprocess.run(['ampy', '--port', port, 'put', local_path, remote_path])
+            try:
+                subprocess.run([ampy_path, '--port', port, 'put', local_path, remote_path], check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Error uploading {local_path}: {e}")
 
 if __name__ == "__main__":
     directory = input("Enter the directory to upload: ")
