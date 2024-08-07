@@ -11,6 +11,9 @@ def temperature_to_pixel(temperature, max_temp, min_temp, pixel_min=20, pixel_ma
     :return: The pixel value for the given temperature.
     """
 
+    if max_temp == min_temp:
+        return (pixel_min + pixel_max) / 2
+
     return pixel_max + ((temperature - min_temp) * (pixel_min - pixel_max)) / (max_temp - min_temp)
 
 
