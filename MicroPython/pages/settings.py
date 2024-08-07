@@ -2,11 +2,13 @@ from utime import sleep
 from config.config import Display, Colors
 from config.buttons import button_x, button_y, button_a, button_b
 from graphics import page_elements
+
 from pages.add_sensor import render_add_sensor as add_sensor
 from pages.del_sensor import render_del_sensor as remove_sensor
 from pages.brightness import render_brightness as change_brightness
 from pages.format_sd import render_format_sd as format_sd
 from pages.del_data import render_del_data as del_data
+from pages.reset_graph import render_reset_graph as del_graph
 
 
 class SettingItems:
@@ -23,6 +25,7 @@ class SettingItems:
     Brightness = 2
     FormatSD = 3
     DelData = 4
+    DelGraph = 5
 
     @staticmethod
     def list_of_items():
@@ -53,6 +56,8 @@ class SettingItems:
             return Settings.format_sd()
         elif selected_item == SettingItems.DelData:
             return Settings.del_data()
+        elif selected_item == SettingItems.DelGraph:
+            return Settings.del_graph()
 
 
 class Settings:
@@ -94,6 +99,12 @@ class Settings:
         """Deletes data from the SD card."""
         print("Deleting data...")
         print("Data deleted") if del_data() else print("Data not deleted")
+
+    @classmethod
+    def del_graph(cls):
+        """Deletes the graph."""
+        print("Deleting graph...")
+        print("Graph deleted") if del_graph() else print("Graph not deleted")
 
 
 def render_settings(selected_item: int = 0):
