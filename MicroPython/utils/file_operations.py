@@ -1,3 +1,4 @@
+import uos
 from sensors.sensor_manager import SensorManager
 from config.sdcard_manager import SDCardManager
 
@@ -61,6 +62,40 @@ def file_exists(target_sensor):
         raise OSError("SD card is not mounted")
 
     if f"{target_sensor.name}.txt" not in files:
-        raise OSError(f"File {target_sensor.name}.txt not found on the SD card")
+        # print(f"File {target_sensor.name}.txt not found on the SD card")
+        return False
 
     return True
+
+
+def get_formatted_filenames(measurements_list):
+    """
+    Formats the filenames to be displayed on the screen.
+    The format is as follows:
+    - D - NAME_OF_SENSOR (Daily)
+    - W - NAME_OF_SENSOR (Weekly)
+    - M - NAME_OF_SENSOR (Monthly)
+    - U - NAME_OF_SENSOR (Unknown type)
+
+    :param measurements_list: The list of filenames to format.
+
+    :return: A list containing the formatted filenames.
+    """
+    formatted_list = []
+
+    for filename in measurements_list:
+        uppercase_letters = ''.join([char for char in filename if char.isupper()])
+
+        if filename.endswith("daily.txt"):
+            type_indicator = 'D'
+        elif filename.endswith("weekly.txt"):
+            type_indicator = 'W'
+        elif filename.endswith("monthly.txt"):
+            type_indicator = 'M'
+        else:
+            type_indicator = 'U'  # Unknown type
+
+        formatted_filename = f"{type_indicator} - {uppercase_letters}"
+        formatted_list.append(formatted_filename)
+
+    return formatted_list
