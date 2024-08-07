@@ -1,8 +1,8 @@
 from uos import stat
 
-from config.config import singleton, Colors, Display
-from graphics.graph_strategy.strategy_graph_interval import StrategyGraphInterval
+from config.config import singleton, Colors, Display, GraphInterval
 from graphics.graph_strategy.concrete_strategy_daily import ConcreteStrategyDaily
+from graphics.graph_strategy.concrete_strategy_weekly import ConcreteStrategyWeekly
 
 
 @singleton
@@ -26,10 +26,15 @@ class ContextGraphInterval:
         return self._strategy
 
     @strategy.setter
-    def strategy(self, strategy: StrategyGraphInterval) -> None:
+    def strategy(self, strategy: GraphInterval) -> None:
         """Sets the strategy to use for rendering the graph_strategy."""
 
-        self._strategy = strategy
+        if strategy == GraphInterval.Daily:
+            self._strategy = ConcreteStrategyDaily()
+        elif strategy == GraphInterval.Weekly:
+            self._strategy = ConcreteStrategyWeekly()
+        else:
+            self._strategy = ConcreteStrategyDaily()    # Default to daily
 
     def render_graph(self, date, target_sensor, force) -> None:
         """Renders the graph_strategy using the strategy pattern."""
