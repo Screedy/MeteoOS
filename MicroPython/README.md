@@ -12,9 +12,9 @@
 		- Select MicroPython (Raspberry Pi Pico) from the interpreter list.
 		- Ensure the correct COM port is selected (Thonny should detect it automatically).
 		- Aditionally on **Linux** you might get a error `Unabble to connect to /dev/tty*: [Errno 13]...` in this case you need to add yourself to the Dialout Group.
-```bash
-sudo usermod -a -G dialout $USER
-```
+			```bash
+			sudo usermod -a -G dialout $USER
+			```
 4. Clone the MeteoOS repository
 ```bash
 git clone https://github.com/Screedy/MeteoOS.git
