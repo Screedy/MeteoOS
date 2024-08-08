@@ -3,6 +3,7 @@ from config.buttons import button_a, button_b, button_x, button_y
 from graphics import page_elements
 from config.settings_manager import SettingsManager, load_brightness
 from graphics.graphics import draw_cancel, draw_confirm
+from config.env import env_vars
 
 
 def render_brightness():
@@ -15,7 +16,7 @@ def render_brightness():
     """
 
     display = Display()
-    brightness = load_brightness()
+    brightness = int(load_brightness())
     old_brightness = brightness
 
     page_elements.clear_fast()
@@ -35,11 +36,13 @@ def render_brightness():
         if button_a.read():
             if brightness < 10:
                 brightness = brightness + 1
-            print(brightness)
+            if env_vars['DEBUG']:
+                print(brightness)
         elif button_b.read():
-            if brightness > 1:
+            if brightness > 2:
                 brightness = brightness - 1
-            print(brightness)
+            if env_vars['DEBUG']:
+                print(brightness)
         elif button_y.read():
             display().set_backlight(old_brightness / 10)
             return False
@@ -65,7 +68,7 @@ def render_nice_slider(brightness):
     draw_cancel()
 
     display().set_pen(Colors.WHITE)
-    display().text("0.1", 10, 58, 236, 2)
+    display().text("0", 10, 58, 236, 2)
     display().text("1.0", 205, 58, 236, 2)
     for i in range(0, brightness):
         display().line(50+i*15, 60, 50+i*15, 70, 10)
