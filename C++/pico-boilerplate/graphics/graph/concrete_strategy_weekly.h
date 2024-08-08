@@ -6,6 +6,7 @@
 #define PICO_BOILERPLATE_CONCRETE_STRATEGY_WEEKLY_H
 
 #include "strategy_graph_interval.h"
+#include "../../pages/set_time.h"
 
 /*
  * Concrete strategy for rendering weekly graph. It is a subclass of StrategyGraphInterval.
