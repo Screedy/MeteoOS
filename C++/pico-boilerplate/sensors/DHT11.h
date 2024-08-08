@@ -34,6 +34,7 @@ private:
     bool write;
     char* sensorType;
     repeating_timer_t timer;
+    std::chrono::high_resolution_clock::time_point last_read;
 
     /*
      * Writes the data to a designated file for this sensor on the SD card.

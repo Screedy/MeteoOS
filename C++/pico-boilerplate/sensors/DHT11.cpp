@@ -3,9 +3,12 @@
 //
 
 #include "DHT11.h"
+#include <cstring>
+#include <algorithm>
 
 #include "../config/sd_card_manager.h"
 #include "../config/rtc_module.h"
+#include "../utils/string_modifiers.h"
 
 DHT11::DHT11(unsigned int pin, std::string name, int interval)
     : pin(pin), interval(interval), temperature(0), humidity(0) {
@@ -15,6 +18,8 @@ DHT11::DHT11(unsigned int pin, std::string name, int interval)
     strcpy(this->sensorType, sensorType);
 
     gpio_init(this->pin);
+
+    last_read = std::chrono::high_resolution_clock::now();
 
     repeating_timer_t timer;
     this->timer = timer;
@@ -55,6 +60,10 @@ std::uint8_t DHT11::readByte() {
 
 int DHT11::read() {
 
+    if (last_read + std::chrono::seconds(interval) > std::chrono::high_resolution_clock::now()) {
+        return 0;
+    }
+
     // Send start signal
     gpio_set_dir(this->pin, GPIO_OUT);
     gpio_put(this->pin, 0);
@@ -85,6 +94,10 @@ int DHT11::read() {
     // Store the data
     this->humidity = humI + (humF / 100.0F);
     this->temperature = tempI + (tempF / 100.0F);
+
+    write_to_file();
+
+    last_read = std::chrono::high_resolution_clock::now();
 
     return 0;
 }
@@ -160,20 +173,41 @@ bool DHT11::handle_timer() {
 }
 
 void DHT11::write_to_file() {
+    FIL fil;
+    FRESULT fr;
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
 
     #ifdef TEST_BUILD
         printf("Appending the new measured values to the sensor file.\n");
     #endif
 
+    // Check if time is set
+    if (!is_rtc_set()){
+        printf("RTC is not set. Cannot write to file.\n");
+        return;
+    }
+
+    // Create a directory
+    auto folder = "0:/measurements";
+    fr = f_mkdir(folder);
+    if(fr != FR_OK && fr != FR_EXIST){
+        printf("Failed to create directory %s\n", folder);
+    }
+
     // Open the file in append mode and write a new line with the measured values
     // The format is: "(yyyy, m, d, dotw, h, m, s, 0);temperature;humidity"
     // File is located in 0:/measurements/sensor_name.txt
-    std::string path = "/measurements/" + this->name + ".txt";
 
-    if (f_open(&sd_card_manager->get_fil(), path.c_str(), FA_WRITE | FA_OPEN_APPEND) != FR_OK) {
+    std::string name = this->getName();
+    name.erase(std::remove(name.begin(), name.end(), '\0'), name.end());
+
+    std::string path = "0:/measurements/" + name + ".txt\0";
+
+    fr = f_open(&fil, path.c_str(), FA_WRITE | FA_OPEN_APPEND);
+    if (fr != FR_OK) {
         printf("Failed to open the file., create it\n");
-        if (f_open(&sd_card_manager->get_fil(), path.c_str(), FA_WRITE | FA_CREATE_ALWAYS) != FR_OK) {
+        fr = f_open(&fil, path.c_str(), FA_WRITE | FA_CREATE_ALWAYS);
+        if (fr != FR_OK) {
             printf("Failed to create the file.\n");
             return;
         }
@@ -190,12 +224,15 @@ void DHT11::write_to_file() {
             rtc_datetime.hour, rtc_datetime.min, rtc_datetime.sec,
             temperature, humidity);
 
-    if (f_printf(&sd_card_manager->get_fil(), buffer) < 0) {
+    UINT bytes_written;
+    fr = f_write(&fil, buffer, strlen(buffer), &bytes_written);
+    if (fr != FR_OK) {
         printf("Failed to write to the file.\n");
+        f_close(&fil);
         return;
     }
 
-    f_close(&sd_card_manager->get_fil());
+    f_close(&fil);
 }
 
 void DHT11::setWrite(bool write) {
