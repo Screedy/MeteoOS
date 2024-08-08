@@ -13,6 +13,7 @@
 #include "../../config/rtc_module.h"
 #include "../../utils/string_modifiers.h"
 #include "../../utils/measurements_tests.h"
+#include "../../pages/set_time.h"
 
 void ConcreteStrategyDaily::renderGraph(datetime_t date, Sensor* sensor, bool force_redraw) {
     Display& display = Display::getInstance();
@@ -123,10 +124,10 @@ void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
 
     // NOTE: This is hardcoded to week that has values pre-generated in a file. So that both MicroPython and C++ version
     // have the same test generated, and thus we can compare the time.
-    date.year = 2024;
-    date.month = 2;
-    date.day = 15;
-    date.dotw = 3;
+    // date.year = 2024;
+    // date.month = 2;
+    // date.day = 15;
+    // date.dotw = 3;
 
     datetime_t start = start_of_week(date);
 
@@ -138,7 +139,10 @@ void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
     std::string clean_name = sensor->getName();
     clean_name.erase(std::remove(clean_name.begin(), clean_name.end(), '\0'), clean_name.end());
-    std::string file_path = "0:/sensors/" + clean_name + ".txt";
+    std::string file_path = "0:/measurements/" + clean_name + ".txt";
+
+    printf("File path: %s\n", file_path.c_str());
+    printf("Start of the week: %d-%d-%d\n", start.year, start.month, start.day);
 
     FIL file;
     FRESULT res = f_open(&file, file_path.c_str(), FA_READ);
@@ -149,10 +153,11 @@ void ConcreteStrategyDaily::generateDailyValues(std::vector<float>& temp,
 
     // Generate the values for the whole week
     for (int i = 0; i < 7; i++) {
+        printf("Generating values for day %d\n", i);
         std::array<float, 2> values = generateOneDayValues(start, file);
         temp[i] = values[0];
         hum[i] = values[1];
-        start.day++;
+        start = add_days(start, 1);
 
         #ifdef TEST_GRAPH_MEMORY
             if (i == 0){
