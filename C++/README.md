@@ -41,6 +41,7 @@ cd pico-boilerplate/lib
 git clone https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico.git
 ```
 6. **Clone the [QR-Code-generator](https://github.com/nayuki/QR-Code-generator/tree/master) Library:**
+	- Only the C++ version is needed, so we delete everything else. 
 ```BASH
 git clone https://github.com/nayuki/QR-Code-generator.git
 cd QR-Code-generator
