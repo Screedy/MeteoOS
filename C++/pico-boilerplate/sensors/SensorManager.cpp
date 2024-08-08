@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 
 #include "SensorManager.h"
 #include "../config/sd_card_manager.h"
@@ -60,10 +61,13 @@ void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
         printf("Failed to open file %s\n", path);
     }
 
+    std::string name = sensor->getName();
+    name.erase(std::remove(name.begin(), name.end(), '\0'), name.end());
+
     std::string sensorStr =
             std::to_string(sensor->getPin()) + ";" +
             sensor->getSensorType() + ";" +
-            sensor->getName() + ";" +
+            name + ";" +
             std::to_string(sensor->getInterval()) + "\n";
 
     f_puts(sensorStr.c_str(), &fil);
