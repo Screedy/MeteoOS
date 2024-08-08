@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "pico/util/datetime.h"
+
 /*
  * Splits a string by a delimiter.
  *
@@ -26,5 +28,7 @@ std::vector<std::string> split(const std::string &s, char delimiter);
  * @return The string with escape sequences removed.
  */
 std::string removeEscapeSequences(const std::string &s);
+
+int compare_date(datetime_t date1, datetime_t date2);
 
 #endif //PICO_BOILERPLATE_STRING_MODIFIERS_H

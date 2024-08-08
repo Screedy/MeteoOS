@@ -62,3 +62,16 @@ bool ensureDirectoriesExist(const std::string& fullPath, bool isOnSD){
 
     return true;
 }
+
+int compare_date(datetime_t date1, datetime_t date2){
+    if (date1.year != date2.year){
+        return date1.year - date2.year;
+    }
+    if (date1.month != date2.month){
+        return date1.month - date2.month;
+    }
+    if (date1.day != date2.day){
+        return date1.day - date2.day;
+    }
+    return 0;
+}
