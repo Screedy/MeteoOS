@@ -130,4 +130,10 @@ void draw_confirm();
  */
 void draw_cancel();
 
+/*
+ * Draws the HELP button on the display.
+ * It is positioned in the bottom right corner of the display.
+ */
+void draw_help();
+
 #endif //PICO_BOILERPLATE_GRAPHICS_H
