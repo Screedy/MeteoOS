@@ -70,7 +70,7 @@ def load_brightness():
             if line.startswith("brightness"):
                 return float(line.split(":")[1])
 
-    return 0.5
+    return 5
 
 
 if __name__ == "__main__":
