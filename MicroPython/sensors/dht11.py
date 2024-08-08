@@ -1,6 +1,7 @@
 from machine import Pin, RTC, Timer
 import dht
 from config.sdcard_manager import SDCardManager
+import uos
 
 
 class DHT11:
@@ -174,6 +175,12 @@ class DHT11:
             except OSError as e:
                 print(f"Failed to mount SD card: {e}, unable to write to file")
                 return
+
+        try:
+            uos.mkdir("sd/measurements")
+        except OSError as e:
+            if e.args[0] != 17:     # 17 is the error code for EEXIST
+                raise e
 
         with open("sd/measurements/" + self.name+".txt", "a") as fw_sensor:
             fw_sensor.write(f"{RTC().datetime()};{self.temperature};{self.humidity}\n")

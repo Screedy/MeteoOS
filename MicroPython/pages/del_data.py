@@ -5,6 +5,7 @@ from config.buttons import button_a, button_b, button_x, button_y
 from graphics import page_elements
 from config.sdcard_manager import SDCardManager
 from graphics.graphics import draw_cancel, draw_ok
+import uos
 
 
 def render_del_data():
@@ -21,6 +22,13 @@ def render_del_data():
 
     sd = SDCardManager()
     path = "/sd/measurements"
+
+    try:
+        uos.mkdir(path)
+    except OSError as e:
+        if e.args[0] != 17:  # 17 is the error code for EEXIST
+            raise e
+
     files = sd.list_files(path)
 
     while True:
