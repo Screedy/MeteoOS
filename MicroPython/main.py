@@ -77,8 +77,8 @@ def main_task():
             sleep(1)  # Allow some time for the background task to notice the flag
             machine.soft_reset()  # Perform a soft reset
             break
-        except Exception as e:
-            print("Error in main_task:", e)
+        #except Exception as e:
+            #print("Error in main_task:", e)
 
 
 if __name__ == "__main__":
