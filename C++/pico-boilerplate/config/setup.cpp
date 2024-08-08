@@ -169,7 +169,7 @@ void initial(){
     // Create a directory
     auto path = "0:/config";
     fr = f_mkdir(path);
-    if(fr != FR_OK){
+    if(fr != FR_OK && fr != FR_EXIST){
         printf("Failed to create directory %s\n", path);
     }
 
@@ -185,12 +185,17 @@ void initial(){
 
     f_close(&fil);
 
-    // Create a directory for measurements 0:/sensors/measurements
+    // Create a directory for sensor measurements
     path = "0:/sensors/measurements";
-    fr = f_mkdir(path);
-    if(fr != FR_OK){
+    fr = f_mkdir("0:/sensors");
+    if(fr != FR_OK && fr != FR_EXIST){
         printf("Failed to create directory %s\n", path);
     }
+    fr = f_mkdir(path);
+    if(fr != FR_OK && fr != FR_EXIST){
+        printf("Failed to create directory %s\n", path);
+    }
+
 
 }
 
