@@ -3,6 +3,8 @@ from config.buttons import button_a, button_b, button_x, button_y
 import graphics.graphics_text as graphics_text
 from utime import sleep
 from graphics.page_elements import clear_fast
+from pages.add_sensor import render_add_sensor
+from utils.misc_utils import help_interrupt
 
 helped = False
 pins = ["GP0", "GP1", "GP9", "GP10", "GP11", "GP20", "GP21", "GP22"]
@@ -25,43 +27,6 @@ def wizard_start():
     display().update()
 
     wait_for_y(wizard_start)
-
-
-def pin_setup():
-    """Sets up the pins for first thermal sensor."""
-
-    global selected_pin
-
-    display = Display()
-
-    def render_screen():
-        """Renders the pin setup screen."""
-
-        clear_fast()
-        display().set_pen(Colors.WHITE)
-        display().text("Setup wizard", 2, 0, 236, 2)
-        display().text("Please select the correct pin for your first thermal sensor with A and B buttons",
-                       2, 20, 236, 2)
-        display().text("OK", display.x_max - 25, display.y_max - 17, 236, 2)
-        display().text("HELP", display.x_max - 45, 2, 236, 2)
-
-    render_screen()
-
-    while not button_y.read():
-        if button_x.read():
-            help_interrupt()
-            render_screen()
-
-        if button_a.read():
-            selected_pin = (selected_pin + 1) % len(pins)
-
-        if button_b.read():
-            selected_pin = (selected_pin - 1) % len(pins)
-
-        clear_pin()
-        display().text(f"PIN: {pins[selected_pin]}", 2, display.y_max - 40, 200, 2)
-        display().update()
-        sleep(.15)
 
 
 def storage_pin_setup():
@@ -93,21 +58,6 @@ def storage_pin_setup():
         storage_pin_setup()
 
 
-def help_interrupt():
-    """Interrupts the current function and displays the help screen."""
-    import qr_code
-
-    display = Display()
-
-    qr_code.render_help()
-
-    graphics_text.text_ok(display.x_max - 25, display.y_max - 17, display, Colors.BLACK)
-    display().update()
-
-    while not button_y.read():
-        sleep(.15)
-
-
 def initial():
     """Initiates the first time setup. This function is called when the settings.txt file is not found.
     Guides the user through the setup process and connects first thermal sensor and SD card.
@@ -115,8 +65,8 @@ def initial():
     f = open("settings.txt", "w")
 
     wizard_start()
-    pin_setup()
     storage_pin_setup()
+    render_add_sensor(True)
 
     f.write(f"PIN: {pins[selected_pin]}\n")
     f.write(f"STORAGE: {storage_pins[0]} {storage_pins[1]} {storage_pins[2]} {storage_pins[3]}\n")
