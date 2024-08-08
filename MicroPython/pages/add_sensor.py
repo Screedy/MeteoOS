@@ -4,7 +4,7 @@ from config.buttons import button_a, button_b, button_x, button_y
 from sensors.sensor_manager import SensorManager, AvailableSensors
 from graphics import page_elements
 from sensors.dht11 import DHT11
-from graphics.graphics import draw_next, draw_confirm, draw_cancel
+from graphics.graphics import draw_next, draw_confirm, draw_cancel, draw_back
 
 
 def render_add_sensor():
@@ -133,16 +133,24 @@ def select_sensor_name():
                 return name.rstrip()
 
         if button_y.read():
-            return name
+            if len(name) > 0:
+                name = name[:-1]
+            else:
+                return ""
 
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
         display().text(f"Name of the sensor:", 2, 20, 180, 2)
         display().text(name, 2, 50, 236, 2)
-        length = display().measure_text(name, 2) + 2
-        display().text(characters[current_index], length, 50, 236, 2)
         draw_next()
-        draw_cancel()
+
+        if len(name) > 0:
+            draw_back()
+        else:
+            draw_cancel()
+        length = display().measure_text(name, 2) + 2
+        display().set_pen(Colors.GREY)
+        display().text(characters[current_index], length, 50, 236, 2)
 
         display().update()
 
