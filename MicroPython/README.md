@@ -15,11 +15,9 @@
 			```bash
 			sudo usermod -a -G dialout $USER
 			```
-4. Clone the MeteoOS repository and install library for the sd card:
+4. Clone the MeteoOS repository
 ```bash
 git clone https://github.com/Screedy/MeteoOS.git
-cd MeteoOS/MicroPython
-curl -O https://raw.githubusercontent.com/micropython/micropython-lib/master/micropython/drivers/storage/sdcard/sdcard.py
 ```
 5. Upload and Run MeteoOS
 	1. In Thonny, go to File > Open... and navigate to the directory containing your application files.
@@ -28,29 +26,28 @@ curl -O https://raw.githubusercontent.com/micropython/micropython-lib/master/mic
 	4. Redo these steps until all files are uploaded. Make sure to mirror the MicroPython directory perfectly.
 
 ## How to install MeteoOS using terminal
-1. Clone the MeteoOS repository and install library for the sd card:
-```bash
-git clone https://github.com/Screedy/MeteoOS.git
-cd MeteoOS/MicroPython
-curl -O https://raw.githubusercontent.com/micropython/micropython-lib/master/micropython/drivers/storage/sdcard/sdcard.py
-```
-2. Download and Install Required Tools
+1. Download and Install Required Tools
 	- **Install** **ampy** (you can also use rshell):
 ```bash
 pip install adafruit-ampy
 ```
-3. Flash MicroPython Firmware onto Raspberry Pi Pico
- 	- **Download MicroPython with Pimoroni drivers**: Visit [Pimoroni-Pico](https://github.com/pimoroni/pimoroni-pico/releases) and download the latest `.uf2` file.
- 		- For example, for [RP Pico](https://github.com/pimoroni/pimoroni-pico/releases/download/v1.23.0-1/pico_usb-v1.23.0-1-pimoroni-micropython.uf2)	and [RP Pico W](https://github.com/pimoroni/pimoroni-pico/releases/download/v1.23.0-1/picow-v1.23.0-1-pimoroni-micropython.uf2).
+    
+Check that path to ampy is setup correctly. Simply try `which ampy` in terminal. This should return the path to the ampy executable. If it doesn't, follow these steps:
+```bash
+python3 -m site --user-base # This will show the user base directory. ampy executable should be located in bin directory.
+export PATH=$PATH:/home/screedy/.local/bin # Change the /home/screedy/.local to the path from command above.
+```
+2. Flash MicroPython Firmware onto Raspberry Pi Pico
+	- **Download MicroPython Firmware**: Visit the [MicroPython download page](https://micropython.org/download/rp2-pico/) and download the latest `.uf2` file for the Raspberry Pi Pico.
 	- **Connect Pico to Computer**: Hold down the `BOOTSEL` button on your Pico and connect it to your computer using the micro USB cable. Release the `BOOTSEL` button once connected.
 	- **Flash Firmware**: Your Pico will appear as a USB mass storage device. Drag and drop the `.uf2` file onto the Pico’s drive. It will reboot automatically and will now run MicroPython.
-4. Find Your Pico’s Serial Port
+3. Find Your Pico’s Serial Port
 	- On Windows, it might appear as a COM port (e.g., COM3). You can find this in Device Manager under “Ports (COM & LPT)”.
 ```bash
 ls /dev/tty.* #on Linux
 ls /dev/cu.usbmodem* #on MacOS
 ```
-5. Run the following Python script:
+4. Run the following Python script:
 ```Python
 import os
 import subprocess
