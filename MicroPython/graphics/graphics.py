@@ -184,7 +184,7 @@ def draw_back():
 
     disp = Display()
     disp().set_pen(Colors.RED)
-    disp().text("BACK", 190, 115, 200, 2)
+    disp().text("BACK", disp.x_max-45, disp.y_max-30, 200, 2)
 
 
 def draw_ok():
