@@ -35,6 +35,10 @@ int StrategyGraphInterval::temperature_to_pixel(float temp, float min_temp, floa
         //printf("The pixel y value is: %d\n", (int) (pixel_max + ((temp - min_temp) * (pixel_min - pixel_max)) / (max_temp - min_temp)));
     #endif
 
+    if (min_temp == max_temp) {
+        return 60;
+    }
+
     return (int) (pixel_min + ((temp - min_temp) * (pixel_max - pixel_min)) / (max_temp - min_temp));
 }
 
@@ -70,13 +74,17 @@ std::array<float, 2> StrategyGraphInterval::generateOneDayValues(datetime_t day,
             uint8_t line_month = std::stoi(date_parts[1]);
             uint8_t line_day = std::stoi(date_parts[2]);
 
+            datetime_t line_date;
+            line_date.year = line_year;
+            line_date.month = line_month;
+            line_date.day = line_day;
+
             #ifdef TEST_BUILD
             printf("Line: %s\n", line.c_str());
             //sleep_ms(1000);
             #endif
-
             // Check if the day is before the given day
-            if (line_day < day.day || line_month < day.month || line_year < day.year) {
+            if (compare_date(day, line_date) > 0){
                 #ifdef TEST_BUILD
                 printf("The day is before the given day\n");
                 //printf("Line day: %d, Line month: %d, Line year: %d\n", line_day, line_month, line_year);
@@ -86,8 +94,7 @@ std::array<float, 2> StrategyGraphInterval::generateOneDayValues(datetime_t day,
                 continue; // Skip the line
             }
 
-            // Check if the day is after the given day
-            if (line_day > day.day || line_month > day.month || line_year > day.year) {
+            if (compare_date(day, line_date) < 0){
                 #ifdef TEST_BUILD
                 printf("The day is after the given day\n");
                 //sleep_ms(1000);
