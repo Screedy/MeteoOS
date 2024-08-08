@@ -99,8 +99,12 @@ void startup() {
     path = "0:/sensors/measurements";
     fr = f_stat(path, &fno);
     if(fr != FR_OK){
+        fr = f_mkdir("0:/sensors");
+        if(fr != FR_OK && fr != FR_EXIST){
+            printf("Failed to create directory %s\n", path);
+        }
         fr = f_mkdir(path);
-        if(fr != FR_OK){
+        if(fr != FR_OK && fr != FR_EXIST){
             printf("Failed to create directory %s\n", path);
         }
     }
