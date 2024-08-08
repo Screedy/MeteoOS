@@ -58,6 +58,9 @@ def render_sensor_details():
     display = Display()
     sensor_manager = SensorManager()
 
+    if len(sensor_manager.sensors) == 0:
+        return
+
     current_sensor = sensor_manager.sensors[sensor_manager.active_sensor]
 
     display().text(current_sensor.name, 30, 7, 250, 2)
