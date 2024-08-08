@@ -56,7 +56,7 @@ class SensorManager:
         :return: A list of available pins.
         """
 
-        available_pins = ["GP0", "GP1", "GP9", "GP10", "GP11", "GP20", "GP21", "GP22"]
+        available_pins = ["GP0", "GP1", "GP2", "GP3", "GP4", "GP5", "GP21", "GP22", "GP26", "GP27", "GP28"]
 
         fr_sensors = None
 
@@ -112,6 +112,9 @@ class SensorManager:
         :return: None
         """
 
+        if len(self._sensors) == 0:
+            return
+
         self._active_sensor = (self._active_sensor + 1) % len(self._sensors)
 
     def previous_sensor(self):
@@ -119,6 +122,9 @@ class SensorManager:
 
         :return: None
         """
+
+        if len(self._sensors) == 0:
+            return
 
         self._active_sensor = (self._active_sensor - 1) % len(self._sensors)
 
