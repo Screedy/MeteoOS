@@ -52,7 +52,7 @@ def select_sensor():
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
         page_elements.render_nav_arrows(110)
-        display().text(f"Select the sensor you want to delete. Data will remain saved.", 2, 0, 90, 2)
+        display().text(f"Select the sensor you want to delete. Data will remain saved.", 2, 0, 110, 2)
         page_elements.render_items_list(selected_sensor, sensor_names)
 
         draw_confirm()
