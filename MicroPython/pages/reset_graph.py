@@ -22,10 +22,12 @@ def render_reset_graph():
         sleep(0.1)
 
         if button_a.is_held():
-            selected_measurement = (selected_measurement + 1) % measurements_list_length
-        elif button_b.is_held():
             selected_measurement = (selected_measurement - 1) % measurements_list_length
+        elif button_b.is_held():
+            selected_measurement = (selected_measurement + 1) % measurements_list_length
         elif button_x.read():
+            if measurements_list_length == 0:
+                continue
             uos.remove(f"/sensors/measurements/{measurements_list[selected_measurement]}")
             return True
         elif button_y.read():
