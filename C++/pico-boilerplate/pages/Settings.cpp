@@ -145,7 +145,11 @@ void settings_loop(){
         } else if (buttons.is_button_y_pressed()){
             return;
         } else if (buttons.is_button_a_held()){
-            selected_item = (selected_item - 1) % settings_list.size();
+            if (selected_item == 0){
+                selected_item = settings_list.size() - 1;
+            } else {
+                selected_item = (selected_item - 1) % settings_list.size();
+            }
         } else if (buttons.is_button_b_held()){
             selected_item = (selected_item + 1) % settings_list.size();
         }
