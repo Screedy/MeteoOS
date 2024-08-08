@@ -194,6 +194,14 @@ class DHT11:
 
         self.write = True
 
+    def stop_measure(self):
+        """Stops the measurement of the sensor.
+
+        :return: None
+        """
+
+        self._timer.deinit()
+
 
 if __name__ == "__main__":
     from utime import sleep
