@@ -33,6 +33,7 @@ pip install adafruit-ampy
 ```
 2. Flash MicroPython Firmware onto Raspberry Pi Pico
  	- **Download MicroPython with Pimoroni drivers**: Visit [Pimoroni-Pico](https://github.com/pimoroni/pimoroni-pico/releases) and download the latest `.uf2` file.
+ 		- For example, for [RP Pico](https://github.com/pimoroni/pimoroni-pico/releases/download/v1.23.0-1/pico_usb-v1.23.0-1-pimoroni-micropython.uf2)	and [RP Pico W](https://github.com/pimoroni/pimoroni-pico/releases/download/v1.23.0-1/picow-v1.23.0-1-pimoroni-micropython.uf2).
 	- **Connect Pico to Computer**: Hold down the `BOOTSEL` button on your Pico and connect it to your computer using the micro USB cable. Release the `BOOTSEL` button once connected.
 	- **Flash Firmware**: Your Pico will appear as a USB mass storage device. Drag and drop the `.uf2` file onto the Pico’s drive. It will reboot automatically and will now run MicroPython.
 3. Find Your Pico’s Serial Port
