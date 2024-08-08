@@ -39,6 +39,10 @@ git clone https://github.com/pimoroni/pimoroni-pico
 mkdir pico-boilerplate/lib
 cd pico-boilerplate/lib
 git clone https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico.git
+```
+6. **Clone the [QR-Code-generator](https://github.com/nayuki/QR-Code-generator/tree/master) Library:**
+```BASH
+git clone https://github.com/nayuki/QR-Code-generator.git
 cd QR-Code-generator
 find . -mindepth 1 -maxdepth 1 ! -name 'cpp' -exec rm -rf {} +
 mv cpp/* .
