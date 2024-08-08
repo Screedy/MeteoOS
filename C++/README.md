@@ -114,6 +114,7 @@ make
 	- Rebuild your project to update the `MeteoOS.uf2` file.
 6. **Load the Application:**
 	- Use picotool to automatically upload the UF2 file to the Pico:
+ 	- Note: On Linux you might need to run the picotool as sudo.
 ```BASH
 ../picotool/build/picotool load -f MeteoOS.uf2
 ```
