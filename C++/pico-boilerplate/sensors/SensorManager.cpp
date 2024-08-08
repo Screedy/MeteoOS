@@ -46,6 +46,13 @@ void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
 
     const char* path = "0:/config/sensors.txt";
 
+    std::string configPath = "0:/config";
+    // check if the directory exists, if not create it
+    fr = f_mkdir(configPath.c_str());
+    if(fr != FR_OK && fr != FR_EXIST){
+        printf("Failed to create directory %s\n", configPath.c_str());
+    }
+
     //append to 0:/config/sensors.txt
     //format: sensorPin;sensorType;sensorName;sensorInterval
     fr = f_open(&fil, path, FA_WRITE | FA_OPEN_APPEND | FA_CREATE_ALWAYS);
