@@ -44,6 +44,9 @@ def select_sensor():
             selected_sensor = (selected_sensor - 1) % sensor_list_length
 
         if button_x.read():
+            if sensor_list_length == 0:
+                return None
+
             return int(sensor_list[selected_sensor].pin)
 
         if button_y.read():
