@@ -1,5 +1,6 @@
 from machine import Pin, SPI
 from uos import VfsFat, mount, umount, listdir, chdir, remove
+from utime import sleep
 
 from config.config import singleton
 import sdcard
@@ -13,7 +14,7 @@ class SDCardManager:
 
     _spi = None
 
-    _baudrate = 40000000
+    _baudrate = 16000000
     _sck = Pin(10)
     _mosi = Pin(11)
     _miso = Pin(8)
@@ -22,7 +23,8 @@ class SDCardManager:
     def __init__(self):
         """Initializes the SD card"""
 
-        self._spi = SPI(1, baudrate=self._baudrate, sck=self._sck, mosi=self._mosi, miso=self._miso)
+        self._spi = SPI(1, baudrate=self._baudrate, polarity=0, phase=0, sck=self._sck, mosi=self._mosi, miso=self._miso)
+        sleep(1)
 
     def mount(self):
         """Mounts the SD card as /sd
@@ -32,12 +34,12 @@ class SDCardManager:
 
         try:
             target_sd = sdcard.SDCard(self._spi, self._cs)
+            sleep(1)
             vfs = VfsFat(target_sd)
             mount(vfs, "/sd")
-        except OSError:
-            print("SD card was unable to open during mount procedure.")
+        except OSError as e:
+            print("SD card was unable to open during mount procedure:", e)
             return False
-
         return True
 
     @staticmethod
@@ -244,3 +246,4 @@ if __name__ == "__main__":
     for _ in range(10):
         # print(sd.list_files())
         sd.list_files()
+
