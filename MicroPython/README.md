@@ -32,7 +32,7 @@ git clone https://github.com/Screedy/MeteoOS.git
 pip install adafruit-ampy
 ```
 2. Flash MicroPython Firmware onto Raspberry Pi Pico
-	- **Download MicroPython Firmware**: Visit the [MicroPython download page](https://micropython.org/download/rp2-pico/) and download the latest `.uf2` file for the Raspberry Pi Pico.
+ 	- **Download MicroPython with Pimoroni drivers**: Visit [Pimoroni-Pico](https://github.com/pimoroni/pimoroni-pico/releases) and download the latest `.uf2` file.
 	- **Connect Pico to Computer**: Hold down the `BOOTSEL` button on your Pico and connect it to your computer using the micro USB cable. Release the `BOOTSEL` button once connected.
 	- **Flash Firmware**: Your Pico will appear as a USB mass storage device. Drag and drop the `.uf2` file onto the Pico’s drive. It will reboot automatically and will now run MicroPython.
 3. Find Your Pico’s Serial Port
