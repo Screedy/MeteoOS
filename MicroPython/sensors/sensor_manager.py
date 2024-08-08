@@ -163,6 +163,7 @@ class SensorManager:
         if position == -1:
             raise ValueError("The given pin is not in the list of sensors.")
 
+        self._sensors[position].stop_measure()
         self._sensors.pop(position)
 
         if position >= active_sensor_position:
