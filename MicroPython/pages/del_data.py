@@ -41,7 +41,7 @@ def render_del_data():
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
         page_elements.render_nav_arrows(110)
-        display().text(f"Select the file with measure- ments you want to delete.", 2, 0, 110, 2)
+        display().text(f"Select the file with measure- ments you want to delete.", 2, 20, 110, 2)
         page_elements.render_items_list(selected_item, files)
 
         draw_ok()
