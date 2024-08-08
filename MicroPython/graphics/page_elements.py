@@ -60,7 +60,7 @@ def render_sensor_details():
 
     current_sensor = sensor_manager.sensors[sensor_manager.active_sensor]
 
-    display().text(current_sensor.name, 34, 7, 250, 2)
+    display().text(current_sensor.name, 30, 7, 250, 2)
     draw_clock(14, 41)
     current_time = localtime()
     display().text(parse_time(current_time), 34, 34, 250, 2)
