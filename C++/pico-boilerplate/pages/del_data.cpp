@@ -46,8 +46,8 @@ void render_del_data(){
     // List all files in the folder
     DIR dir;
     FILINFO fno;
-    FRESULT fr = f_opendir(&dir, path);
-    if(fr != FR_OK){
+    FRESULT fr = f_mkdir(path);
+    if(fr != FR_OK && fr != FR_EXIST){
         if (fr == FR_NO_PATH){
             printf("Directory %s does not exist\n", path);
             // Create the directory
