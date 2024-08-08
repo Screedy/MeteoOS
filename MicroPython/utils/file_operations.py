@@ -55,6 +55,12 @@ def file_exists(target_sensor):
     """
 
     try:
+        uos.mkdir("/sd/measurements")
+    except OSError as e:
+        if e.args[0] != 17:  # 17 is the error code for EEXIST
+            raise e
+
+    try:
         sd = SDCardManager()
         sd.mount()
         files = sd.list_files("/sd/measurements")
