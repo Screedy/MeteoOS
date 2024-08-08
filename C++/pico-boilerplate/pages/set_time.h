@@ -19,6 +19,8 @@
  */
 void render_set_time_menu();
 
+datetime_t add_days(const datetime_t& dt, int days);
+
 
 
 #endif //PICO_BOILERPLATE_SET_TIME_H

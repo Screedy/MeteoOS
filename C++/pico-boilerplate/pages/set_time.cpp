@@ -56,6 +56,24 @@ void increment_day(datetime_t *dt){
     dt->day = (dt->day % days) + 1;
 }
 
+// Function to add days to a datetime_t structure
+datetime_t add_days(const datetime_t& dt, int days) {
+    datetime_t new_dt = dt;
+
+    new_dt.day += days;
+
+    while (new_dt.day > days_in_month(new_dt.month, new_dt.year)) {
+        new_dt.day -= days_in_month(new_dt.month, new_dt.year);
+        new_dt.month++;
+        if (new_dt.month > 12) {
+            new_dt.month = 1;
+            new_dt.year++;
+        }
+    }
+
+    return new_dt;
+}
+
 void decrement_day(datetime_t *dt){
     int days = days_in_month(dt->month, dt->year);
     if (dt->day == 1){
