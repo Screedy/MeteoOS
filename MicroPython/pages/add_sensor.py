@@ -114,28 +114,23 @@ def select_sensor_name():
     """
 
     display = Display()
+    characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
+    len_characters = len(characters)
     name = ""
-
-    current_ascii = 65
+    current_index = 0
 
     while True:
         sleep(.1)
         if button_a.is_held():
-            current_ascii = (current_ascii + 1) % 91
-            if current_ascii == 0:
-                current_ascii = 65
-
-        if button_b.is_held():
-            current_ascii = (current_ascii - 1) % 91
-            if current_ascii == 64:
-                current_ascii = 90
-
-        if button_x.read():
+            current_index = (current_index + 1) % len_characters
+        elif button_b.is_held():
+            current_index = (current_index - 1) % len_characters
+        elif button_x.read():
             if len(name) < 6:
-                name = name + chr(current_ascii)
-                current_ascii = 65
+                name += (characters[current_index]) if characters[current_index] != "_" else " "
+                current_ascii = 0
             else:
-                return name
+                return name.rstrip()
 
         if button_y.read():
             return name
@@ -143,9 +138,9 @@ def select_sensor_name():
         page_elements.clear_fast()
         display().set_pen(Colors.WHITE)
         display().text(f"Name of the sensor:", 2, 20, 180, 2)
-        display().text(name, 2, 40, 236, 2)
+        display().text(name, 2, 50, 236, 2)
         length = display().measure_text(name, 2) + 2
-        display().text(chr(current_ascii), length, 40, 236, 2)
+        display().text(characters[current_index], length, 50, 236, 2)
         draw_next()
         draw_cancel()
 
