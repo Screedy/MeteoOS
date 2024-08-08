@@ -217,7 +217,18 @@ def draw_cancel():
 
     disp = Display()
     disp().set_pen(Colors.RED)
-    disp().text("CANCEL", disp.x_max-65, disp.y_max-20, 200, 2)
+    disp().text("CANCEL", disp.x_max-65, disp.y_max-30, 200, 2)
+
+
+def draw_help():
+    """Draws a help icon on the display.
+
+    :return: None
+    """
+
+    disp = Display()
+    disp().set_pen(Colors.RED)
+    disp().text("HELP", disp.x_max-45, disp.y_max-30, 200, 2)
 
 
 if __name__ == "__main__":
