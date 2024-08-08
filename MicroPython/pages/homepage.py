@@ -27,12 +27,17 @@ def render_homepage(graph_interval):
     page_elements.render_sensor_details()
     display().line(101, 16, 101, 120, 3)
 
+    if len(sensor_manager.sensors) == 0:
+        display().update()
+        return
+
     active_sensor = sensor_manager.sensors[sensor_manager.active_sensor]
     # Value is fixed here to test on same data every time.
     # graph.render_graph((2024, 2, 15, 3), active_sensor, False)
 
-    current_time = localtime()
-    graph.render_graph((current_time[0], current_time[1], current_time[2], current_time[6]), active_sensor, False)
+    if active_sensor:
+        current_time = localtime()
+        graph.render_graph((current_time[0], current_time[1], current_time[2], current_time[6]), active_sensor, False)
 
     display().update()
 
