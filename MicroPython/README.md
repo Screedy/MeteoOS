@@ -99,3 +99,5 @@ if __name__ == "__main__":
     port = input("Enter the serial port (e.g., /dev/ttyUSB0 or COM3): ")
     upload_directory(directory, port)
 ```
+
+6. Open Thonny IDE, connect to the Raspberry Pi Pico, load the main.py file from the RP2040 and click run.
