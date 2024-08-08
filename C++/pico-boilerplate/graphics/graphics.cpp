@@ -136,3 +136,8 @@ void draw_cancel(){
     graphics.set_pen(Colors::RED);
     graphics.text("CANCEL", Point{DISPLAY_WIDTH - 65, DISPLAY_HEIGHT - 20}, 200, 2);
 }
+
+void draw_help(){
+    graphics.set_pen(Colors::RED);
+    graphics.text("HELP", Point{DISPLAY_WIDTH - 45, DISPLAY_HEIGHT - 20}, 200, 2);
+}
