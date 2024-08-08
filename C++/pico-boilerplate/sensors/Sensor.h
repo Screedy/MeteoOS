@@ -9,6 +9,7 @@
 #include "SensorType.h"
 #include "pico/stdlib.h"
 #include "hardware/timer.h"
+#include <chrono>
 
 /*
  * An abstract class that represents a generic sensor.
@@ -91,6 +92,7 @@ public:
 
 private:
     repeating_timer_t timer;
+    std::chrono::high_resolution_clock::time_point last_read;
 };
 
 /*
