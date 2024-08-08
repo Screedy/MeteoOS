@@ -67,17 +67,26 @@ void ConcreteStrategyWeekly::renderWeeklyGraph(const std::vector<float>& temp, c
     graphics.text(temp_middle_str.str(), Point(108, 60), 250, 1);
     graphics.text(min_temp_str.str(), Point(108, 98), 250, 1);
 
+    // printf("Temp values: %f %f %f %f\n", temp[0], temp[1], temp[2], temp[3]);
+
+    graphics.set_pen(Colors::WHITE);
+
     for (int i = 0; i < 3; i++) {
         if (temp[i] != -404.0f && temp[i + 1] != -404.0f) {
-            graphics.line(Point(130 + i * 32, temperature_to_pixel(temp[i], max_temp, min_temp)),
-                          Point(130 + (i + 1) * 32, temperature_to_pixel(temp[i + 1], max_temp, min_temp)));
+            graphics.line(Point(140 + i * 30, temperature_to_pixel(temp[i], max_temp, min_temp)),
+                          Point(140 + (i + 1) * 30, temperature_to_pixel(temp[i + 1], max_temp, min_temp)));
         } else if (temp[i] != -404.0f) {
-            graphics.pixel(Point(130 + i * 32, temperature_to_pixel(temp[i], max_temp, min_temp)));
+            // printf("Drawing pixel at %d %d\n", 130 + i * 32, temperature_to_pixel(temp[i], max_temp, min_temp));
+            graphics.pixel(Point(140 + i * 30, temperature_to_pixel(temp[i], max_temp, min_temp)));
         } else if (temp[i + 1] != -404.0f) {
-            graphics.pixel(Point(130 + (i + 1) * 32, temperature_to_pixel(temp[i + 1], max_temp, min_temp)));
+            graphics.pixel(Point(140 + (i + 1) * 30, temperature_to_pixel(temp[i + 1], max_temp, min_temp)));
         }
     }
-    graphics.pixel(Point(130 + 3 * 32, temperature_to_pixel(temp[3], max_temp, min_temp)));
+
+    if (temp[3] != -404.0f) {
+        graphics.line(Point(140 + 3 * 30, temperature_to_pixel(temp[3], max_temp, min_temp)),
+                      Point(140 + 4 * 30, temperature_to_pixel(temp[3], max_temp, min_temp)));
+    }
 }
 
 void ConcreteStrategyWeekly::getWeeklyValuesFromFile(std::vector<float>& temp, std::vector<float>& hum, Sensor* sensor) {
@@ -117,13 +126,14 @@ void ConcreteStrategyWeekly::generateWeeklyValues(std::vector<float>& temp,
 
     // NOTE: This is hardcoded to week that has values pregenerated in a file. So that both MicroPython and C++ version
     // have the same test generated, and thus we can compare the time.
-    date.year = 2024;
-    date.month = 2;
-    date.day = 15;
-    date.dotw = 3;
+    // date.year = 2024;
+    // date.month = 2;
+    // date.day = 15;
+    // date.dotw = 3;
 
     datetime_t start = date;
-    start.day = 1; // Start of the month
+    start.day = 1;
+
 
     int num_days_in_month = getNumDaysInMonth(date.month, date.year);
 
@@ -135,7 +145,7 @@ void ConcreteStrategyWeekly::generateWeeklyValues(std::vector<float>& temp,
     sd_card_manager* sd_card_manager = sd_card_manager::get_instance();
     std::string clean_name = sensor->getName();
     clean_name.erase(std::remove(clean_name.begin(), clean_name.end(), '\0'), clean_name.end());
-    std::string file_path = "0:/sensors/" + clean_name + ".txt";
+    std::string file_path = "0:/measurements/" + clean_name + ".txt";
 
     FIL file;
     FRESULT res = f_open(&file, file_path.c_str(), FA_READ);
@@ -159,17 +169,7 @@ void ConcreteStrategyWeekly::generateWeeklyValues(std::vector<float>& temp,
                 days_with_values++;
             }
 
-            start.day++;
-
-            if (start.day > num_days_in_month) {
-                start.day = 1;
-                start.month++;
-                if (start.month > 12) {
-                    start.month = 1;
-                    start.year++;
-                }
-                num_days_in_month = getNumDaysInMonth(start.month, start.year);
-            }
+            start = add_days(start, 1);
         }
 
         if (days_with_values == 0) {
@@ -179,6 +179,8 @@ void ConcreteStrategyWeekly::generateWeeklyValues(std::vector<float>& temp,
             temp[i] /= days_with_values;
             hum[i] /= days_with_values;
         }
+
+        days_with_values = 0;
     }
 
     f_close(&file);
