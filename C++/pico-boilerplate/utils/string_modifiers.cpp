@@ -3,8 +3,10 @@
 //
 
 #include "string_modifiers.h"
-
+#include <vector>
+#include <string>
 #include <sstream>
+#include "ff.h"
 
 // Function to split a string by a delimiter
 std::vector<std::string> split(const std::string &s, char delimiter) {
@@ -26,4 +28,37 @@ std::string removeEscapeSequences(const std::string &s) {
         }
     }
     return result;
+}
+
+std::vector<std::string> splitPath(const std::string& path){
+    std::vector<std::string> parts = split(path, '/');
+    return parts;
+}
+
+FRESULT createDirectory(const std::string& path){
+    FRESULT fr = f_mkdir(path.c_str());
+    if (fr != FR_OK && fr != FR_EXIST) {
+        printf("Failed to create directory %s\n", path.c_str());
+    }
+    return fr;
+}
+
+bool ensureDirectoriesExist(const std::string& fullPath, bool isOnSD){
+    std::vector<std::string> parts = splitPath(fullPath);
+
+    if (isOnSD){
+        parts.erase(parts.begin());
+    }
+
+    std::string currentPath = parts[0];
+
+    for (size_t i = 1; i < parts.size(); ++i){
+        currentPath += "/" + parts[i];
+        FRESULT fr = createDirectory(currentPath);
+        if (fr != FR_OK && fr != FR_EXIST){
+            return false;
+        }
+    }
+
+    return true;
 }
