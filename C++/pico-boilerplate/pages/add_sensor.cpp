@@ -212,6 +212,10 @@ std::string select_sensor_name(bool is_setup) {
                 name += (characters[current_index] == '_') ? ' ' : characters[current_index];
                 current_index = 0;
             } else {
+                //Strip " " from the end of the name
+                while (name.back() == ' '){
+                    name.pop_back();
+                }
                 return name;
             }
         } else if (buttons.is_button_y_pressed()){
