@@ -2,7 +2,7 @@
 1. Download and install Thonny IDE
 	- Go to [thonny.org](https://thonny.org/) and download the version suitable for your operating system (Windows, macOS, or Linux).
 2. Flash MicroPython Firmware onto Raspberry Pi Pico
- 	- **Download MicroPython with Pimoroni drivers**: Visit [Pimoroni-Pico](https://github.com/pimoroni/pimoroni-pico/releases) and download the latest `.uf2` file (App tested on `v1.20.3`.
+ 	- **Download MicroPython with Pimoroni drivers**: Visit [Pimoroni-Pico](https://github.com/pimoroni/pimoroni-pico/releases) and download the latest `.uf2` file (App tested on `v1.20.3`).
 	- **Connect Pico to Computer**: Hold down the `BOOTSEL` button on your Pico and connect it to your computer using the micro USB cable. Release the `BOOTSEL` button once connected.
 	- **Flash Firmware**: Your Pico will appear as a USB mass storage device. Drag and drop the `.uf2` file onto the Pico’s drive. It will reboot automatically and will now run MicroPython.
 3. Set Up Thonny IDE
