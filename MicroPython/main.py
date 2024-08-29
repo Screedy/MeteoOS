@@ -98,8 +98,6 @@ if __name__ == "__main__":
 
     collect()
     try:
-        start_new_thread(handle_interrupt, ())
+        start_new_thread(main_task, ())
     except Exception as e:
         print("Error starting main_task thread:", e)
-
-    main_task()
